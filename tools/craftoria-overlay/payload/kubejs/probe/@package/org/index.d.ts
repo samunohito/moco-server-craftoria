@@ -1,0 +1,13 @@
+export * as lwjgl from "@package/org/lwjgl";
+export * as embeddedt from "@package/org/embeddedt";
+export * as slf4j from "@package/org/slf4j";
+export * as cyclops from "@package/org/cyclops";
+export * as antlr from "@package/org/antlr";
+export * as joml from "@package/org/joml";
+export * as objectweb from "@package/org/objectweb";
+export * as apache from "@package/org/apache";
+export * as spongepowered from "@package/org/spongepowered";
+export * as jline from "@package/org/jline";
+export * as xiyu from "@package/org/xiyu";
+export * as anti_ad from "@package/org/anti_ad";
+export * as reactivestreams from "@package/org/reactivestreams";

@@ -1,0 +1,64 @@
+import { $InteractionResult } from "@package/net/minecraft/world";
+import { $ItemStack_ } from "@package/net/minecraft/world/item";
+import { $IStorageWrapper } from "@package/net/p3pp3rf1y/sophisticatedcore/api";
+import { $ITierDisplay, $ICountDisplay, $BarrelMaterial_, $IMaterialHolder, $IFillLevelDisplay, $BarrelMaterial, $IUpgradeDisplay, $StorageBlockEntity, $ILockable } from "@package/net/p3pp3rf1y/sophisticatedstorage/block";
+import { $CompoundTag } from "@package/net/minecraft/nbt";
+import { $ResourceLocation_, $ResourceLocation } from "@package/net/minecraft/resources";
+import { $Entity } from "@package/net/minecraft/world/entity";
+import { $Player } from "@package/net/minecraft/world/entity/player";
+import { $List, $Map_, $Map } from "@package/java/util";
+
+declare module "@package/net/p3pp3rf1y/sophisticatedstorage/entity" {
+    export class $StorageHolderBase implements $ILockable, $ICountDisplay, $ITierDisplay, $IUpgradeDisplay, $IFillLevelDisplay, $IMaterialHolder {
+        isOpen(): boolean;
+        isLocked(): boolean;
+        tick(arg0: $Entity): void;
+        openContainerMenu(arg0: $Player): $InteractionResult;
+        startOpen(arg0: $Player, arg1: $Entity): void;
+        stopOpen(arg0: $Player, arg1: $Entity): void;
+        isPacked(): boolean;
+        setStorageItem(arg0: $ItemStack_): void;
+        onStorageItemSynced(): void;
+        getStorageWrapper(): $IStorageWrapper;
+        toggleFillLevelVisibility(): void;
+        shouldShowFillLevels(): boolean;
+        toggleCountVisibility(): void;
+        getMaterials(): $Map<$BarrelMaterial, $ResourceLocation>;
+        setMaterials(arg0: $Map_<$BarrelMaterial_, $ResourceLocation_>): void;
+        canHoldMaterials(): boolean;
+        setShouldBeOpen(arg0: boolean): void;
+        toggleLock(): void;
+        areCountsVisible(): boolean;
+        areUpgradesVisible(): boolean;
+        isLockVisible(): boolean;
+        getRenderInfoNbt(arg0: $ItemStack_): $CompoundTag;
+        isBarrel(): boolean;
+        getMainStorageHolder(): $StorageHolderBase;
+        getAuxiliaryStorageHolder(): ($StorageHolderBase) | undefined;
+        toggleTierVisiblity(): void;
+        toggleLockVisibility(): void;
+        toggleUpgradesVisiblity(): void;
+        getSlotFillLevels(): $List<number>;
+        shouldShowCounts(): boolean;
+        getSlotCounts(): $List<number>;
+        updateStorageWrapper(): void;
+        getRenderBlockEntity(): $StorageBlockEntity;
+        areFillLevelsVisible(): boolean;
+        shouldShowTier(): boolean;
+        shouldShowUpgrades(): boolean;
+        shouldShowLock(): boolean;
+        get open(): boolean;
+        get locked(): boolean;
+        get packed(): boolean;
+        set storageItem(value: $ItemStack_);
+        get storageWrapper(): $IStorageWrapper;
+        set shouldBeOpen(value: boolean);
+        get lockVisible(): boolean;
+        get barrel(): boolean;
+        get mainStorageHolder(): $StorageHolderBase;
+        get auxiliaryStorageHolder(): ($StorageHolderBase) | undefined;
+        get slotFillLevels(): $List<number>;
+        get slotCounts(): $List<number>;
+        get renderBlockEntity(): $StorageBlockEntity;
+    }
+}

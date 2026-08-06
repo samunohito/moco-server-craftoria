@@ -1,0 +1,64 @@
+_specver: 2
+
+modpack:
+  name: Craftoria
+  description: The latest & best of NeoForge on 1.21
+
+install:
+  mcVersion:
+  loaderVersion: 21.1.230
+  modpackUrl: https://mediafilez.forgecdn.net/files/8127/194/Craftoria-1.31.0.zip
+  installerUrl: "https://maven.neoforged.net/releases/net/neoforged/neoforge/{{@loaderversion@}}/neoforge-{{@loaderversion@}}-installer.jar"
+  ignoreFiles:
+    - mods/optifine*.jar
+    - resources/**
+  additionalFiles:
+  localFiles: ~
+  installerArguments:
+    - "--installServer"
+  modpackFormat: curse
+  formatSpecific:
+    ignoreProject:
+      - 737481
+      - 363363
+      - 908741
+      - 986380
+      - 844662
+      - 568563
+      - 915902
+      - 690971
+      - 455508
+      - 1089803
+      - 925889
+      - 1112793
+      - 1133580
+      - 1274497
+      - 1254143
+      - 1285475
+      - 646146
+      - 1351246
+      - 1326436
+  baseInstallPath:
+  checkFolder: true
+  installLoader: true
+  installPack: true
+  spongeBootstrapper: ~
+  connectTimeout: 90
+  readTimeout: 90
+
+launch:
+  maxRam: 5G
+  minRam: 3G
+  autoRestart: false
+  javaArgs:
+    - "-XX:+UseG1GC"
+  spongefix: false
+  ramDisk: false
+  checkOffline: false
+  crashLimit: 10
+  crashTimer: 60min
+  preJavaArgs: ~
+  forcedJavaPath: ~
+  startCommand:
+    - "@libraries/net/neoforged/neoforge/{{@loaderversion@}}/{{@os@}}_args.txt"
+    - "nogui"

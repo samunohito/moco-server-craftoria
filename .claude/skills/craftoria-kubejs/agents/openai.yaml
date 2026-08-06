@@ -1,0 +1,5 @@
+interface:
+  display_name: "Craftoria KubeJS"
+  short_description: "Develop and validate this Craftoria KubeJS pack"
+  default_prompt: "Use $craftoria-kubejs to implement and validate a KubeJS change for this Craftoria instance."
+

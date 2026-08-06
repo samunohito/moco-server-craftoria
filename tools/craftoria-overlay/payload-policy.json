@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "files": {
+    "kubejs/client_scripts/jsconfig.json": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "d2a13306c453d92e9fe31b499b657a16a5083b1471850216a5a22d9876520e17"
+      ]
+    },
+    "kubejs/server_scripts/Mods/Craftoria/ConflictFixes.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "be0eaee625dda26870d9a59025035a44c69bcb61d502b06c1e1d6dbe55d4e790"
+      ]
+    },
+    "kubejs/server_scripts/Mods/ModernIndustrialization/ReplicatorBlacklist.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "30ffc72981a0e91592e36787b31ddd1a44ae64158a11939279dc9d71421eedf6"
+      ]
+    },
+    "kubejs/server_scripts/unify/Knife.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "f8fad5d65580c6823e25185a3196a95865201fa33c2b5d0bef830822f99c535a"
+      ]
+    },
+    "kubejs/server_scripts/jsconfig.json": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "76baa3d2717a253e959bff6e1468592ebd9ec417e44e7f46846e57a4ca636c79"
+      ]
+    },
+    "kubejs/startup_scripts/jsconfig.json": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "c598d8f9710af7a23f92cdd9061894afa84b2380377a66e15d293e769c998f97"
+      ]
+    }
+  }
+}

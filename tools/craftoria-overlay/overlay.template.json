@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "addonVersion": "1.1.0",
+  "target": {
+    "managedPackId": "1039252",
+    "managedPackVersionId": "8127261",
+    "managedPackVersion": "1.31.0",
+    "minecraft": "1.21.1",
+    "neoForge": "21.1.230"
+  },
+  "files": [
+    {
+      "path": "mods/create-new-age-1.2.0+neoforge-mc1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/FTeXqI9v/versions/IwtuwMZy/create-new-age-1.2.0%2Bneoforge-mc1.21.1.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "a217ea21ccc8364e99d86777e519436bc7c94516df9737ad0103047e48a44717"
+    },
+    {
+      "path": "mods/createdieselgenerators-1.21.1-1.3.15.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/ZM3tt6p1/versions/UoPH8lO1/createdieselgenerators-1.21.1-1.3.15.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "56ef1d574278fc311f1ffa223dbd613077b899354a18d01ae8dca2578a4e2990"
+    },
+    {
+      "path": "mods/CreateNumismatics-1.0.20+neoforge-mc1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/Jdbbtt0i/versions/guON3qvQ/CreateNumismatics-1.0.20%2Bneoforge-mc1.21.1.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "1375ba1b50e53fd09435029b5b2d5b94779ba397cca7e01180d07b0f624e5b9b"
+    },
+    {
+      "path": "mods/createvintageneoforged-1.21.1-1.3.7.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/qVZh767G/versions/lKygSXpY/createvintageneoforged-1.21.1-1.3.7.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "2ef3e8b9b7fce7528db3fea5827feb5917d1d5c33e27a0acd4887d7c70849b5c"
+    },
+    {
+      "path": "mods/numismaticsutils-2.2-1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/8kRKVjUw/versions/6c1vcLsi/numismaticsutils-2.2-1.21.1.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "27a2f7b249ef37507abddccae1c847ae9a85787683deb732edea0c2c10292f66"
+    },
+    {
+      "path": "mods/sliceanddice-forge-4.2.4.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/GmjmRQ0A/versions/tyVnEa75/sliceanddice-forge-4.2.4.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "c3bd743a73eed3de14f6be5221fe68655cfeed0749f8f467f2ce2012ed1416bd"
+    },
+    {
+      "path": "mods/kubejs-create-neoforge-2101.3.1-build.18.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/T38eAZQC/versions/1qmcLagN/kubejs-create-neoforge-2101.3.1-build.18.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "b2c3064a06f7a06aa479c38daa72fcf88e31e753cb16c53435690b2472f71acea49fe3fcab09a1e5d6fed88b289941f9ecf3f71ba9a7b8b84397cab2b8d9801d"
+    },
+    {
+      "path": "mods/dg_js-1.21.1-1.2.3.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/10UMLVgM/versions/QnpXNcWf/dg_js-1.21.1-1.2.3.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "501d630ba2b59c042bdca1cf868215fcf79d6cc47395b71f59f24eb68b1ffef14c5b81615c6d3cf4dad74e27c53bbc08eb2372d0604e195399f5f962fb7764a9"
+    },
+    {
+      "path": "mods/kubejs_mekanism_extends-2101.0.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/T9pG3C89/versions/OLu0A7cB/kubejs_mekanism_extends-2101.0.1.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "1690e026016576bfd386b592c60d1c768805b167bedf30ce201935e31d936ac9"
+    },
+    {
+      "path": "mods/easy-villagers-neoforge-1.21.1-1.1.42.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/Kaov2qgi/versions/uXQvvtUt/easy-villagers-neoforge-1.21.1-1.1.42.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "584bcd5449996f0bcc66d97a88da3a148087f1b29e077983c06137ff18c1dc302df8f84eef7d835e61ebcd9fd221f98c67cbe9cb480fb33a46de6245614a68e4"
+    },
+    {
+      "path": "mods/emf_compat_core_1.21.1_1.1.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/hbGct5uU/versions/ES6z1yza/emf_compat_core_1.21.1_1.1.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "b1f2f04fd7f86230f85f4edd8107399c2eb343b0bcf6288fb4d5aad2d42e5126217c1d7566309b3542ab333241ffc1e433e0fe03a8cf821efbc2789505b64a4b"
+    },
+    {
+      "path": "mods/emf_compat_better_combat_1.21.1_1.1.0.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/Smytm33T/versions/Am9WNe7Z/emf_compat_better_combat_1.21.1_1.1.0.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "740b257c807637d006f9687f1693e59d21a591fd873a9f561c07cd657b4fd70d3c5f83aec9c85340630552d09af32ba28d752517707c1bfb515a0b2ba5d4751d"
+    },
+    {
+      "path": "mods/spartan_weaponry_unofficial-1.2.2-1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/w8V2GMiK/versions/I7KW38kf/spartan_weaponry_unofficial-1.2.2-1.21.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "624f8286b00a4f4d25903122480f69d9d15e5350b2a2babeb4a3ed978fba7bc935dc49fe553cc1301a17276a17116a15592eeaa092d2c4bbd1e6fae1fe26c6b7"
+    },
+    {
+      "path": "mods/spartanshieldsunofficial-1.0.0-1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/EvjGFdKp/versions/xzXbZ0oN/spartanshieldsunofficial-1.0.0-1.21.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "0b88b858e4611c1a2f78368d37b673dbcd207b5dc740aa41b9a7667a4589a132fa9537d2168964e2725550d2af3474a53ccc44626d12fe26ddfa500556d60e6c"
+    },
+    {
+      "path": "mods/bettercombat-neoforge-2.4.0+1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/5sy6g3kz/versions/VhIOvcXP/bettercombat-neoforge-2.4.0%2B1.21.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "db24730a42ae7e2dd546ee031d2f5e0dd6f9896418417a529fa21a44121761ebb29c8b8299db8f20500f7497f7b60a7d793b66c93abf37a8ea0aa3edafd80eb6"
+    }
+  ]
+}
