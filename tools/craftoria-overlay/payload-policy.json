@@ -1,6 +1,42 @@
 {
   "schemaVersion": 1,
   "files": {
+    "config/ftbquests/quests/reward_tables/1D6F040D6822FC7F.snbt": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "09338cee03965766e5b0ce0aa971918daa18f754ea2de66888ce49f5e1c884a1"
+      ]
+    },
+    "config/ftbquests/quests/reward_tables/303299C956CA9C80.snbt": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "6daf376f55a345675dbe57e387ed372575ad79e2a2d18cb6091eaa46aac25e26"
+      ]
+    },
+    "config/cataclysm.toml": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "f71749f3821942e0303e32daad6501f25ac0d7cf530fab15f82486a6bd2a9549"
+      ]
+    },
+    "config/eternal_starlight.json": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "daa380a6e180577ca03c3b99db1cdacc169f13438a190bd9a0934572db054bfe"
+      ]
+    },
+    "config/irons_spellbooks-server.toml": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "d47973a3c4e14444df99d1cab4bce0d87d229cc2e391c690252db60d34cc817a"
+      ]
+    },
+    "config/twilightforest-common.toml": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "81e54e0f4f939ab77bc6c05f977735406f3fc8bd3930794e721b40e7da9d0b1e"
+      ]
+    },
     "config/ftbquests/quests/chapters/Applied Energistics.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [

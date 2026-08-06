@@ -105,6 +105,8 @@ Upgrade上限は16のまま残し、8枚まではMekanism本来の曲線、9枚�
 1枚ごとに相殺不能な1.5倍の追加電力ペナルティを課します。Speed / Energyを各16枚積むと
 速度は100倍、電力は約2,563倍、標準機械の同時処理は最大16 operation/tickです。
 高速化の面白さは残しつつ、発電設備と配線容量を伴わない安易な常用を抑えます。
+機械内部容量にも追加ペナルティと同じ倍率を適用し、最大強化を理論上は運用可能にします。
+これは消費電力や稼働時間を緩和せず、1 tick分の要求電力すら保持できない永久停止だけを防ぎます。
 
 実装：
 [general.toml](payload/config/Mekanism/general.toml)、
@@ -141,12 +143,15 @@ Builder本体と建築用途は維持し、次のQuarry Cardはレシピと非�
 含め、次へ共有します。
 
 - Ars Nouveau Drygmy
+- Ars Nouveauの捕獲系Spell Jar
 - Apothic Spawners
 - Mob Grinding Utils Swab
 - Industrial Foregoing Mob Duplicator
+- Industrial Foregoing Mob Imprisonment Tool
 - Just Dire Things Paradox Machine
+- Just Dire Things Creature Catcher、NoAI、Polymorph
 
-通常Mobの自動化は残し、ボスや固有Entityの受動的な複製を防ぎます。
+通常Mobの自動化は残し、ボスや固有Entityの受動的な複製、捕獲、永久停止、変身を防ぎます。
 
 ### Hostile Neural Networks
 
@@ -173,6 +178,57 @@ Builder本体と建築用途は維持し、次のQuarry Cardはレシピと非�
 
 通常機械の移設用途は維持し、Spawner、Trial Spawner、Vault、Waystone、Portal、End Gateway、
 End Portal Frame、Reinforced Deepslateなどを移設禁止にしています。
+
+## 戦闘バランス
+
+### 戦闘バイパス
+
+主要Bossへ `#craftoria:mob_blacklist` を共有し、Just Dire ThingsのNoAI、Polymorph、
+Creature Catcher、Industrial ForegoingのMob Imprisonment Tool、Ars Nouveauの捕獲系から
+除外します。Bossの自然ドロップや討伐報酬は変更せず、正規の戦闘だけを必要にします。
+
+Just Dire Thingsのクエスト抽選表から次を除外します。レシピや通常の進行による作成は
+維持します。
+
+- `justdirethings:upgrade_noai`
+- `justdirethings:upgrade_invulnerability`
+
+実装：
+[tags.js](payload/kubejs/server_scripts/tags.js)、
+[JDT 4 reward table](payload/config/ftbquests/quests/reward_tables/1D6F040D6822FC7F.snbt)、
+[JDT 1 reward table](payload/config/ftbquests/quests/reward_tables/303299C956CA9C80.snbt)
+
+### 中規模Boss
+
+| 対象 | 調整前 | 調整後 |
+| --- | ---: | ---: |
+| Iron's Spells Tyros | 1,000 HP / 攻撃10 / Spell Power 1.25 | 1,250 HP / 攻撃12 / Spell Power 1.40 |
+| Iron's Spells Dead King | 500 HP / 攻撃10 / Spell Power 1.15 | 750 HP / 攻撃12 / Spell Power 1.30 |
+| Eternal Starlight Gatekeeper | 175 HP / 攻撃5 | 300 HP / 攻撃6 |
+| Eternal Starlight Starlight Golem | 220 HP / 攻撃倍率1.0 | 350 HP / 攻撃倍率1.2 |
+| Eternal Starlight Permafrost | 120 HP / 攻撃倍率1.0 | 240 HP / 攻撃倍率1.2 |
+| Eternal Starlight Lunar Monstrosity | 200 HP / 攻撃倍率1.0 | 350 HP / 攻撃倍率1.2 |
+| Eternal Starlight Solar Creeper | 250 HP / 攻撃倍率1.0 | 400 HP / 攻撃倍率1.2 |
+
+Twilight Forestは単独戦の基礎値を一律変更せず、複数人戦では参加人数に応じてBossの
+体力とLootを同時に増加させます。Cataclysmの極端な終盤Boss設定は変更しません。
+
+実装：
+[irons_spellbooks-server.toml](payload/config/irons_spellbooks-server.toml)、
+[eternal_starlight.json](payload/config/eternal_starlight.json)、
+[twilightforest-common.toml](payload/config/twilightforest-common.toml)
+
+### Cataclysm Wither Assault Shoulder Weapon
+
+他のCataclysm武器と比べて突出していたミサイルだけを緩和します。Bossドロップとしての
+強さは残し、CataclysmのBoss能力値と他の武器は変更しません。
+
+| 設定 | 調整前 | 調整後 | Mod標準値 |
+| --- | ---: | ---: | ---: |
+| Missile Damage | 145 | 48 | 16 |
+| Missile Cooldown | 8 tick | 16 tick | 40 tick |
+
+実装：[cataclysm.toml](payload/config/cataclysm.toml)
 
 ## 時間操作
 
@@ -229,6 +285,7 @@ Iron FarmはIron Block 6、Carved Pumpkin、Lava Bucket、Supreme Machine Frame�
 - PneumaticCraft Pressurized Spawner。
 - Industrial Foregoing Wither Builder。
 - ボスの自然ドロップ、固有装備、Trophy、討伐クエスト。
+- Apotheosisの通常Gem性能・抽選と、Apothic GatewayのGem報酬。
 - Easy Villagers Trader、Incubator、Trade Cycling。
 
 ## 反映タイミング

@@ -283,14 +283,20 @@ ServerEvents.tags('fluid', e => {
 ServerEvents.tags('entity_type', e => {
   e.add('craftoria:mob_blacklist', ['artifacts:mimic', 'minecraft:warden', '#c:bosses', /^occultism:(?!possessed).*$/, '#neoforge:bosses']);
 
+  // Keep boss encounters intact across the pack's capture and crowd-control tools.
+  e.add('c:capturing_not_supported', '#craftoria:mob_blacklist');
+
   e.add('ftbchunks:entity_interact_whitelist', ['minecraft:villager', 'minecraft:wandering_trader']);
 
-  e.add('justdirethings:creature_catcher_deny', ['ars_nouveau:dummy']);
+  e.add('justdirethings:creature_catcher_deny', ['ars_nouveau:dummy', '#craftoria:mob_blacklist']);
+  e.add('justdirethings:no_ai_deny', '#craftoria:mob_blacklist');
+  e.add('justdirethings:polymorphic_target_deny', '#craftoria:mob_blacklist');
   e.add('apothic_spawners:blacklisted_from_spawners', ['#craftoria:mob_blacklist']);
   e.add('mob_grinding_utils:no_swab', '#craftoria:mob_blacklist');
   e.add('ars_nouveau:drygmy_blacklist', '#craftoria:mob_blacklist');
   e.add('industrialforegoing:mob_crusher_blacklist', ['#c:bosses', '#neoforge:bosses']);
   e.add('industrialforegoing:mob_duplicator_blacklist', '#craftoria:mob_blacklist');
+  e.add('industrialforegoing:mob_imprisonment_tool_blacklist', '#craftoria:mob_blacklist');
   e.add('justdirethings:paradox_deny', [
     '#craftoria:mob_blacklist',
     'occultism:foliot',

@@ -154,7 +154,7 @@ test('export-client creates a minimal versioned ZIP and preserves install.sh mod
     assert.ok(names.includes(`${prefix}install.sh`));
     assert.ok(names.includes(`${prefix}.installer/install.ps1`));
     assert.ok(names.includes(`${prefix}manifest.json`));
-    assert.ok(names.includes(`${prefix}payload/mods/mekanism-overclock-0.1.0.jar`));
+    assert.ok(names.includes(`${prefix}payload/mods/mekanism-overclock-0.1.1.jar`));
     assert.ok(!names.some((name) => /(?:package\.json|pnpm-lock|src\/|server-bootstrap)/u.test(name)));
     assert.equal(entries.find(({ name }) => name === `${prefix}install.sh`)?.mode, 0o100755);
   } finally {
