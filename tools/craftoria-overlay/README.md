@@ -76,8 +76,8 @@ overlayへ同梱できます。`overlay.template.json`へ`bundledFiles`を追加
 ```json
 "bundledFiles": [
   {
-    "source": "craftoria-mekanism-overclock/build/libs/craftoria-mekanism-overclock-0.1.0.jar",
-    "path": "mods/craftoria-mekanism-overclock-0.1.0.jar",
+    "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.0.jar",
+    "path": "mods/mekanism-overclock-0.1.0.jar",
     "kind": "mod",
     "hashAlgorithm": "SHA256",
     "replacePolicy": "known-base-only"

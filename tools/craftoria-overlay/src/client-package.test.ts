@@ -149,12 +149,13 @@ test('export-client creates a minimal versioned ZIP and preserves install.sh mod
     await exportClientOverlay({ sourceInstance: path.resolve(resourceRoot, '..', '..'), output });
     const entries = await zipEntries(output);
     const names = entries.map(({ name }) => name);
-    const prefix = 'Craftoria-Client-Addon-1.1.0/';
+    const prefix = 'Craftoria-Client-Addon-1.2.0/';
     assert.ok(names.includes(`${prefix}install.bat`));
     assert.ok(names.includes(`${prefix}install.sh`));
     assert.ok(names.includes(`${prefix}.installer/install.ps1`));
     assert.ok(names.includes(`${prefix}manifest.json`));
-    assert.ok(!names.some((name) => /(?:package\.json|pnpm-lock|src\/|server-bootstrap|\.jar$)/u.test(name)));
+    assert.ok(names.includes(`${prefix}payload/mods/mekanism-overclock-0.1.0.jar`));
+    assert.ok(!names.some((name) => /(?:package\.json|pnpm-lock|src\/|server-bootstrap)/u.test(name)));
     assert.equal(entries.find(({ name }) => name === `${prefix}install.sh`)?.mode, 0o100755);
   } finally {
     await rm(scratch, { recursive: true, force: true });

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "addonVersion": "1.1.0",
+  "addonVersion": "1.2.0",
   "target": {
     "managedPackId": "1039252",
     "managedPackVersionId": "8127261",
@@ -8,6 +8,22 @@
     "minecraft": "1.21.1",
     "neoForge": "21.1.230"
   },
+  "bundledFiles": [
+    {
+      "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.0.jar",
+      "path": "mods/mekanism-overclock-0.1.0.jar",
+      "kind": "mod",
+      "hashAlgorithm": "SHA256",
+      "replacePolicy": "known-base-only"
+    }
+  ],
+  "remove": [
+    {
+      "path": "mods/mekanism_unleashed-0.3.4.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "e9186a3b8029abbe4447ba056e2f8d1bd09df65488c47c3d6cdce19aa5ff2886"
+    }
+  ],
   "files": [
     {
       "path": "mods/create-new-age-1.2.0+neoforge-mc1.21.1.jar",

@@ -1,12 +1,6 @@
 {
   "schemaVersion": 1,
   "files": {
-    "config/mekanism_unleashed-startup.toml": {
-      "replacePolicy": "known-base-only",
-      "expectedExistingHashes": [
-        "d70739ef071c3c87532b1eeaf1e1fe8c4cab49df4f50ec5f9773e170a0c75968"
-      ]
-    },
     "config/ftbquests/quests/chapters/Applied Energistics.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [

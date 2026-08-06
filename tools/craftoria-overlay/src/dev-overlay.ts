@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validatePrismInstance } from './instance.js';
@@ -42,11 +42,14 @@ async function readDevState(minecraft: string): Promise<DevState | null> {
 
 export async function syncPayload({ instancePath, dryRun = false, forceConflict = false }: DevOptions = {}): Promise<void> {
   const { resourceRoot, minecraft } = await context(instancePath);
-  const { sources } = await prepareOverlay(resourceRoot);
+  const { manifest, sources } = await prepareOverlay(resourceRoot);
   const previous = await readDevState(minecraft);
   const backupRoot = path.join(minecraft, '.craftoria-overlay', 'backups', `dev-${timestamp()}`);
   const nextFiles: Record<string, string> = {};
-  const plans: Array<{ action: 'Install' | 'Skip'; path: string; source: string; destination: string; hash: string; existing: string | null }> = [];
+  const plans: Array<
+    | { action: 'Install' | 'Skip'; path: string; source: string; destination: string; hash: string; existing: string | null }
+    | { action: 'Remove' | 'Absent'; path: string; destination: string; hash: string; existing: string | null }
+  > = [];
 
   for (const entry of sources) {
     const destination = resolveInside(minecraft, entry.path);
@@ -67,22 +70,39 @@ export async function syncPayload({ instancePath, dryRun = false, forceConflict 
     nextFiles[entry.path] = hash;
   }
 
+  for (const entry of manifest.remove ?? []) {
+    const destination = resolveInside(minecraft, entry.path);
+    if (!await pathExists(destination)) {
+      plans.push({ action: 'Absent', path: entry.path, destination, hash: entry.hash, existing: null });
+      continue;
+    }
+    const existing = await hashFile(destination, entry.hashAlgorithm);
+    if (existing !== entry.hash.toLowerCase()) {
+      throw new Error(`Refusing to remove an unexpected file at ${entry.path} (hash ${existing}).`);
+    }
+    plans.push({ action: 'Remove', path: entry.path, destination, hash: entry.hash, existing });
+  }
+
   console.log(`Target: ${minecraft}`);
   for (const plan of plans) console.log(`${plan.action.padEnd(8)} ${plan.path}`);
   if (dryRun) return;
 
   let backupMade = false;
   for (const plan of plans) {
-    if (plan.action !== 'Install') continue;
+    if (plan.action !== 'Install' && plan.action !== 'Remove') continue;
     if (plan.existing !== null) {
       const backup = resolveInside(backupRoot, plan.path);
       await mkdir(path.dirname(backup), { recursive: true });
       await copyFile(plan.destination, backup);
       backupMade = true;
     }
-    await mkdir(path.dirname(plan.destination), { recursive: true });
-    await copyFile(plan.source, plan.destination);
-    if (await hashFile(plan.destination) !== plan.hash) throw new Error(`Post-copy verification failed: ${plan.path}`);
+    if ('source' in plan) {
+      await mkdir(path.dirname(plan.destination), { recursive: true });
+      await copyFile(plan.source, plan.destination);
+      if (await hashFile(plan.destination) !== plan.hash) throw new Error(`Post-copy verification failed: ${plan.path}`);
+    } else {
+      await unlink(plan.destination);
+    }
   }
 
   await writeJson(path.join(minecraft, '.craftoria-overlay', 'dev-state.json'), {
@@ -96,7 +116,7 @@ export async function syncPayload({ instancePath, dryRun = false, forceConflict 
 
 export async function diffPayload({ instancePath }: Pick<DevOptions, 'instancePath'> = {}): Promise<void> {
   const { resourceRoot, minecraft } = await context(instancePath);
-  const { sources } = await prepareOverlay(resourceRoot);
+  const { manifest, sources } = await prepareOverlay(resourceRoot);
   let differences = 0;
   console.log(`Target: ${minecraft}`);
   for (const entry of sources) {
@@ -110,6 +130,17 @@ export async function diffPayload({ instancePath }: Pick<DevOptions, 'instancePa
     const status = sourceHash === destinationHash ? 'MATCH' : 'MODIFIED';
     console.log(`${status.padEnd(8)} ${entry.path}`);
     if (status !== 'MATCH') differences += 1;
+  }
+  for (const entry of manifest.remove ?? []) {
+    const destination = resolveInside(minecraft, entry.path);
+    if (!await pathExists(destination)) {
+      console.log(`${'ABSENT'.padEnd(8)} ${entry.path}`);
+      continue;
+    }
+    const destinationHash = await hashFile(destination, entry.hashAlgorithm);
+    const status = destinationHash === entry.hash.toLowerCase() ? 'REMOVE' : 'CONFLICT';
+    console.log(`${status.padEnd(8)} ${entry.path}`);
+    differences += 1;
   }
   console.log(differences === 0 ? 'No differences.' : `${differences} difference(s).`);
 }
