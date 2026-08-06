@@ -77,6 +77,44 @@
       "expectedExistingHashes": [
         "c598d8f9710af7a23f92cdd9061894afa84b2380377a66e15d293e769c998f97"
       ]
+    },
+    "kubejs/server_scripts/tags.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "5c99a925deb78278c40b2ff2e27df56bd07b183cb9b00495bb53456ed827644e",
+        "bac2927caacb9ac1c82e8e3b642730148360ec1eb4d4c5ae432ec6e558e1b0df"
+      ]
+    },
+    "kubejs/server_scripts/Mods/HostileNeuralNetworks/DataModels.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "648edb45e2f4b82f507e32093dea56fff64473d148cb27c11f27e775e8eeaad6",
+        "733312569e3405cd7a5c6506f8ac3b446705b806f03aa7e086cb218c6a916bd9",
+        "8cb0af997c55ed81306d11e43d2784a6a00fd925ec06d42b365ae1fa2715fb63",
+        "dd3930c178a109f2dd295bb19c3c0b408897f83ca37f89b262c917d374251f09"
+      ]
+    },
+    "kubejs/server_scripts/Mods/IndustrialForegoing/Recipes.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "19102953d44b00833029b75a476627b537bc2d8e982684f144b1f1d538f629d5",
+        "fc6933c8830744f63a256db9523619e73d94d515ca301a459067cf104e3dec58"
+      ]
+    },
+    "kubejs/server_scripts/Mods/ModernIndustrialization/CustomMachines/ModelSynthesizer.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "15ffa5098c2f9a6d2493d72c7fdae6367b1e90d99fe3227054ac2b5e39494e42",
+        "171c86b8258c6fa2d4bd21f14be14285bb695341b6f4cf0027b38dfeffe36365",
+        "6a2b651fb271658e28ab44d3005f2086a7b7f2ed4100d537ea0933c2fa1e91b3"
+      ]
+    },
+    "kubejs/server_scripts/Mods/Craftoria/BrokenDevices.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "743ab7d93c663f43ba8751ead1447dcf0017fc8082a54a8b76eb13e1b4827b20",
+        "eea271046acccbd1eccdb611ec5ca62eee6b1f4b76276263c03dbb9275bdde58"
+      ]
     }
   }
 }
