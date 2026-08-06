@@ -1,6 +1,19 @@
 {
   "schemaVersion": 1,
   "files": {
+    "config/powah.json5": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "45818007f2b183807ec3f30af1c73f0381e6798a900c5ec7939726507edb29c8"
+      ]
+    },
+    "config/ftbquests/quests/reward_tables/2C400654E7B41B6A.snbt": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "ee33ce1603670b92f4fc614756f69fdb28f303e0a4406b0eb2af31e629df53e5",
+        "74f8ce08600a46664fe9dd5035c498f954cff629d55e895bfdd948c75f125063"
+      ]
+    },
     "kubejs/client_scripts/jsconfig.json": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
