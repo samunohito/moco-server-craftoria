@@ -12,6 +12,7 @@ import {
 } from './lib.js';
 import { validatePrismInstance } from './instance.js';
 import { overlayArchiveName, prepareOverlay } from './manifest.js';
+import type { OverlayManifest } from './types.js';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 
@@ -20,12 +21,20 @@ export interface ExportOverlayOptions {
   output?: string;
 }
 
+export function overlayOutputPath(
+  resourceRoot: string,
+  manifest: OverlayManifest,
+  output?: string,
+): string {
+  return path.resolve(output ?? path.join(resourceRoot, 'dist', `${overlayArchiveName(manifest)}.zip`));
+}
+
 export async function exportOverlay({ sourceInstance, output }: ExportOverlayOptions = {}): Promise<void> {
   const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
   const defaultInstance = path.resolve(resourceRoot, '..', '..');
   const { manifest, sources } = await prepareOverlay(resourceRoot);
-  const instance = await validatePrismInstance(sourceInstance ?? defaultInstance, manifest.target);
-  const outputPath = path.resolve(output ?? path.join(instance, `${overlayArchiveName(manifest)}.zip`));
+  await validatePrismInstance(sourceInstance ?? defaultInstance, manifest.target);
+  const outputPath = overlayOutputPath(resourceRoot, manifest, output);
 
   if (await pathExists(outputPath)) throw new Error(`Output already exists: ${outputPath}`);
   const stage = await mkdtemp(path.join(os.tmpdir(), 'craftoria-overlay-export-'));

@@ -132,8 +132,8 @@ pnpm run export:client
 pnpm run export
 ```
 
-出力名は `Craftoria-Addon-<version>.zip` です。以下のNode.js版導入手順やサーバー作成に
-使用します。
+`dist/Craftoria-Addon-<version>.zip` が生成されます。以下のNode.js版導入手順や
+サーバー作成に使用します。
 
 ### Node.js版CLIでクライアントへ導入する
 

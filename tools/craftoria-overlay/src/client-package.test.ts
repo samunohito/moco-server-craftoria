@@ -8,7 +8,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { clientInstallPlan, writeClientPackage } from './client-package.js';
 import { exportClientOverlay } from './export-client.js';
-import { exportOverlay } from './export-overlay.js';
+import { exportOverlay, overlayOutputPath } from './export-overlay.js';
 import { readPreviouslyInstalled, writeInstalledState } from './installed-state.js';
 import type { PayloadSource } from './payload.js';
 import type { OverlayManifest } from './types.js';
@@ -149,7 +149,7 @@ test('export-client creates a minimal versioned ZIP and preserves install.sh mod
     await exportClientOverlay({ sourceInstance: path.resolve(resourceRoot, '..', '..'), output });
     const entries = await zipEntries(output);
     const names = entries.map(({ name }) => name);
-    const prefix = 'Craftoria-Client-Addon-1.2.1/';
+    const prefix = 'Craftoria-Client-Addon-1.2.2/';
     assert.ok(names.includes(`${prefix}install.bat`));
     assert.ok(names.includes(`${prefix}install.sh`));
     assert.ok(names.includes(`${prefix}.installer/install.ps1`));
@@ -160,6 +160,14 @@ test('export-client creates a minimal versioned ZIP and preserves install.sh mod
   } finally {
     await rm(scratch, { recursive: true, force: true });
   }
+});
+
+test('toolkit export defaults to the dist directory', () => {
+  const manifest = fixtureManifest('config value\n', 'test script\n');
+  assert.equal(
+    overlayOutputPath(resourceRoot, manifest),
+    path.join(resourceRoot, 'dist', 'Craftoria-Addon-9.8.7-test.zip'),
+  );
 });
 
 test('legacy toolkit export still contains the Node CLI, server bootstrap, and client templates', async () => {
