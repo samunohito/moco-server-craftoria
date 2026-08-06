@@ -1,6 +1,27 @@
 {
   "schemaVersion": 1,
   "files": {
+    "config/ftbquests/quests/chapters/Applied Energistics.snbt": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "b46aff645e33a29cf640e3fbf940238e410d351a9c1adb5bcf0d01e8a1fd4434",
+        "be52be24dbae1101929952113ce0acd988d8c9b16fef11ab09d4ba4d030f93db"
+      ]
+    },
+    "config/ftbquests/quests/reward_tables/0414572B7C36F04F.snbt": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "b08bc192098129ed9116c78b2745453f95656918bad45bf1a90fe7514864eae5",
+        "0950478f266546de52f8b48e4c68069263fa533bb3cec994b0a2209c5cbf4f5a"
+      ]
+    },
+    "config/ftbquests/quests/reward_tables/145BAF105E285CD0.snbt": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "0debdc6ed1a5833e826c994100d11a120306835e7534901c96cfcef137ed935f",
+        "9dbdfdc0f78fc42c2907e5fa1e44678f83f0902f5157068c83fce6d4a80ac20d"
+      ]
+    },
     "config/create_new_age-server.toml": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
