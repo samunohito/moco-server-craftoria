@@ -1,0 +1,34 @@
+[Unit]
+Description=Craftoria 1.31.0 NeoForge Server
+Wants=network-online.target
+After=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+ConditionPathExists=/srv/craftoria/startserver.sh
+
+[Service]
+Type=simple
+User=minecraft
+Group=minecraft
+WorkingDirectory=/srv/craftoria
+ExecStart=/srv/craftoria/startserver.sh
+
+Restart=on-failure
+RestartSec=10s
+KillSignal=SIGINT
+TimeoutStopSec=180s
+SuccessExitStatus=0 130 143 SIGINT SIGTERM
+
+UMask=0027
+LimitNOFILE=65535
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/srv/craftoria
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

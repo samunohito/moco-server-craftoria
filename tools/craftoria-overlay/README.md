@@ -179,6 +179,25 @@ Node.js 24以降、pnpm 11.7.0、Java 21または25が必要です。JavaがPATH
 `--java "C:\path\to\java.exe"` を指定します。既存ワールドの `serverconfig` は
 自動変更しません。
 
+### Linuxでsystemd管理する
+
+`new-server`はサーバールートの`systemd/`へ、`craftoria.service`と専用READMEも配置します。
+既定値はサービスユーザー`minecraft`、サーバールート`/srv/craftoria`です。公式サーバーの
+導入とオーバーレイ適用を完了し、手動で正常起動できることを確認してから登録します。
+
+```sh
+sudo install -m 0644 /srv/craftoria/systemd/craftoria.service \
+  /etc/systemd/system/craftoria.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now craftoria.service
+sudo journalctl -u craftoria.service -f
+```
+
+異なるユーザーや配置先を使う場合は、Unit内の`User`、`Group`、`ConditionPathExists`、
+`WorkingDirectory`、`ExecStart`、`ReadWritePaths`を変更してください。メモリ量は
+`server-setup-config.yaml`の`launch.minRam`と`launch.maxRam`で設定します。詳細は
+[systemd README](server-bootstrap/systemd/README.md)を参照してください。
+
 ## 開発
 
 スクリプトはビルドせず、`tsx` で `src/cli.ts` を直接実行します。利用できる
