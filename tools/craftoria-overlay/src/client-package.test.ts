@@ -149,7 +149,7 @@ test('export-client creates a minimal versioned ZIP and preserves install.sh mod
     await exportClientOverlay({ sourceInstance: path.resolve(resourceRoot, '..', '..'), output });
     const entries = await zipEntries(output);
     const names = entries.map(({ name }) => name);
-    const prefix = 'Craftoria-Client-Addon-1.2.0/';
+    const prefix = 'Craftoria-Client-Addon-1.2.1/';
     assert.ok(names.includes(`${prefix}install.bat`));
     assert.ok(names.includes(`${prefix}install.sh`));
     assert.ok(names.includes(`${prefix}.installer/install.ps1`));
@@ -170,12 +170,24 @@ test('legacy toolkit export still contains the Node CLI, server bootstrap, and c
     const names = (await zipEntries(output)).map(({ name }) => name);
     assert.ok(names.includes('src/cli.ts'));
     assert.ok(names.includes('server-bootstrap/startserver.sh'));
+    assert.ok(names.includes('server-bootstrap/systemd/craftoria.service'));
+    assert.ok(names.includes('server-bootstrap/systemd/README.md'));
     assert.ok(names.includes('client-templates/install.sh'));
     assert.ok(names.includes('package.json'));
     assert.ok(names.includes('manifest.json'));
   } finally {
     await rm(scratch, { recursive: true, force: true });
   }
+});
+
+test('systemd unit uses the dedicated server root and clean Minecraft shutdown', async () => {
+  const unit = await readFile(path.join(resourceRoot, 'server-bootstrap', 'systemd', 'craftoria.service'), 'utf8');
+  assert.match(unit, /^User=minecraft$/mu);
+  assert.match(unit, /^WorkingDirectory=\/srv\/craftoria$/mu);
+  assert.match(unit, /^ExecStart=\/srv\/craftoria\/startserver\.sh$/mu);
+  assert.match(unit, /^KillSignal=SIGINT$/mu);
+  assert.match(unit, /^Restart=on-failure$/mu);
+  assert.match(unit, /^ReadWritePaths=\/srv\/craftoria$/mu);
 });
 
 test('generated Windows installer supports dry-run, install, backup, conflict refusal, and force', {

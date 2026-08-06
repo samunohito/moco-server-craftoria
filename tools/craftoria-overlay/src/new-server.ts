@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readdir, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -41,7 +41,14 @@ export async function newCraftoriaServer({
   }
 
   if (await pathExists(target)) {
-    const allowed = new Set(['server-setup-config.yaml', 'startserver.bat', 'startserver.sh', 'serverstarter-2.4.1.jar', 'eula.txt']);
+    const allowed = new Set([
+      'server-setup-config.yaml',
+      'startserver.bat',
+      'startserver.sh',
+      'serverstarter-2.4.1.jar',
+      'eula.txt',
+      'systemd',
+    ]);
     const entries = await readdir(target);
     const unexpected = entries.filter((name) => !allowed.has(name));
     if (unexpected.length > 0 && !await pathExists(path.join(target, 'server-setup-config.yaml'))) {
@@ -59,11 +66,12 @@ export async function newCraftoriaServer({
     for (const name of ['server-setup-config.yaml', 'startserver.bat', 'startserver.sh']) {
       await copyFile(path.join(bootstrap, name), path.join(target, name));
     }
+    await cp(path.join(bootstrap, 'systemd'), path.join(target, 'systemd'), { recursive: true });
     console.log(`Prepared official Craftoria server bootstrap at: ${target}`);
   }
 
   if (!installBase) {
-    console.log('Run startserver.bat there, accept the EULA interactively, wait for installation/startup, then stop the server.');
+    console.log('Run startserver.bat (Windows) or ./startserver.sh (Linux), accept the EULA interactively, wait for installation/startup, then stop the server.');
     console.log(`Afterward run: pnpm run cli -- install --server "${target}"`);
     return;
   }

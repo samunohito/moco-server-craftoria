@@ -16,13 +16,15 @@
     "config/ftbquests/quests/reward_tables/1D6F040D6822FC7F.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "09338cee03965766e5b0ce0aa971918daa18f754ea2de66888ce49f5e1c884a1"
+        "09338cee03965766e5b0ce0aa971918daa18f754ea2de66888ce49f5e1c884a1",
+        "7351323a9c3dc3c5ac02fd5e2db7adced2a25cde5390cfc8aac4156fbb800ce2"
       ]
     },
     "config/ftbquests/quests/reward_tables/303299C956CA9C80.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "6daf376f55a345675dbe57e387ed372575ad79e2a2d18cb6091eaa46aac25e26"
+        "6daf376f55a345675dbe57e387ed372575ad79e2a2d18cb6091eaa46aac25e26",
+        "0a067a1012ba8fcfd857030df03b1fbac5ae6d16451cff38eda0c9eb44517083"
       ]
     },
     "config/cataclysm.toml": {
@@ -53,21 +55,24 @@
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "b46aff645e33a29cf640e3fbf940238e410d351a9c1adb5bcf0d01e8a1fd4434",
-        "be52be24dbae1101929952113ce0acd988d8c9b16fef11ab09d4ba4d030f93db"
+        "be52be24dbae1101929952113ce0acd988d8c9b16fef11ab09d4ba4d030f93db",
+        "7bef764a72cc83c864f50fe080d06e6cf8894115f21724a442140f0931b95555"
       ]
     },
     "config/ftbquests/quests/reward_tables/0414572B7C36F04F.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "b08bc192098129ed9116c78b2745453f95656918bad45bf1a90fe7514864eae5",
-        "0950478f266546de52f8b48e4c68069263fa533bb3cec994b0a2209c5cbf4f5a"
+        "0950478f266546de52f8b48e4c68069263fa533bb3cec994b0a2209c5cbf4f5a",
+        "cb852d7501b1611f9eb588b5c9938a0a3c28890053dd3a982788721ae54b2397"
       ]
     },
     "config/ftbquests/quests/reward_tables/145BAF105E285CD0.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "0debdc6ed1a5833e826c994100d11a120306835e7534901c96cfcef137ed935f",
-        "9dbdfdc0f78fc42c2907e5fa1e44678f83f0902f5157068c83fce6d4a80ac20d"
+        "9dbdfdc0f78fc42c2907e5fa1e44678f83f0902f5157068c83fce6d4a80ac20d",
+        "458e3588b994497c22aa565c564fa88d7d1cdf6c7b4472eb2bc8626feccbfeed"
       ]
     },
     "config/create_new_age-server.toml": {
@@ -87,7 +92,8 @@
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "ee33ce1603670b92f4fc614756f69fdb28f303e0a4406b0eb2af31e629df53e5",
-        "74f8ce08600a46664fe9dd5035c498f954cff629d55e895bfdd948c75f125063"
+        "74f8ce08600a46664fe9dd5035c498f954cff629d55e895bfdd948c75f125063",
+        "8342f79482610362960beb76e824decd562fbe650ae07bc55ab7d96e0c497160"
       ]
     },
     "kubejs/client_scripts/jsconfig.json": {
