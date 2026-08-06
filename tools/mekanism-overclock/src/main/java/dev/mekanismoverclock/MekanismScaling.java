@@ -35,10 +35,13 @@ public final class MekanismScaling {
     }
 
     public static double capacityMultiplier(IUpgradeTile tile) {
-        return OverclockMath.capacityMultiplier(
+        return OverclockMath.machineCapacityMultiplier(
+            upgrades(tile, Upgrade.SPEED),
             upgrades(tile, Upgrade.ENERGY),
             mekanismBaseMultiplier(),
-            OverclockConfig.baselineUpgrades()
+            OverclockConfig.baselineUpgrades(),
+            OverclockConfig.overclockThreshold(),
+            OverclockConfig.powerPenalty()
         );
     }
 

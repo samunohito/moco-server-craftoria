@@ -37,6 +37,16 @@ class OverclockMathTest {
     }
 
     @Test
+    void machineCapacityAbsorbsTheUnmitigableOverclockPenalty() {
+        for (int upgrades : new int[]{0, 8, 10, 13, 16}) {
+            double power = OverclockMath.powerMultiplier(upgrades, upgrades, 10.0, 8, 8, 1.5);
+            double capacity = OverclockMath.machineCapacityMultiplier(upgrades, upgrades, 10.0, 8, 8, 1.5);
+            assertEquals(power, capacity, EPSILON);
+        }
+        assertEquals(100.0, OverclockMath.capacityMultiplier(16, 10.0, 8), EPSILON);
+    }
+
+    @Test
     void chemicalUsageTracksOverclockSpeed() {
         assertEquals(100.0, OverclockMath.chemicalMultiplier(16, 0, false, 10.0, 8), EPSILON);
         assertEquals(1_000.0, OverclockMath.chemicalMultiplier(16, 8, true, 10.0, 8), EPSILON);

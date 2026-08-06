@@ -10,14 +10,19 @@
   },
   "bundledFiles": [
     {
-      "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.0.jar",
-      "path": "mods/mekanism-overclock-0.1.0.jar",
+      "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.1.jar",
+      "path": "mods/mekanism-overclock-0.1.1.jar",
       "kind": "mod",
       "hashAlgorithm": "SHA256",
       "replacePolicy": "known-base-only"
     }
   ],
   "remove": [
+    {
+      "path": "mods/mekanism-overclock-0.1.0.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "5a074a8aff515136504bcde7723623466d4855b819e48b04921e42dd1ab79143"
+    },
     {
       "path": "mods/mekanism_unleashed-0.3.4.jar",
       "hashAlgorithm": "SHA256",

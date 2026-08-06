@@ -37,7 +37,7 @@ Mekanismの`maxUpgradeMultiplier`を`M`、Speed枚数を`S`、Energy枚数を`E`
 ```text
 速度倍率 = M^(S / B)
 電力倍率 = M^((2S - E) / B) * P^max(S - T, 0)
-容量倍率 = M^(E / B)
+機械内部容量倍率 = M^(E / B) * P^max(S - T, 0)
 Chemical対応機械の化学物質倍率 = M^((2S - C) / B)
 ```
 
@@ -50,11 +50,13 @@ Chemical対応機械の化学物質倍率 = M^((2S - C) / B)
 | ---: | ---: | ---: | ---: | ---: |
 | 0 / 0 | 1x | 1x | 1x | 1x |
 | 8 / 8 | 10x | 10x | 10x | 1x |
-| 12 / 12 | 約31.6x | 約160x | 約31.6x | 約5.1x |
-| 16 / 16 | 100x | 約2,563x | 100x | 約25.6x |
+| 12 / 12 | 約31.6x | 約160x | 約160x | 約5.1x |
+| 16 / 16 | 100x | 約2,563x | 約2,563x | 約25.6x |
 
 Energy UpgradeはMekanism本来の電費軽減を行いますが、9枚目以降の追加ペナルティは
-相殺できません。化学物質消費も8枚基準の速度曲線に追従します。
+相殺できません。追加ペナルティは機械内部容量にも同率で反映し、最大強化が内部容量不足で
+永久停止することを防ぎます。発電量・転送量・実効稼働時間は緩和しません。
+化学物質消費も8枚基準の速度曲線に追従します。
 
 通常の処理機械はMekanism既存の複数operation/tick機構を利用し、設定した上限で制限します。
 Digital Miner、Electric Pump、Fluidic Plenisher、Formulaic Assemblicatorなど固有tick処理を
@@ -68,5 +70,5 @@ cd tools/mekanism-overclock
 .\gradlew.bat build
 ```
 
-成果物は`build/libs/mekanism-overclock-0.1.0.jar`です。Craftoria overlayはこのJARを
+成果物は`build/libs/mekanism-overclock-0.1.1.jar`です。Craftoria overlayはこのJARを
 ローカル成果物として同期・同梱します。

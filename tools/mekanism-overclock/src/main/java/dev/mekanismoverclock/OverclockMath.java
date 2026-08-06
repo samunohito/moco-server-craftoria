@@ -22,13 +22,28 @@ public final class OverclockMath {
             baseMultiplier,
             (2.0 * speed - energy) / positive(baselineUpgrades)
         );
-        int excessSpeed = Math.max(speed - nonNegative(overclockThreshold), 0);
-        double penalty = exponentialMultiplier(Math.max(penaltyPerUpgrade, 1.0), excessSpeed);
-        return saturatingMultiply(mekanismScaling, penalty);
+        return saturatingMultiply(
+            mekanismScaling,
+            overclockPenaltyMultiplier(speed, overclockThreshold, penaltyPerUpgrade)
+        );
     }
 
     public static double capacityMultiplier(int energyUpgrades, double baseMultiplier, int baselineUpgrades) {
         return exponentialMultiplier(baseMultiplier, nonNegative(energyUpgrades) / positive(baselineUpgrades));
+    }
+
+    public static double machineCapacityMultiplier(
+        int speedUpgrades,
+        int energyUpgrades,
+        double baseMultiplier,
+        int baselineUpgrades,
+        int overclockThreshold,
+        double penaltyPerUpgrade
+    ) {
+        return saturatingMultiply(
+            capacityMultiplier(energyUpgrades, baseMultiplier, baselineUpgrades),
+            overclockPenaltyMultiplier(speedUpgrades, overclockThreshold, penaltyPerUpgrade)
+        );
     }
 
     public static double chemicalMultiplier(
@@ -85,6 +100,15 @@ public final class OverclockMath {
     private static double saturatingMultiply(double left, double right) {
         double result = left * right;
         return Double.isFinite(result) ? result : Double.MAX_VALUE;
+    }
+
+    private static double overclockPenaltyMultiplier(
+        int speedUpgrades,
+        int overclockThreshold,
+        double penaltyPerUpgrade
+    ) {
+        int excessSpeed = Math.max(nonNegative(speedUpgrades) - nonNegative(overclockThreshold), 0);
+        return exponentialMultiplier(Math.max(penaltyPerUpgrade, 1.0), excessSpeed);
     }
 
     private static int nonNegative(int value) {
