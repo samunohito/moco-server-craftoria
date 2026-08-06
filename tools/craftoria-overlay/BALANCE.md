@@ -276,6 +276,27 @@ Iron FarmはIron Block 6、Carved Pumpkin、Lava Bucket、Supreme Machine Frame�
 [easy_villagers-server.toml](payload/config/easy_villagers-server.toml)、
 [Balance.js](payload/kubejs/server_scripts/Mods/EasyVillagers/Balance.js)
 
+## 戦闘時の回復・蘇生
+
+装備や消耗品を準備してBossへ挑む価値は残し、継続回復や連続蘇生によって戦闘そのものを
+飛ばせる要素だけを抑えます。
+
+| 対象 | 調整前 | 調整後 |
+| --- | ---: | ---: |
+| Advanced AE Regeneration Card | 毎tick 1 HP（毎秒10ハート） | 毎tick 0.1 HP（毎秒1ハート） |
+| Reliquary Angelheart Vial | 64個スタック、既存素材のみ | 1個スタック、不死のトーテムを追加要求 |
+| RAR Vampiric Glove | 育成で吸血率が30%を超過可能 | 吸血率上限30% |
+
+Angelheart VialはMilk Bucket、Infernal Claw、Fertile Essence、Glass Paneに加えて
+Totem of Undyingを1個消費します。Phoenix Down、JDT Death Protection、Cursium
+Chestplateなど、消費または長い再使用待ちを伴う死亡保険は変更しません。
+
+実装：
+[advanced_ae-common.toml](payload/config/advanced_ae-common.toml)、
+[vampiric_glove.yaml](payload/config/artifacts/relics/vampiric_glove.yaml)、
+[Reliquary startup Balance.js](payload/kubejs/startup_scripts/Mods/Reliquary/Balance.js)、
+[Reliquary recipe Balance.js](payload/kubejs/server_scripts/Mods/Reliquary/Balance.js)
+
 ## 意図的に維持している要素
 
 - Mekanismの原子力系発電。

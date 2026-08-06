@@ -1,6 +1,18 @@
 {
   "schemaVersion": 1,
   "files": {
+    "config/advanced_ae-common.toml": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "dec3ed1e7f0287f5ce5c4a28e8800cc85adf1957268559c9fa656aa71ba6732f"
+      ]
+    },
+    "config/artifacts/relics/vampiric_glove.yaml": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "6dc5a6e140f343cef169ff9a70fd8adf5d761ebd6538bf2dd18763265370674f"
+      ]
+    },
     "config/ftbquests/quests/reward_tables/1D6F040D6822FC7F.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
