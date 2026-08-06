@@ -68,6 +68,29 @@ VS Codeスニペット、ログは取り込みません。
 通常のpayload編集や型定義更新では配布ZIPを生成しません。以下のexport操作と
 add-onバージョン更新は、リリースまたは配布物の作成を明示的に行うときだけ実施します。
 
+### ローカルビルドMODを同梱する
+
+`tools/`配下に置いた専用Modプロジェクトのビルド済みJARは、外部URLへ公開せずに
+overlayへ同梱できます。`overlay.template.json`へ`bundledFiles`を追加します。
+
+```json
+"bundledFiles": [
+  {
+    "source": "craftoria-mekanism-overclock/build/libs/craftoria-mekanism-overclock-0.1.0.jar",
+    "path": "mods/craftoria-mekanism-overclock-0.1.0.jar",
+    "kind": "mod",
+    "hashAlgorithm": "SHA256",
+    "replacePolicy": "known-base-only"
+  }
+]
+```
+
+`source`は`tools/`からの相対パス、`path`はインストール先Minecraftディレクトリからの
+相対パスです。対象は`mods/`直下のJARに限定されます。`sync`はビルド済みJARを開発用
+インスタンスへ同期し、`export`と`export-client`はJARを配布ZIP内のpayloadへコピーして
+SHA-256またはSHA-512をmanifestへ自動記録します。成果物が未ビルドの場合は安全のため
+処理を停止します。
+
 ## 2. クライアント配布ZIPを作る
 
 クライアントがNode.jsやpnpmを導入せずに使えるZIPを、Git管理された `payload/` から

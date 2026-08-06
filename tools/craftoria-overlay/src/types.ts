@@ -40,3 +40,16 @@ export interface OverlayManifest {
   files: OverlayFile[];
   remove?: RemovedOverlayFile[];
 }
+
+export interface BundledOverlayFile {
+  source: string;
+  path: string;
+  kind: 'mod';
+  hashAlgorithm?: HashAlgorithm;
+  replacePolicy?: ReplacePolicy;
+  expectedExistingHashes?: string[];
+}
+
+export interface OverlayTemplate extends OverlayManifest {
+  bundledFiles?: BundledOverlayFile[];
+}

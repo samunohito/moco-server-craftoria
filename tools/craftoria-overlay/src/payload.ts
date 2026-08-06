@@ -16,7 +16,7 @@ interface PayloadPolicyFile {
 export interface PayloadSource {
   path: string;
   source: string;
-  kind: Extract<OverlayFile['kind'], 'kubejs' | 'config'>;
+  kind: OverlayFile['kind'];
   hashAlgorithm: HashAlgorithm;
   replacePolicy: ReplacePolicy;
   expectedExistingHashes: string[];
@@ -33,7 +33,7 @@ export function assertPayloadPath(relativePath: string): string {
   return relative;
 }
 
-function classify(relative: string): PayloadSource['kind'] {
+function classify(relative: string): Extract<PayloadSource['kind'], 'kubejs' | 'config'> {
   return relative.startsWith('kubejs/') ? 'kubejs' : 'config';
 }
 

@@ -51,7 +51,9 @@ export async function exportOverlay({ sourceInstance, output }: ExportOverlayOpt
     await createZip(stage, outputPath);
     console.log(`Created: ${outputPath}`);
     const kubeCount = sources.filter(({ kind }) => kind === 'kubejs').length;
-    console.log(`Included KubeJS files: ${kubeCount}; config files: ${sources.length - kubeCount}`);
+    const configCount = sources.filter(({ kind }) => kind === 'config').length;
+    const bundledModCount = sources.filter(({ kind }) => kind === 'mod').length;
+    console.log(`Included KubeJS files: ${kubeCount}; config files: ${configCount}; bundled mods: ${bundledModCount}`);
   } finally {
     await removeOwnedScratch(stage);
   }

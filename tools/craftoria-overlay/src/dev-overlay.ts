@@ -3,8 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validatePrismInstance } from './instance.js';
 import { findResourceRoot, hashFile, pathExists, readJson, resolveInside, writeJson } from './lib.js';
-import { assertPayloadPath, assertRegularFile, payloadSources, rawPayloadPolicy } from './payload.js';
+import { assertPayloadPath, assertRegularFile, rawPayloadPolicy } from './payload.js';
 import { refreshProbeTypingSnapshot } from './probe-typings.js';
+import { prepareOverlay } from './manifest.js';
 import type { OverlayManifest } from './types.js';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -41,7 +42,7 @@ async function readDevState(minecraft: string): Promise<DevState | null> {
 
 export async function syncPayload({ instancePath, dryRun = false, forceConflict = false }: DevOptions = {}): Promise<void> {
   const { resourceRoot, minecraft } = await context(instancePath);
-  const sources = await payloadSources(resourceRoot);
+  const { sources } = await prepareOverlay(resourceRoot);
   const previous = await readDevState(minecraft);
   const backupRoot = path.join(minecraft, '.craftoria-overlay', 'backups', `dev-${timestamp()}`);
   const nextFiles: Record<string, string> = {};
@@ -95,7 +96,7 @@ export async function syncPayload({ instancePath, dryRun = false, forceConflict 
 
 export async function diffPayload({ instancePath }: Pick<DevOptions, 'instancePath'> = {}): Promise<void> {
   const { resourceRoot, minecraft } = await context(instancePath);
-  const sources = await payloadSources(resourceRoot);
+  const { sources } = await prepareOverlay(resourceRoot);
   let differences = 0;
   console.log(`Target: ${minecraft}`);
   for (const entry of sources) {
