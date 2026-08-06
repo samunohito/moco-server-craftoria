@@ -115,6 +115,13 @@
         "743ab7d93c663f43ba8751ead1447dcf0017fc8082a54a8b76eb13e1b4827b20",
         "eea271046acccbd1eccdb611ec5ca62eee6b1f4b76276263c03dbb9275bdde58"
       ]
+    },
+    "kubejs/server_scripts/Mods/EasyVillagers/Balance.js": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "2ee246f0cc4810551eabf07ea95bafb8cbc99470597481927cc1c66adc542cb1",
+        "56b7c96e8f874e59de4dc91e28a4c536e896ca6bba933c0c9b221f4ce44f8e9f"
+      ]
     }
   }
 }
