@@ -14,6 +14,55 @@ Craftoria 1.31.0（Minecraft 1.21.1 / NeoForge 21.1.230）へ、このオーバ�
 ここでいう「非ブロックLoot」は宝箱とエンティティのLootです。設置済みブロックを破壊した
 ときの自己ドロップは維持します。
 
+## 設備Tierの判定基準
+
+発電機、蓄電設備、採掘機、資源生成機、Mob自動化などは、装備やダンジョンとは別のTierで
+評価します。設備には作成できても十分に動かせない期間があるため、次の2段階を区別します。
+
+- 導入Tier：本体を作成し、最低限の運転を開始できる時期。
+- 常用Tier：燃料、入力、電力、搬出、Upgradeを自動化し、継続運転できる時期。
+
+レシピ難度は導入Tier、出力・消費電力・Upgrade曲線は常用Tierを主に調整します。最大強化時の
+常用Tierが導入Tierより後になることは許容し、設備本体を早めに触れる楽しさを残します。
+
+Tier判定では次の5点を確認します。
+
+1. 素材と進行条件：Overworld資源だけか、Nether、End、Boss素材、上位回路、他Mod進行を要求するか。
+2. 必要インフラ：単体で動くか、複数機械、流体・Gas、Multiblock、高容量配線を要求するか。
+3. 継続コスト：燃料、触媒、耐久、Mob素材、電力などを運転中も消費するか。
+4. 自動化能力：放置運転、範囲、選択性、Chunkを跨ぐ処理、並列化によって手作業をどこまで置換するか。
+5. 拡張時の影響：Upgradeや台数増加が線形か、自己増殖・無限資源・他進行の省略へつながるか。
+
+| 段階 | 導入・常用の目安 | 許容する設備能力 |
+| --- | --- | --- |
+| 序盤 | Overworldの一般資源、手動燃料、単体配線で運転 | 小規模発電、短時間の蓄電、局所的・低速な自動化 |
+| 中盤 | Nether素材、上位合金、複数機械、流体・Gas供給を要求 | 数千FE/t級の安定発電、一般資源の継続自動化、限定範囲の処理 |
+| 後半 | End・Boss素材、Elite級回路、上位Machine Frame、大容量電力網を要求 | 広域選択採掘、Mob複製、高速処理、数万から十万FE/t級の設備 |
+| 終盤 | Antimatter、最上位素材、複数Mod進行、大型Multiblockを要求 | 原子力、Replication、ほぼ無限の資源供給、最上位装備の生産基盤 |
+
+数値帯は異なるエネルギー体系を比較するための目安で、FE/tだけでTierを決めません。例えば
+燃料不要の放置発電は同出力の燃料式より高く評価し、消耗品を継続消費する設備は低く評価します。
+また、Boss固有素材の複製、無条件の広域採掘、単独起動専用の代替発電など、他の進行を省略する
+設備は「Tier外のバイパス」として扱い、レシピ高難度化だけで解決しない場合は対象制限または
+無効化を選びます。
+
+現在の代表例は次の通りです。
+
+| 設備 | 導入Tier | 常用Tier | 判断 |
+| --- | --- | --- | --- |
+| Mekanism Solar / Powah Starter・Basic発電 | 序盤 | 序盤 | 低出力の導入用発電 |
+| Mekanism Gas-Burning Generator | 中盤 | 中盤 | PRCとEthene自動化を要求。高効率のため本体レシピも強化 |
+| Mekanism Digital Miner | 中盤 | 後半 | 本体は早めに導入可能だが、広域運転と9枚目以降の強化には大規模電力網を要求 |
+| Powah Spirited / Nitro発電 | 後半 | 後半 | 上位素材と、方式ごとの燃料・熱源に対応した高出力発電 |
+| Industrial Foregoing Mob Duplicator | 後半 | 後半 | Supreme Machine Frame、継続電力、Mob素材を要求し、Bossは対象外 |
+| Industrial Foregoing Mycelial Reactor | 終盤 | 終盤 | Antimatter、Nitro Reactor、Supreme Machine Frameなど複数系統を要求 |
+| Mekanism核分裂・核融合、MI Replicator | 終盤 | 終盤 | 大型設備と最上位素材を要求する最終生産基盤 |
+
+蓄電設備は容量と転送速度だけでは資源やエネルギーを生みません。そのため発電・資源生成設備より
+進行破壊リスクを一段低く扱い、現状は容量とLootを変更しません。Createの自然回転源も建築規模と
+回転インフラを要求するため維持します。Create: New Age MotorはFEから回転力への変換設備として、
+無限ループと自然回転源の陳腐化を防ぐ観点から速度を制限します。
+
 ## 発電とエネルギー
 
 ### Mekanism Generators
@@ -296,6 +345,66 @@ Chestplateなど、消費または長い再使用待ちを伴う死亡保険は�
 [vampiric_glove.yaml](payload/config/artifacts/relics/vampiric_glove.yaml)、
 [Reliquary startup Balance.js](payload/kubejs/startup_scripts/Mods/Reliquary/Balance.js)、
 [Reliquary recipe Balance.js](payload/kubejs/server_scripts/Mods/Reliquary/Balance.js)
+
+## 装備の入手時期と通常ダンジョン
+
+装備完成品は危険度と進行段階に合わせ、通常ダンジョンは素材、Affix装備、Gem、固有品を
+探す場所として終盤まで価値を残します。
+
+### 段階の判定基準
+
+構造物の名前やDimensionだけでは分類せず、次の4点から「そのLootを最初に現実的に取得できる
+時期」を判定します。
+
+1. 到達条件：無条件のOverworld探索か、Dimension開放、鍵、前段Bossなどを要求するか。
+2. 想定装備：初見攻略時に鉄、ダイヤ、Netherite、Mod上位装備のどれを想定するか。
+3. 戦闘密度：地表の小規模戦か、複数Spawner、Mini Boss、Boss、攻略ギミックを含むか。
+4. 盗掘耐性：戦闘を完了せず、壁抜き、掘削、離脱などで箱だけ取得しやすいか。
+
+建物全体の難度より実際の箱への到達難度を優先します。大型構造物でも外周の樽は序盤、
+最深部のTreasure箱は中盤という分類があり得ます。反対に、通常箱という名前でも鍵やBoss
+討伐が必須なら後半扱いにできます。戦闘を避けて容易に取得できるLootは、建物の最高難度では
+なく取得経路の段階まで下げて評価します。
+
+| 段階 | 到達・攻略の目安 | 完成品Lootの方針 |
+| --- | --- | --- |
+| 序盤 | Overworldで無条件に発見でき、鉄装備前後で到達・離脱可能 | 革・金・チェイン・鉄装備を維持。ダイヤは原則素材 |
+| 中盤 | Nether到達や探索準備を要し、ダイヤ装備で大型構造物や複数Spawnerを攻略 | Treasure、Vault、Equipment箱のダイヤ完成品を維持 |
+| 後半 | Dimension進行、鍵、前段Bossを要し、Netheriteや強化済み装備で固有Mob・Bossを攻略 | Netherite級、テーマ固有品、Boss固有装備を許可 |
+| 終盤 | 複数の進行系統、最終Boss、最上位技術・素材を要求 | 最終Boss固有品と最終素材を許可。汎用最上位装備は通常Lootへ追加しない |
+
+目安となる例は次の通りです。
+
+| Loot源 | 判定 | 理由 |
+| --- | --- | --- |
+| Artifacts Campsite、Mushroom Villageの樽 | 序盤 | 地表で見つかり、低装備でも回収・離脱しやすい |
+| Illager Windmillの通常樽 | 序盤から中盤 | 戦闘はあるが、最深部攻略を要求しない |
+| Illager WindmillのTreasure箱、Dungeons Arise大型構造物の最深部 | 中盤 | 構造物攻略に対する明示的な報酬 |
+| Bastion、Ancient City、Deeper Darker Temple | 後半 | 高密度の危険、特殊環境、進行準備を要求 |
+| 進行条件付きDimensionの後半Boss、Cataclysm上位Boss | 終盤 | 前段進行と最上位戦闘準備を要求 |
+
+MekaSuit、Advanced AE Quantum、MI Quantum、JDT上位装備は「終盤ダンジョン装備」ではなく
+技術・素材進行の終盤装備です。ダンジョンTierとは別枠ですが、通常Lootから完成品を配布せず、
+前段装備と対応する技術進行を要求する点を共通方針とします。
+
+クエスト報酬表は確認時点で素材、Template、Upgrade、部品が中心で、終盤装備の完成品を
+直接配布していないため変更しません。Cataclysm Black Steel、Iron's Spells Autoloader
+Crossbow、SpectrumのCircletなど、テーマ構造物の固有完成品も探索の個性として維持します。
+
+低危険度の地表Lootだけ、完成済みダイヤ装備を除外します。
+
+| Loot | 除外する完成品 | 残る主な価値 |
+| --- | --- | --- |
+| Artifacts Campsite Chest | ダイヤの斧、ツルハシ、シャベル | 鉄・金装備、鉱石、ダイヤ、Artifact抽選 |
+| Dungeons Arise Illager Windmill Barrel | ダイヤの剣 | 鉄装備、資材。Treasure箱のダイヤ剣は維持 |
+| Dungeons Arise Mushroom Village Barrel | ダイヤの剣 | 食料、資材、村系Loot |
+
+Apotheosis標準の通常チェスト向けAffix装備30％、Gem 20％の抽選は変更しません。これにより
+通常ダンジョンには、上位装備を完成品で配らずとも厳選・分解・強化素材として再訪価値が
+残ります。Boss Loot、Treasure、Vault、Equipment箱にはこの除外を適用しません。
+
+実装：
+[EquipmentProgression.js](payload/kubejs/server_scripts/Mods/Craftoria/EquipmentProgression.js)
 
 ## 意図的に維持している要素
 
