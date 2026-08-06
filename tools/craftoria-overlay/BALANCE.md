@@ -98,11 +98,14 @@ Motor Extensionの倍率と追加容量は変更していません。水車、�
 | 採掘間隔 | 80 tick | 120 tick |
 | Easy Miner Filter | 有効 | 無効 |
 | 回路素材 | Basic Circuit | Elite Circuit |
+| Speed / Energy Upgrade上限（全Mekanism機械） | 16 | 8 |
 
 選択採掘機としては残し、広域を高速かつ簡単なフィルターで掘り尽くす性能を抑えています。
+Upgrade上限はMekanism Unleashedの共通設定であり、Digital Miner以外の対応機械にも適用されます。
 
 実装：
 [general.toml](payload/config/Mekanism/general.toml)、
+[mekanism_unleashed-startup.toml](payload/config/mekanism_unleashed-startup.toml)、
 [BrokenDevices.js](payload/kubejs/server_scripts/Mods/Craftoria/BrokenDevices.js)
 
 ### RFTools Builder
