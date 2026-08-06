@@ -44,3 +44,65 @@ test('FTB Quests base policies accept verified Linux LF variants', async () => {
     assert.ok(policy.files[relative]?.expectedExistingHashes?.includes(hash), relative);
   }
 });
+
+test('base policies accept verified Craftoria 1.31.0 text line endings', async () => {
+  const policy = JSON.parse(await readFile(path.join(resourceRoot, 'payload-policy.json'), 'utf8')) as {
+    files: Record<string, { expectedExistingHashes?: string[] }>;
+  };
+  const expectedHashes: Record<string, string[]> = {
+    'config/advanced_ae-common.toml': [
+      'a8a9ecfd4d9e535897e3cdf5c383edcc870dadff1b5ef7f5572b3e287f4e5eca',
+    ],
+    'config/artifacts/relics/vampiric_glove.yaml': [
+      '890653999730dda46193974e03024e44bfff184c18d4a9978dae9179638cf4db',
+    ],
+    'config/cataclysm.toml': [
+      '523ad93a8cf9fdfbc1b1a18070a87e63d6361446f0438786a41aea0a8b31e77e',
+    ],
+    'config/eternal_starlight.json': [
+      '67787b73a7b480c8d6ca84f9b48dbaa077281818aa3298bbdf16ce2036d3c88e',
+    ],
+    'config/irons_spellbooks-server.toml': [
+      '75b2fa2072c3442ff34b86986f42e50cf57eba6c2332f7a9c059f119789879fd',
+    ],
+    'config/powah.json5': [
+      '2d217907ba94cdb507e557d8a47fe33dcbc3ea668c18f9fd0b7c67a72cc0cb3c',
+    ],
+    'config/twilightforest-common.toml': [
+      '59f87c27b7d493835dcf3e4c1ef2c9df138b1cb31ee0708cd7df7c0ca43fe7dd',
+    ],
+    'kubejs/server_scripts/Mods/Craftoria/ConflictFixes.js': [
+      '58d26b7ccd9615310f49b0f8576fb56084c15367898144a8152fc4f975163cca',
+      '58bd0d9526fb57490637252553d0a5d1137792c2972033f91679909d1ad774ed',
+    ],
+    'kubejs/server_scripts/Mods/HostileNeuralNetworks/DataModels.js': [
+      '305ef3bba383cf31cc9932476898e534d9f27e342a5a39dfc1ad0b36c50b9d7c',
+    ],
+    'kubejs/server_scripts/Mods/IndustrialForegoing/Recipes.js': [
+      'bda19039569dd81428a7c096c2d8ee29ad993eeaf56674d2d226030514bbf428',
+    ],
+    'kubejs/server_scripts/Mods/Mekanism/DataMaps.js': [
+      '1bcd6fa6bde35e63a78b54a3e9a1a64f7df4a762a4a964cbe7c8ee5cd06b869e',
+      '73c3f642d3ba10304ff3bc57cfb4600423bb848b00966e75f45b916150dfc611',
+    ],
+    'kubejs/server_scripts/Mods/ModernIndustrialization/CustomMachines/ModelSynthesizer.js': [
+      'b33c3609ca3482ecab332bbea2294289038c8d640cefa52f33d01128bf00786a',
+    ],
+    'kubejs/server_scripts/Mods/ModernIndustrialization/ReplicatorBlacklist.js': [
+      '23c3f2b1b2e1bb1688fa6df1795531ec5cb10a923748bc21b1744b3445588b74',
+      'f74d6232a6a578bc340cffd61db626408da9efffccab1cce5ade6d5b879515ef',
+    ],
+    'kubejs/server_scripts/tags.js': [
+      'b832abd582bffbe1aa15dfc0a0b83253d01872d7b0a29f9675d2a9e5eeb05f0e',
+    ],
+    'kubejs/server_scripts/unify/Knife.js': [
+      '01239a96ff206220a5d8b5d6b5f946be2de02575eef146553bc7ac136bcc01dc',
+      'c542a0df3f5ea9a7cd1dd62e6cc9a94b8ec33dafc7b9df42bb8c42a0659ec390',
+    ],
+  };
+
+  for (const [relative, hashes] of Object.entries(expectedHashes)) {
+    const allowed = policy.files[relative]?.expectedExistingHashes ?? [];
+    for (const hash of hashes) assert.ok(allowed.includes(hash), `${relative}: ${hash}`);
+  }
+});
