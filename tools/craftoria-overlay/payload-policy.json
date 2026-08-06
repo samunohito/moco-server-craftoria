@@ -1,6 +1,13 @@
 {
   "schemaVersion": 1,
   "files": {
+    "config/create_new_age-server.toml": {
+      "replacePolicy": "known-base-only",
+      "expectedExistingHashes": [
+        "ca363f6369409c828cc841b0b5fb3b1f7fdaded08b62077ab0de33e2c4f3d5bd",
+        "edd7878bfe0f1fac60aadd77d1ceccdbe2ab9a35c56acd4ed37ee785198794af"
+      ]
+    },
     "config/powah.json5": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
