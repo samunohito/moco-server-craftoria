@@ -1,12 +1,3 @@
-export interface PrismComponent {
-  uid: string;
-  version: string;
-}
-
-export interface MmcPack {
-  components?: PrismComponent[];
-}
-
 export type HashAlgorithm = 'SHA256' | 'SHA512';
 export type ReplacePolicy = 'known-base-only' | 'backup';
 

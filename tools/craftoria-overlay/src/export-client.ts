@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { writeClientPackage } from './client-package.js';
-import { validatePrismInstance } from './instance.js';
+import { validateClientInstallation } from './instance.js';
 import { createZip, findResourceRoot, pathExists, removeOwnedScratch } from './lib.js';
 import { overlayArchiveName, prepareOverlay } from './manifest.js';
 
@@ -18,7 +18,7 @@ export async function exportClientOverlay({ sourceInstance, output }: ExportClie
   const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
   const defaultInstance = path.resolve(resourceRoot, '..', '..');
   const { manifest, sources } = await prepareOverlay(resourceRoot);
-  await validatePrismInstance(sourceInstance ?? defaultInstance, manifest.target);
+  await validateClientInstallation(sourceInstance ?? defaultInstance, manifest.target);
 
   const packageName = overlayArchiveName(manifest, true);
   const outputPath = path.resolve(output ?? path.join(resourceRoot, 'dist', `${packageName}.zip`));

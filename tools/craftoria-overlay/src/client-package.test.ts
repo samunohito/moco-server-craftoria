@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { clientInstallPlan, writeClientPackage } from './client-package.js';
 import { exportClientOverlay } from './export-client.js';
 import { exportOverlay, overlayOutputPath } from './export-overlay.js';
+import { validateClientInstallation } from './instance.js';
 import { readPreviouslyInstalled, writeInstalledState } from './installed-state.js';
 import type { PayloadSource } from './payload.js';
 import type { OverlayManifest } from './types.js';
@@ -121,6 +122,42 @@ test('generated POSIX installer includes Linux and macOS hash fallbacks', async 
   }
 });
 
+test('client validation accepts a launcher-independent game directory', async () => {
+  const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-client-root-test-'));
+  try {
+    const gameRoot = path.join(scratch, 'ATLauncher-Craftoria');
+    for (const directory of ['mods', 'config', 'kubejs']) {
+      await mkdir(path.join(gameRoot, directory), { recursive: true });
+    }
+    const manifest = fixtureManifest('config value\n', 'test script\n');
+    await writeFile(
+      path.join(gameRoot, 'version_info.json'),
+      JSON.stringify({ version: manifest.target.managedPackVersion }),
+      'utf8',
+    );
+    await writeFile(path.join(scratch, 'instance.cfg'), 'ManagedPackVersionName=some-other-pack\n', 'utf8');
+    await writeFile(path.join(scratch, 'mmc-pack.json'), JSON.stringify({ components: [] }), 'utf8');
+
+    assert.equal(await validateClientInstallation(gameRoot, manifest.target), gameRoot);
+
+    await writeFile(path.join(gameRoot, 'version_info.json'), JSON.stringify({ version: 'wrong-version' }), 'utf8');
+    await assert.rejects(
+      validateClientInstallation(gameRoot, manifest.target),
+      /Expected Craftoria 1\.31\.0-test/u,
+    );
+  } finally {
+    await rm(scratch, { recursive: true, force: true });
+  }
+});
+
+test('portable installers do not require PrismLauncher metadata', async () => {
+  for (const name of ['install.ps1', 'install.sh']) {
+    const installer = await readFile(path.join(resourceRoot, 'client-templates', name), 'utf8');
+    assert.doesNotMatch(installer, /instance\.cfg|mmc-pack\.json/u, name);
+    assert.match(installer, /version_info\.json/u, name);
+  }
+});
+
 test('portable installed state remains compatible with legacy JSON state', async () => {
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-state-test-'));
   try {
@@ -226,17 +263,10 @@ test('generated Windows installer supports dry-run, install, backup, conflict re
       },
     ];
     await writeClientPackage(resourceRoot, packageRoot, packageName, manifest, sources);
-    await writeFile(path.join(scratch, 'instance.cfg'), [
-      'ManagedPackID=test-pack',
-      'ManagedPackVersionID=test-file',
-      'ManagedPackVersionName=1.31.0-test',
-      '',
-    ].join('\r\n'), 'utf8');
-    await writeFile(path.join(scratch, 'mmc-pack.json'), JSON.stringify({ components: [
-      { uid: 'net.minecraft', version: '1.21.1-test' },
-      { uid: 'net.neoforged', version: '21.1.230-test' },
-    ] }), 'utf8');
     await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.31.0-test' }), 'utf8');
+    await mkdir(path.join(minecraftRoot, 'config'), { recursive: true });
+    await mkdir(path.join(minecraftRoot, 'kubejs'), { recursive: true });
+    await mkdir(path.join(minecraftRoot, 'mods'), { recursive: true });
 
     const dryRun = await run('cmd.exe', ['/d', '/c', 'install.bat', '--dry-run'], packageRoot);
     assert.equal(dryRun.code, 0, dryRun.output);
@@ -259,7 +289,6 @@ test('generated Windows installer supports dry-run, install, backup, conflict re
 
     await mkdir(path.join(minecraftRoot, 'kubejs/server_scripts'), { recursive: true });
     await writeFile(path.join(minecraftRoot, 'kubejs/server_scripts/Test.js'), 'official base\n', 'utf8');
-    await mkdir(path.join(minecraftRoot, 'mods'), { recursive: true });
     await writeFile(path.join(minecraftRoot, 'mods/old.jar'), 'old mod', 'utf8');
 
     const install = await run('pwsh.exe', ['-NoProfile', '-File', path.join(packageRoot, '.installer/install.ps1')], packageRoot);
@@ -328,17 +357,8 @@ test('generated POSIX installer passes sh syntax and installation checks', async
         replacePolicy: 'known-base-only', expectedExistingHashes: [sha256('official base\n')],
       },
     ]);
-    await writeFile(path.join(scratch, 'instance.cfg'), [
-      'ManagedPackID=test-pack',
-      'ManagedPackVersionID=test-file',
-      'ManagedPackVersionName=1.31.0-test',
-      '',
-    ].join('\n'), 'utf8');
-    await writeFile(path.join(scratch, 'mmc-pack.json'), JSON.stringify({ components: [
-      { uid: 'net.minecraft', version: '1.21.1-test' },
-      { uid: 'net.neoforged', version: '21.1.230-test' },
-    ] }), 'utf8');
     await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.31.0-test' }), 'utf8');
+    await mkdir(path.join(minecraftRoot, 'config'), { recursive: true });
     await mkdir(path.join(minecraftRoot, 'kubejs/server_scripts'), { recursive: true });
     await writeFile(path.join(minecraftRoot, 'kubejs/server_scripts/Test.js'), 'official base\n', 'utf8');
     await mkdir(path.join(minecraftRoot, 'mods'), { recursive: true });

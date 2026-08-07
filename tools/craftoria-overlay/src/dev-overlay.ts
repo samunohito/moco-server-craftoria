@@ -1,7 +1,7 @@
 import { copyFile, mkdir, readdir, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { validatePrismInstance } from './instance.js';
+import { validateClientInstallation } from './instance.js';
 import { findResourceRoot, hashFile, pathExists, readJson, resolveInside, writeJson } from './lib.js';
 import { assertPayloadPath, assertRegularFile, rawPayloadPolicy } from './payload.js';
 import { refreshProbeTypingSnapshot } from './probe-typings.js';
@@ -26,8 +26,8 @@ async function context(instancePath?: string): Promise<{ resourceRoot: string; m
   const resourceRoot = await findResourceRoot(scriptDirectory, 'payload-policy.json');
   const manifest = await readJson<OverlayManifest>(path.join(resourceRoot, 'overlay.template.json'));
   const defaultInstance = path.resolve(resourceRoot, '..', '..');
-  const instance = await validatePrismInstance(instancePath ?? defaultInstance, manifest.target);
-  return { resourceRoot, minecraft: path.join(instance, 'minecraft') };
+  const minecraft = await validateClientInstallation(instancePath ?? defaultInstance, manifest.target);
+  return { resourceRoot, minecraft };
 }
 
 function timestamp(): string {

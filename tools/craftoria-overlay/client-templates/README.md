@@ -1,11 +1,15 @@
 # Craftoria Client Add-on @@ADDON_VERSION@@
 
 Craftoria @@MANAGED_PACK_VERSION@@専用のクライアント追加パッケージです。
-MinecraftとPrismLauncherを完全に終了してから導入してください。
+Minecraftと使用中のランチャーを完全に終了してから導入してください。
+
+PrismLauncher、ATLauncherなど、ランチャーの種類には依存しません。
+`version_info.json`、`mods`、`config`、`kubejs` があるCraftoriaのゲームディレクトリへ
+展開してください。フォルダ名は `minecraft` でなくても構いません。
 
 ## Windows
 
-1. このZIPをCraftoriaの `minecraft` フォルダ内へ置き、「ここに展開」します。
+1. このZIPをCraftoriaのゲームディレクトリ内へ置き、「ここに展開」します。
 2. 展開された `@@PACKAGE_NAME@@` を開きます。
 3. `install.bat` を実行します。
 

@@ -10,7 +10,7 @@ import {
   resolveInside,
   writeJson,
 } from './lib.js';
-import { validatePrismInstance } from './instance.js';
+import { validateClientInstallation } from './instance.js';
 import { overlayArchiveName, prepareOverlay } from './manifest.js';
 import type { OverlayManifest } from './types.js';
 
@@ -33,7 +33,7 @@ export async function exportOverlay({ sourceInstance, output }: ExportOverlayOpt
   const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
   const defaultInstance = path.resolve(resourceRoot, '..', '..');
   const { manifest, sources } = await prepareOverlay(resourceRoot);
-  await validatePrismInstance(sourceInstance ?? defaultInstance, manifest.target);
+  await validateClientInstallation(sourceInstance ?? defaultInstance, manifest.target);
   const outputPath = overlayOutputPath(resourceRoot, manifest, output);
 
   if (await pathExists(outputPath)) throw new Error(`Output already exists: ${outputPath}`);

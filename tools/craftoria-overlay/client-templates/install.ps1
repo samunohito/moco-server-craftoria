@@ -77,39 +77,26 @@ function Backup-File([string]$Source, [string]$Relative, [string]$BackupRoot) {
 $installerRoot = $PSScriptRoot
 $packageRoot = [System.IO.Directory]::GetParent($installerRoot).FullName
 $minecraftRoot = [System.IO.Directory]::GetParent($packageRoot).FullName
-$instanceRoot = [System.IO.Directory]::GetParent($minecraftRoot).FullName
 $manifestPath = Join-Path $packageRoot 'manifest.json'
 $planPath = Join-Path $installerRoot 'install-plan.tsv'
 
 foreach ($requiredPath in @(
-    (Join-Path $instanceRoot 'instance.cfg'),
-    (Join-Path $instanceRoot 'mmc-pack.json'),
     (Join-Path $minecraftRoot 'version_info.json'),
     $manifestPath,
     $planPath
 )) {
     if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
-        Fail "Required file is missing. Extract this ZIP directly inside Craftoria's minecraft directory: $requiredPath"
+        Fail "Required file is missing. Extract this ZIP directly inside Craftoria's game directory: $requiredPath"
+    }
+}
+foreach ($requiredDirectory in @('mods', 'config', 'kubejs')) {
+    $directory = Join-Path $minecraftRoot $requiredDirectory
+    if (-not (Test-Path -LiteralPath $directory -PathType Container)) {
+        Fail "Required Craftoria directory is missing: $directory"
     }
 }
 
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
-$instanceLines = Get-Content -LiteralPath (Join-Path $instanceRoot 'instance.cfg')
-foreach ($marker in @(
-    'ManagedPackID=@@MANAGED_PACK_ID@@',
-    'ManagedPackVersionID=@@MANAGED_PACK_VERSION_ID@@',
-    'ManagedPackVersionName=@@MANAGED_PACK_VERSION@@'
-)) {
-    if ($instanceLines -notcontains $marker) { Fail "Unsupported Craftoria instance; required marker is missing: $marker" }
-}
-
-$mmcPack = Get-Content -LiteralPath (Join-Path $instanceRoot 'mmc-pack.json') -Raw | ConvertFrom-Json
-if (-not @($mmcPack.components | Where-Object { $_.uid -eq 'net.minecraft' -and $_.version -eq '@@MINECRAFT@@' }).Count) {
-    Fail 'Expected Minecraft @@MINECRAFT@@.'
-}
-if (-not @($mmcPack.components | Where-Object { $_.uid -eq 'net.neoforged' -and $_.version -eq '@@NEOFORGE@@' }).Count) {
-    Fail 'Expected NeoForge @@NEOFORGE@@.'
-}
 $versionInfo = Get-Content -LiteralPath (Join-Path $minecraftRoot 'version_info.json') -Raw | ConvertFrom-Json
 if ([string]$versionInfo.version -ne '@@MANAGED_PACK_VERSION@@') { Fail 'Expected Craftoria @@MANAGED_PACK_VERSION@@.' }
 

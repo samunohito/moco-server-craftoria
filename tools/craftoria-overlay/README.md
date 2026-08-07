@@ -103,9 +103,13 @@ pnpm run export:client
 `dist/Craftoria-Client-Addon-<version>.zip` が生成されます。ModのJARはZIPへ含めず、
 インストール時にModrinth等の固定HTTPS URLから取得してハッシュ検証します。
 
-受信側ではCraftoriaの `minecraft` フォルダへZIPを置いて「ここに展開」し、展開された
+受信側ではCraftoriaのゲームディレクトリへZIPを置いて「ここに展開」し、展開された
 専用フォルダ内の `install.bat` を実行します。Linux/macOSでは `./install.sh` または
-`sh install.sh` を実行します。MinecraftとPrismLauncherは先に終了してください。
+`sh install.sh` を実行します。Minecraftと使用中のランチャーは先に終了してください。
+
+ゲームディレクトリは `version_info.json`、`mods/`、`config/`、`kubejs/` がある場所です。
+この検証はPrismLauncher固有の `instance.cfg` には依存せず、ATLauncherなどでも利用
+できます。フォルダ名が `minecraft` である必要もありません。
 
 事前確認や、内容を確認済みの競合を上書きする場合は次のオプションを使えます。
 
@@ -143,13 +147,15 @@ pnpm run export
 pnpm install --frozen-lockfile
 ```
 
-PrismLauncherとMinecraftを終了して、共通CLIの `install` サブコマンドを実行します。
+Minecraftと使用中のランチャーを終了して、共通CLIの `install` サブコマンドを実行します。
 
 ```powershell
-pnpm run cli -- install --instance "C:\path\to\PrismLauncher\instances\Craftoria"
+pnpm run cli -- install --instance "C:\path\to\Craftoria\game-directory"
 ```
 
-事前確認だけなら `--dry-run` を付けます。対象はCraftoria 1.31.0に固定され、既存
+`--instance` にはゲームディレクトリ自体、またはその直下に `minecraft/` がある
+ランチャーのインスタンスディレクトリを指定できます。事前確認だけなら `--dry-run` を
+付けます。対象はCraftoria 1.31.0に固定され、既存
 ファイルは `.craftoria-overlay/backups/` に退避されます。既知の公式KubeJSファイル
 以外が変更済みなら停止します。内容を確認して上書きする場合だけ
 `--force-conflict` を指定してください。

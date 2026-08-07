@@ -18,7 +18,7 @@ async function main(): Promise<void> {
       (command) => command
         .option('source-instance', {
           type: 'string',
-          description: 'エクスポート元のPrismLauncherインスタンス',
+          description: '検証に使うCraftoriaゲームディレクトリまたはランチャーのインスタンス',
           normalize: true,
         })
         .option('output', {
@@ -39,7 +39,7 @@ async function main(): Promise<void> {
       (command) => command
         .option('source-instance', {
           type: 'string',
-          description: '対象バージョン検証に使うPrismLauncherインスタンス',
+          description: '検証に使うCraftoriaゲームディレクトリまたはランチャーのインスタンス',
           normalize: true,
         })
         .option('output', {
@@ -60,7 +60,7 @@ async function main(): Promise<void> {
       (command) => command
         .option('instance', {
           type: 'string',
-          description: '同期先PrismLauncherインスタンス（既定: このCraftoriaインスタンス）',
+          description: '同期先Craftoriaゲームディレクトリまたはランチャーのインスタンス',
           normalize: true,
         })
         .option('dry-run', {
@@ -86,7 +86,7 @@ async function main(): Promise<void> {
       'payloadと開発用Craftoriaインスタンスの差分を表示します',
       (command) => command.option('instance', {
         type: 'string',
-        description: '比較先PrismLauncherインスタンス（既定: このCraftoriaインスタンス）',
+        description: '比較先Craftoriaゲームディレクトリまたはランチャーのインスタンス',
         normalize: true,
       }),
       async (arguments_) => {
@@ -107,7 +107,7 @@ async function main(): Promise<void> {
         })
         .option('instance', {
           type: 'string',
-          description: '取込元PrismLauncherインスタンス（既定: このCraftoriaインスタンス）',
+          description: '取込元Craftoriaゲームディレクトリまたはランチャーのインスタンス',
           normalize: true,
         })
         .option('force', {
@@ -135,7 +135,7 @@ async function main(): Promise<void> {
       (command) => command
         .option('instance', {
           type: 'string',
-          description: '取込元PrismLauncherインスタンス（既定: このCraftoriaインスタンス）',
+          description: '取込元Craftoriaゲームディレクトリまたはランチャーのインスタンス',
           normalize: true,
         })
         .option('dry-run', {
@@ -183,7 +183,7 @@ async function main(): Promise<void> {
       (command) => command
         .option('instance', {
           type: 'string',
-          description: '対象のPrismLauncherインスタンス',
+          description: '対象のCraftoriaゲームディレクトリまたはランチャーのインスタンス',
           normalize: true,
         })
         .option('server', {

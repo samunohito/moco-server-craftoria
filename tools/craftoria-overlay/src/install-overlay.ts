@@ -12,8 +12,9 @@ import {
   removeOwnedScratch,
   resolveInside,
 } from './lib.js';
+import { validateClientInstallation } from './instance.js';
 import { readPreviouslyInstalled, writeInstalledState } from './installed-state.js';
-import type { MmcPack, OverlayFile, OverlayManifest, RemovedOverlayFile } from './types.js';
+import type { OverlayFile, OverlayManifest, RemovedOverlayFile } from './types.js';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 
@@ -65,30 +66,7 @@ export async function installOverlay({
   let root: string;
 
   if (instancePath !== undefined) {
-    const instance = await realpath(path.resolve(instancePath));
-    const configPath = path.join(instance, 'instance.cfg');
-    const mmcPath = path.join(instance, 'mmc-pack.json');
-    if (!await pathExists(configPath) || !await pathExists(mmcPath)) {
-      throw new Error(`Not a PrismLauncher instance: ${instance}`);
-    }
-    const configText = await readFile(configPath, 'utf8');
-    for (const required of [
-      `ManagedPackID=${manifest.target.managedPackId}`,
-      `ManagedPackVersionID=${manifest.target.managedPackVersionId}`,
-      `ManagedPackVersionName=${manifest.target.managedPackVersion}`,
-    ]) {
-      if (!configText.split(/\r?\n/u).includes(required)) {
-        throw new Error(`Unsupported instance; required marker is missing: ${required}`);
-      }
-    }
-    const mmcPack = await readJson<MmcPack>(mmcPath);
-    if (!mmcPack.components?.some(({ uid, version }) => uid === 'net.minecraft' && version === manifest.target.minecraft)) {
-      throw new Error(`Expected Minecraft ${manifest.target.minecraft}.`);
-    }
-    if (!mmcPack.components?.some(({ uid, version }) => uid === 'net.neoforged' && version === manifest.target.neoForge)) {
-      throw new Error(`Expected NeoForge ${manifest.target.neoForge}.`);
-    }
-    root = path.join(instance, 'minecraft');
+    root = await validateClientInstallation(instancePath, manifest.target);
   } else {
     const resolvedServerPath = serverPath;
     if (resolvedServerPath === undefined) throw new Error('--server is required.');

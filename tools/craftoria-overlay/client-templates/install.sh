@@ -27,21 +27,15 @@ done
 
 package_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
 minecraft_root=$(CDPATH= cd -- "$package_root/.." && pwd -P)
-instance_root=$(CDPATH= cd -- "$minecraft_root/.." && pwd -P)
 installer_root="$package_root/.installer"
 plan_path="$installer_root/install-plan.tsv"
 
-for required in "$instance_root/instance.cfg" "$instance_root/mmc-pack.json" "$minecraft_root/version_info.json" "$package_root/manifest.json" "$plan_path"; do
-  [ -f "$required" ] || fail "Required file is missing. Extract this ZIP directly inside Craftoria's minecraft directory: $required"
+for required in "$minecraft_root/version_info.json" "$package_root/manifest.json" "$plan_path"; do
+  [ -f "$required" ] || fail "Required file is missing. Extract this ZIP directly inside Craftoria's game directory: $required"
 done
-
-for marker in 'ManagedPackID=@@MANAGED_PACK_ID@@' 'ManagedPackVersionID=@@MANAGED_PACK_VERSION_ID@@' 'ManagedPackVersionName=@@MANAGED_PACK_VERSION@@'; do
-  grep -Fqx "$marker" "$instance_root/instance.cfg" || fail "Unsupported Craftoria instance; required marker is missing: $marker"
+for required in "$minecraft_root/mods" "$minecraft_root/config" "$minecraft_root/kubejs"; do
+  [ -d "$required" ] || fail "Required Craftoria directory is missing: $required"
 done
-grep -Eq '"uid"[[:space:]]*:[[:space:]]*"net\.minecraft"' "$instance_root/mmc-pack.json" || fail 'Minecraft component is missing.'
-grep -Eq '"version"[[:space:]]*:[[:space:]]*"@@MINECRAFT@@"' "$instance_root/mmc-pack.json" || fail 'Expected Minecraft @@MINECRAFT@@.'
-grep -Eq '"uid"[[:space:]]*:[[:space:]]*"net\.neoforged"' "$instance_root/mmc-pack.json" || fail 'NeoForge component is missing.'
-grep -Eq '"version"[[:space:]]*:[[:space:]]*"@@NEOFORGE@@"' "$instance_root/mmc-pack.json" || fail 'Expected NeoForge @@NEOFORGE@@.'
 grep -Eq '"version"[[:space:]]*:[[:space:]]*"@@MANAGED_PACK_VERSION@@"' "$minecraft_root/version_info.json" || fail 'Expected Craftoria @@MANAGED_PACK_VERSION@@.'
 
 command -v awk >/dev/null 2>&1 || fail 'awk is required.'
