@@ -235,7 +235,7 @@ test('systemd unit uses the dedicated server root and clean Minecraft shutdown',
   assert.match(unit, /^ReadWritePaths=\/srv\/craftoria$/mu);
 });
 
-test('generated Windows installer supports dry-run, install, backup, conflict refusal, and force', {
+test('generated Windows installer supports double-folder extraction and safe installation', {
   skip: process.platform !== 'win32',
 }, async () => {
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-client-windows-test-'));
@@ -244,7 +244,7 @@ test('generated Windows installer supports dry-run, install, backup, conflict re
   try {
     const minecraftRoot = path.join(scratch, 'minecraft');
     const packageName = 'Craftoria-Client-Addon-9.8.7-test';
-    const packageRoot = path.join(minecraftRoot, packageName);
+    const packageRoot = path.join(minecraftRoot, packageName, packageName);
     const sourceRoot = path.join(scratch, 'sources');
     await mkdir(sourceRoot, { recursive: true });
     const configSource = path.join(sourceRoot, 'config.toml');
@@ -270,6 +270,7 @@ test('generated Windows installer supports dry-run, install, backup, conflict re
 
     const dryRun = await run('cmd.exe', ['/d', '/c', 'install.bat', '--dry-run'], packageRoot);
     assert.equal(dryRun.code, 0, dryRun.output);
+    assert.ok(dryRun.output.includes(`Target: ${minecraftRoot}`), dryRun.output);
     assert.match(dryRun.output, /Install\s+config\/test-common\.toml/u);
     await assert.rejects(readFile(path.join(minecraftRoot, 'config/test-common.toml')));
 
@@ -319,7 +320,7 @@ test('generated Windows installer supports dry-run, install, backup, conflict re
   }
 });
 
-test('generated POSIX installer passes sh syntax and installation checks', async (context) => {
+test('generated POSIX installer supports double-folder extraction and installation', async (context) => {
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-client-sh-test-'));
   try {
     let shell = 'sh';
@@ -339,7 +340,7 @@ test('generated POSIX installer passes sh syntax and installation checks', async
     }
 
     const minecraftRoot = path.join(scratch, 'minecraft');
-    const packageRoot = path.join(minecraftRoot, 'package');
+    const packageRoot = path.join(minecraftRoot, 'package', 'package');
     const configSource = path.join(scratch, 'source.toml');
     const kubeSource = path.join(scratch, 'Test.js');
     const configContent = 'value=true\n';
@@ -368,6 +369,7 @@ test('generated POSIX installer passes sh syntax and installation checks', async
     assert.equal(syntax.code, 0, syntax.output);
     const dryRun = await run(shell, [path.join(packageRoot, 'install.sh'), '--dry-run'], packageRoot, environment);
     assert.equal(dryRun.code, 0, dryRun.output);
+    assert.match(dryRun.output, /Target: .*\/minecraft\r?$/mu);
     assert.match(dryRun.output, /Install\s+config\/test-common\.toml/u);
     const install = await run(shell, [path.join(packageRoot, 'install.sh')], packageRoot, environment);
     assert.equal(install.code, 0, install.output);

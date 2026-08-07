@@ -103,9 +103,11 @@ pnpm run export:client
 `dist/Craftoria-Client-Addon-<version>.zip` が生成されます。ModのJARはZIPへ含めず、
 インストール時にModrinth等の固定HTTPS URLから取得してハッシュ検証します。
 
-受信側ではCraftoriaのゲームディレクトリへZIPを置いて「ここに展開」し、展開された
-専用フォルダ内の `install.bat` を実行します。Linux/macOSでは `./install.sh` または
-`sh install.sh` を実行します。Minecraftと使用中のランチャーは先に終了してください。
+受信側ではCraftoriaのゲームディレクトリへZIPを置きます。Windowsでは右クリックの
+「すべて展開」を既定の展開先で実行し、展開先をたどって `install.bat` を実行します。
+同名フォルダが二重になっても、インストーラーが上位のゲームディレクトリを検出します。
+Linux/macOSでは `./install.sh` または `sh install.sh` を実行します。Minecraftと使用中の
+ランチャーは先に終了してください。
 
 ゲームディレクトリは `version_info.json`、`mods/`、`config/`、`kubejs/` がある場所です。
 この検証はPrismLauncher固有の `instance.cfg` には依存せず、ATLauncherなどでも利用
@@ -118,7 +120,7 @@ pnpm run export:client
 .\install.bat --force-conflict
 ```
 
-追加Modは `overlay.template.json` に固定された現在10 Modです。KubeJS連携用として
+追加Modは `overlay.template.json` にバージョン、配布URL、ハッシュを固定しています。KubeJS連携用として
 次の2 Modもクライアント・サーバー双方へ導入します。
 
 - KubeJS Create 2101.3.1-build.18

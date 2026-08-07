@@ -26,16 +26,30 @@ while [ "$#" -gt 0 ]; do
 done
 
 package_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-minecraft_root=$(CDPATH= cd -- "$package_root/.." && pwd -P)
 installer_root="$package_root/.installer"
 plan_path="$installer_root/install-plan.tsv"
 
-for required in "$minecraft_root/version_info.json" "$package_root/manifest.json" "$plan_path"; do
+for required in "$package_root/manifest.json" "$plan_path"; do
   [ -f "$required" ] || fail "Required file is missing. Extract this ZIP directly inside Craftoria's game directory: $required"
 done
-for required in "$minecraft_root/mods" "$minecraft_root/config" "$minecraft_root/kubejs"; do
-  [ -d "$required" ] || fail "Required Craftoria directory is missing: $required"
-done
+
+find_craftoria_root() {
+  candidate=$(CDPATH= cd -- "$1/.." && pwd -P)
+  depth=0
+  while [ "$depth" -lt 3 ]; do
+    if [ -f "$candidate/version_info.json" ] && [ -d "$candidate/mods" ] && [ -d "$candidate/config" ] && [ -d "$candidate/kubejs" ]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+    parent=$(CDPATH= cd -- "$candidate/.." && pwd -P)
+    [ "$parent" != "$candidate" ] || break
+    candidate=$parent
+    depth=$((depth + 1))
+  done
+  fail "Craftoria's game directory was not found above the extracted package. Keep the ZIP inside the game directory before extracting it."
+}
+
+minecraft_root=$(find_craftoria_root "$package_root")
 grep -Eq '"version"[[:space:]]*:[[:space:]]*"@@MANAGED_PACK_VERSION@@"' "$minecraft_root/version_info.json" || fail 'Expected Craftoria @@MANAGED_PACK_VERSION@@.'
 
 command -v awk >/dev/null 2>&1 || fail 'awk is required.'
