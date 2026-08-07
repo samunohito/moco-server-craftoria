@@ -9,9 +9,13 @@ PrismLauncher、ATLauncherなど、ランチャーの種類には依存しませ
 
 ## Windows
 
-1. このZIPをCraftoriaのゲームディレクトリ内へ置き、「ここに展開」します。
-2. 展開された `@@PACKAGE_NAME@@` を開きます。
-3. `install.bat` を実行します。
+1. このZIPをCraftoriaのゲームディレクトリ内へ置きます。
+2. ZIPを右クリックして「すべて展開」を選び、既定の展開先のまま展開します。
+3. 展開先を開き、フォルダをたどって `install.bat` を実行します。
+
+Windowsの既定動作では `@@PACKAGE_NAME@@\@@PACKAGE_NAME@@\` のように同名フォルダが
+二重になることがありますが、そのまま実行できます。インストーラーは上位フォルダから
+Craftoriaのゲームディレクトリを安全に検出します。
 
 ## Linux / macOS
 

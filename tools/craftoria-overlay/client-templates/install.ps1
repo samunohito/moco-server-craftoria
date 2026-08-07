@@ -74,14 +74,27 @@ function Backup-File([string]$Source, [string]$Relative, [string]$BackupRoot) {
     Copy-Item -LiteralPath $Source -Destination $backup -Force
 }
 
+function Find-CraftoriaRoot([string]$PackageDirectory) {
+    $candidate = [System.IO.Directory]::GetParent($PackageDirectory)
+    for ($depth = 0; $depth -lt 3 -and $null -ne $candidate; $depth++) {
+        $root = $candidate.FullName
+        if ((Test-Path -LiteralPath (Join-Path $root 'version_info.json') -PathType Leaf) -and
+            (Test-Path -LiteralPath (Join-Path $root 'mods') -PathType Container) -and
+            (Test-Path -LiteralPath (Join-Path $root 'config') -PathType Container) -and
+            (Test-Path -LiteralPath (Join-Path $root 'kubejs') -PathType Container)) {
+            return $root
+        }
+        $candidate = $candidate.Parent
+    }
+    Fail "Craftoria's game directory was not found above the extracted package. Keep the ZIP inside the game directory before using Extract All."
+}
+
 $installerRoot = $PSScriptRoot
 $packageRoot = [System.IO.Directory]::GetParent($installerRoot).FullName
-$minecraftRoot = [System.IO.Directory]::GetParent($packageRoot).FullName
 $manifestPath = Join-Path $packageRoot 'manifest.json'
 $planPath = Join-Path $installerRoot 'install-plan.tsv'
 
 foreach ($requiredPath in @(
-    (Join-Path $minecraftRoot 'version_info.json'),
     $manifestPath,
     $planPath
 )) {
@@ -89,12 +102,7 @@ foreach ($requiredPath in @(
         Fail "Required file is missing. Extract this ZIP directly inside Craftoria's game directory: $requiredPath"
     }
 }
-foreach ($requiredDirectory in @('mods', 'config', 'kubejs')) {
-    $directory = Join-Path $minecraftRoot $requiredDirectory
-    if (-not (Test-Path -LiteralPath $directory -PathType Container)) {
-        Fail "Required Craftoria directory is missing: $directory"
-    }
-}
+$minecraftRoot = Find-CraftoriaRoot $packageRoot
 
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
 $versionInfo = Get-Content -LiteralPath (Join-Path $minecraftRoot 'version_info.json') -Raw | ConvertFrom-Json
