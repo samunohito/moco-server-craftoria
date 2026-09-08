@@ -230,6 +230,30 @@ End Portal Frame、Reinforced Deepslateなどを移設禁止にしています�
 
 ## 戦闘バランス
 
+### SlashBlade: Resharped
+
+SlashBlade本来のコンボ、ガード、空中機動、自己修復と通常攻撃力は維持し、Sランク時の
+精錬ボーナスと召喚攻撃の連発だけを抑制します。
+
+| 設定 | 標準値 | 調整後 |
+| --- | ---: | ---: |
+| 通常ダメージ倍率 | 1.0 | 1.0（維持） |
+| Sランク時の精錬ダメージ倍率 | 1.0 | 0.25 |
+| Trapezohedronの精錬上限 | 2,147,483,647 | 200 |
+| 単発召喚剣のProud Soul消費 | 2 | 5 |
+| Blade ArtsのProud Soul消費 | 20 | 50 |
+| レシピ素材となる刀の精錬値 | 合算 | 最大値のみ継承 |
+
+通常の刀は基礎攻撃力2から8程度で、精錬による表示攻撃力も逓減します。一方、Sランク時は
+現在の経験値Levelと精錬値に応じた別枠加算がコンボや召喚攻撃にも反映されるため、その倍率を
+25%へ抑えます。Trapezohedronは既存の最上位Proud Soul素材と同じ精錬200を上限とし、
+事実上無制限の育成と整数オーバーフローを防ぎます。
+
+Naga、Hydra、Minoshroom、Wither、Ender Dragonなどから得る固有刀は、実際の討伐報酬として
+変更せず維持します。PvPと友好Entityへの攻撃は無効のままです。
+
+実装：[slashblade-common.toml](payload/config/slashblade-common.toml)
+
 ### 戦闘バイパス
 
 主要Bossへ `#craftoria:mob_blacklist` を共有し、Just Dire ThingsのNoAI、Polymorph、
