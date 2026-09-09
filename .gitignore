@@ -5,6 +5,7 @@
 
 # Repository metadata.
 !/.gitignore
+!/README.md
 
 # Customizations maintained in this repository.
 !/.agents/
