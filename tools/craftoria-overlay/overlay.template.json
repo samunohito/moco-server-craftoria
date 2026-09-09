@@ -27,6 +27,11 @@
       "path": "mods/mekanism_unleashed-0.3.4.jar",
       "hashAlgorithm": "SHA256",
       "hash": "e9186a3b8029abbe4447ba056e2f8d1bd09df65488c47c3d6cdce19aa5ff2886"
+    },
+    {
+      "path": "config/openloader/packs/11_Facu's Resourcepack.zip",
+      "hashAlgorithm": "SHA256",
+      "hash": "2e9d569c7b0abb43ef8236eb8464730d86a717060edbe27ed935637c5f7d2db3"
     }
   ],
   "files": [
