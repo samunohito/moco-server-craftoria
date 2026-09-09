@@ -79,9 +79,8 @@ sh install.sh
 - Numismatics Utils
 - Create Slice & Dice
 - Advanced Chimneys
-- AdPother
 - Smog
-- ForgeEndertech（依存ライブラリ）
+- ForgeEndertech（Advanced Chimneysの依存ライブラリ）
 
 Createの回転設備、電力変換、ディーゼル発電、通貨・取引、食品加工に加え、排気と大気汚染を
 扱う仕組みを拡張します。

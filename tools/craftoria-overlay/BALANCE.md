@@ -11,6 +11,21 @@ Craftoria 1.31.0（Minecraft 1.21.1 / NeoForge 21.1.230）へ、このオーバ�
 - 宝箱や敵から偶然得る楽しさは残す。ただし、無効化対象の完成品は非ブロックLootからも除く。
 - 蓄電容量、Createの自然回転源、原子力は、明記した例外を除いて変更しない。
 
+## 大気汚染
+
+AdPotherを構成から外し、より把握しやすいSmogのチャンク単位方式だけを使用します。
+汚染源はCreate Diesel Generatorsのディーゼルエンジン、小型・大型・超大型の3種だけです。
+Smogの自動検出は無効化しているため、かまど、燻製器、キャンプファイアなどは汚染を発生させません。
+3種の排出量はSmog標準の10%、通常の自然減衰・雨天時の追加減衰・植生吸収は標準の2倍です。
+設備を大量稼働すれば影響は残りますが、停止すれば比較的早く自然回復する調整です。
+
+Advanced ChimneysとForgeEndertechは排気設備と煙の演出のために残します。
+煙そのものには局所的な毒性があり、煙突はSmogが認識する排気経路としても利用できます。
+
+実装：
+[smog-common.toml](payload/config/smog-common.toml)、
+[adchimneys-common.toml](payload/config/adchimneys-common.toml)
+
 ここでいう「非ブロックLoot」は宝箱とエンティティのLootです。設置済みブロックを破壊した
 ときの自己ドロップは維持します。
 

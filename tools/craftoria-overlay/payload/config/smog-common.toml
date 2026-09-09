@@ -1,0 +1,57 @@
+# Use Smog's simpler chunk-based model. Only Create Diesel Generators engines
+# emit pollution, at 10% of Smog's defaults. Recovery runs at 200%.
+[integration]
+	deferToPollutionOfTheRealms = false
+
+[simulation]
+	tickInterval = 100
+	maxPollution = 10000.0
+	spreadRate = 0.12
+	decayRate = 0.005
+	rainDecayBonus = 0.04
+	vegetationAbsorption = 3.0
+
+[thresholds]
+	light = 400.0
+	moderate = 1800.0
+	heavy = 4500.0
+	toxic = 8000.0
+
+[sources]
+	autoDetectedLitRate = 0.1
+	#emitters = ["createdieselgenerators:diesel_engine=4.5", "createdieselgenerators:large_diesel_engine=7", "createdieselgenerators:huge_diesel_engine=11"]
+
+[effects]
+	terrainDegradation = true
+	playerEffects = true
+
+[scrubber]
+	cleanRatePerSecond = 24.0
+	cartridgeCapacity = 24000
+	brassCartridgeMultiplier = 4
+	stressImpact = 8.0
+	gasRadius = 7
+	gasStepCost = 40.0
+	adpotherRateMultiplier = 12.0
+	cleanEntities = true
+	precisionCartridgeMultiplier = 16
+	waterBoost = 1.6
+	waterPerSecond = 4
+	contraptionRate = 0.75
+
+[panel]
+	efficiencyPerMember = 1.0
+	maxMembers = 64
+	cloudReachMembers = 25
+	radius = 12
+	skyRadius = 8
+
+[flue]
+	divertPerBlock = 0.12
+	maxDivert = 0.8
+	maxHeight = 8
+	ventPerSecond = 120.0
+	capturePerSecondPerBlock = 12
+
+[respirator]
+	reliefPerSecond = 40

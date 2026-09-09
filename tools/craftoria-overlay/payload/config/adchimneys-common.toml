@@ -1,0 +1,36 @@
+[Smoke]
+	# Keep chimney smoke harmful as a local exhaust hazard while Smog owns the
+	# persistent chunk pollution model.
+	defaultColor = -1
+	maxAmount = 18
+	maxIntencity = 4.0
+	maxScale = 2.5
+	maxRenderDistance = 128
+	replaceVanillaCampfireSmoke = true
+	poisonAnimals = true
+	poisonHostileMobs = true
+	poisonNPCs = true
+	poisonPlayers = true
+
+[Painting]
+	"whereAreTheSettings?" = ["I've read the hint and understood"]
+
+[Chimney]
+	narrowChimneyLightDampening = 5
+	fullSizedChimneyLightDampening = 10
+
+[Pipe]
+	maxPipesAtOnce = 8
+
+[Vent]
+	"whereAreTheSettings?" = ["I've read the hint and understood"]
+
+[Pump]
+	powerSource = "REDSTONE"
+
+	[Pump.ForgeEnergy]
+		capacity = 10000
+		consumption = 50
+
+	[Pump.KineticEnergy]
+		minActivationSpeed = 16
