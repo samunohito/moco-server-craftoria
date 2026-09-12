@@ -3,15 +3,15 @@
   "addonVersion": "1.2.2",
   "target": {
     "managedPackId": "1039252",
-    "managedPackVersionId": "8127261",
-    "managedPackVersion": "1.31.0",
+    "managedPackVersionId": "8850018",
+    "managedPackVersion": "1.36.0",
     "minecraft": "1.21.1",
-    "neoForge": "21.1.230"
+    "neoForge": "21.1.249"
   },
   "bundledFiles": [
     {
-      "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.1.jar",
-      "path": "mods/mekanism-overclock-0.1.1.jar",
+      "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.2.jar",
+      "path": "mods/mekanism-overclock-0.1.2.jar",
       "kind": "mod",
       "hashAlgorithm": "SHA256",
       "replacePolicy": "known-base-only"
@@ -22,6 +22,26 @@
       "path": "mods/mekanism-overclock-0.1.0.jar",
       "hashAlgorithm": "SHA256",
       "hash": "5a074a8aff515136504bcde7723623466d4855b819e48b04921e42dd1ab79143"
+    },
+    {
+      "path": "mods/mekanism-overclock-0.1.1.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "036e13fc95447ce1d03f7db9d4aeb5a87dc3374f46efe75b1994aa6490ea0355"
+    },
+    {
+      "path": "mods/sliceanddice-forge-4.2.4.jar",
+      "hashAlgorithm": "SHA256",
+      "hash": "c3bd743a73eed3de14f6be5221fe68655cfeed0749f8f467f2ce2012ed1416bd"
+    },
+    {
+      "path": "mods/emf_compat_core_1.21.1_1.1.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "b1f2f04fd7f86230f85f4edd8107399c2eb343b0bcf6288fb4d5aad2d42e5126217c1d7566309b3542ab333241ffc1e433e0fe03a8cf821efbc2789505b64a4b"
+    },
+    {
+      "path": "mods/emf_compat_better_combat_1.21.1_1.1.0.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "740b257c807637d006f9687f1693e59d21a591fd873a9f561c07cd657b4fd70d3c5f83aec9c85340630552d09af32ba28d752517707c1bfb515a0b2ba5d4751d"
     },
     {
       "path": "mods/mekanism_unleashed-0.3.4.jar",
@@ -40,6 +60,48 @@
     }
   ],
   "files": [
+    {
+      "path": "mods/create_ultimate_factory-2.2.4-neoforge-1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/N9QToVpw/versions/AEMRNsNS/create_ultimate_factory-2.2.4-neoforge-1.21.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "2a1d1e6e27aa0744d131ad12dcc4e3bcae2d5d10c620cc566cb0300c63a66bced1c55be0b636998f3773e3a7b384e74ef06395ec7ee6a90649f7702c9a893b0d"
+    },
+    {
+      "path": "mods/createaddoncompatibility-neoforge-1.21.1-1.0.0.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/QgrK9rtJ/versions/tL1Tayuh/createaddoncompatibility-neoforge-1.21.1-1.0.0.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "dd00b322526454c60c088e1e50e9473fa3a3eb3bcb5fbaf2cd9b0ba41121d4b0458b49ecca15c0f0fa0b863bd2775741362da249eca11422955648c2722d99c3"
+    },
+    {
+      "path": "mods/create_compat_core-1.0.0-neoforge-1.21.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/pJgR7pam/versions/HhkKb5Pm/create_compat_core-1.0.0-neoforge-1.21.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "b4d198bac855aa50253949e7a4971de34761cf073ace5965632665e5a4a17594badaa2104c0332cd660f0535da45c3067aa5f91b715037bf749bf09da9aab5fa"
+    },
+    {
+      "path": "mods/create_ars_nouveau_compat-1.21.1-1.1.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/4ltoyGD0/versions/nZ7IFk2r/create_ars_nouveau_compat-1.21.1-1.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "48759017cadf79a5faecad8e3e5bbb31a19390df99499932c00a54dbfc34513ecf8982a661dadc914dea90ed54d5c20a84ee20508b7e90187714706146d17711"
+    },
+    {
+      "path": "mods/create_ae2recipes-0.2.0+1.21.1.jar",
+      "kind": "mod",
+      "url": "https://mediafilez.forgecdn.net/files/7031/443/create_ae2recipes-0.2.0%2B1.21.1.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "35d519ab0599addc52fbd4979769630b1b4f001c085320d69ee55e5b0bf27fc1f7dffee7a7b8adf8087b1412bb3832dd9587a68de71982a09299e94345bb8ec2"
+    },
+    {
+      "path": "mods/create-crafts-n-stuff-1.21.1-neoforge-1.2.0.jar",
+      "kind": "mod",
+      "url": "https://cdn.modrinth.com/data/sPTK93cT/versions/aA8weEzo/create-crafts-n-stuff-1.21.1-neoforge-1.2.0.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "fbd8182f4ad68575db9a7a2ce263098e4eb803f8ee668e72438de7d19bd3cf5a4aa25344b5e49602594a6da0b065f2571576aa3c2c87eee16f801bab90c12574"
+    },
     {
       "path": "mods/create-new-age-1.2.0+neoforge-mc1.21.1.jar",
       "kind": "mod",
@@ -97,11 +159,11 @@
       "hash": "27a2f7b249ef37507abddccae1c847ae9a85787683deb732edea0c2c10292f66"
     },
     {
-      "path": "mods/sliceanddice-forge-4.2.4.jar",
+      "path": "mods/sliceanddice-4.3.3-neoforge.jar",
       "kind": "mod",
-      "url": "https://cdn.modrinth.com/data/GmjmRQ0A/versions/tyVnEa75/sliceanddice-forge-4.2.4.jar",
-      "hashAlgorithm": "SHA256",
-      "hash": "c3bd743a73eed3de14f6be5221fe68655cfeed0749f8f467f2ce2012ed1416bd"
+      "url": "https://cdn.modrinth.com/data/GmjmRQ0A/versions/N67LJgrN/sliceanddice-4.3.3-neoforge.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "3bdbd282ae5aa11ef6c186b752497541730b50fb400c4962230bcd7734cfe4e8daa2ee565387450dfe0eb6deaa0fa44bf81f99c788bac09b1a60d8f1991db37f"
     },
     {
       "path": "mods/kubejs-create-neoforge-2101.3.1-build.18.jar",
@@ -132,18 +194,18 @@
       "hash": "584bcd5449996f0bcc66d97a88da3a148087f1b29e077983c06137ff18c1dc302df8f84eef7d835e61ebcd9fd221f98c67cbe9cb480fb33a46de6245614a68e4"
     },
     {
-      "path": "mods/emf_compat_core_1.21.1_1.1.1.jar",
+      "path": "mods/emf_compat_core_1.21.1_2.0.0.jar",
       "kind": "mod",
-      "url": "https://cdn.modrinth.com/data/hbGct5uU/versions/ES6z1yza/emf_compat_core_1.21.1_1.1.1.jar",
+      "url": "https://cdn.modrinth.com/data/hbGct5uU/versions/31At82lp/emf_compat_core_1.21.1_2.0.0.jar",
       "hashAlgorithm": "SHA512",
-      "hash": "b1f2f04fd7f86230f85f4edd8107399c2eb343b0bcf6288fb4d5aad2d42e5126217c1d7566309b3542ab333241ffc1e433e0fe03a8cf821efbc2789505b64a4b"
+      "hash": "9ab81092b3840d6f19368b1653d10a7c765951a13961720786507decf4f6378115a5a843193bbca15b22d48bd8e2ae92094d1d1e82d9efdc9a755c261eb02b4e"
     },
     {
-      "path": "mods/emf_compat_better_combat_1.21.1_1.1.0.jar",
+      "path": "mods/emf_compat_better_combat_1.21.1_2.0.0.jar",
       "kind": "mod",
-      "url": "https://cdn.modrinth.com/data/Smytm33T/versions/Am9WNe7Z/emf_compat_better_combat_1.21.1_1.1.0.jar",
+      "url": "https://cdn.modrinth.com/data/Smytm33T/versions/m3PyTVNC/emf_compat_better_combat_1.21.1_2.0.0.jar",
       "hashAlgorithm": "SHA512",
-      "hash": "740b257c807637d006f9687f1693e59d21a591fd873a9f561c07cd657b4fd70d3c5f83aec9c85340630552d09af32ba28d752517707c1bfb515a0b2ba5d4751d"
+      "hash": "e04cae7c2c9ed64808577453f45bd02224c0f5096f9aa58a19a198c022f748ebfc25ba22a2a209cebd9d23667e2e51ae890d973d788d46b3e6b9fa175cff761f"
     },
     {
       "path": "mods/spartan_weaponry_unofficial-1.2.2-1.21.1.jar",

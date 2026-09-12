@@ -3,8 +3,8 @@ ServerEvents.generateData('after_mods', event => {
     values: {
       'mekanism:ethene': {
         burn_time: 40,
-        energy: 90
-      }
-    }
+        energy: 90,
+      },
+    },
   });
 });

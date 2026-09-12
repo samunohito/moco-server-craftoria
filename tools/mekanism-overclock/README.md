@@ -6,7 +6,7 @@ Mekanism 10.7.19.85のSpeed / Energy Upgrade上限を個別に設定し、8個�
 ## 対象
 
 - Minecraft 1.21.1
-- NeoForge 21.1.230
+- NeoForge 21.1.230以上（Minecraft 1.21.1系）
 - Mekanism 10.7.19.85（JAR artifact。公開mod versionは`10.7.19`）
 - Java 21
 - Mod ID: `mekanism_overclock`
@@ -70,5 +70,5 @@ cd tools/mekanism-overclock
 .\gradlew.bat build
 ```
 
-成果物は`build/libs/mekanism-overclock-0.1.1.jar`です。Craftoria overlayはこのJARを
+成果物は`build/libs/mekanism-overclock-0.1.2.jar`です。Craftoria overlayはこのJARを
 ローカル成果物として同期・同梱します。

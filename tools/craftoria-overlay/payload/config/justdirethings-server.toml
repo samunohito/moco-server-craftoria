@@ -242,7 +242,7 @@
 	#The maximum amount of Forge Energy the Time Wand can hold in its buffer
 	# Default: 100000
 	# Range: > 1
-	time_wand_rf_capacity = 100000
+	time_wand_rf_capacity = 1000000
 	#The Forge Energy cost to use the Time wand. This value is multiplied by the acceleration amount. For example, when you go from 128 to 256, it will charge 256 x <this value> in FE cost.
 	# Default: 100
 	# Range: > 0

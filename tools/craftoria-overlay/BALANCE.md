@@ -1,6 +1,6 @@
 # Craftoria バランス調整一覧
 
-Craftoria 1.31.0（Minecraft 1.21.1 / NeoForge 21.1.230）へ、このオーバーレイが加える
+Craftoria 1.36.0（Minecraft 1.21.1 / NeoForge 21.1.249）へ、このオーバーレイが加える
 ゲームバランス変更の一覧です。実装の正本は `payload/` です。
 
 基本方針は次のとおりです。
@@ -153,6 +153,26 @@ Motor Extensionの倍率と追加容量は変更していません。水車、�
 [GeneratorRecipes.js](payload/kubejs/server_scripts/Mods/IndustrialForegoing/GeneratorRecipes.js)
 
 ## 採掘と資源生成
+
+### Create: Ultimate Factory
+
+Create: Ultimate Factory 2.2.4をクライアント・サーバー双方へ追加します。Createの憑霊で
+木炭を石炭へ変換できるほか、各種の再生可能資源レシピが追加されます。特に、加熱した
+圧縮工程による石炭ブロックと溶岩からのダイヤモンド生成など、Create設備を使った資源の
+自動化が可能になります。このModが追加するレシピは現状変更していません。
+
+### Create連携レシピ
+
+- Create: AE2 Recipes 0.2.0により、AE2のProcessor、Storage Cell、Card、Cable、Terminalなどを
+  CreateのDeploying、Sequenced Assembly、Mixing等で生産できるようにします。
+- Create: Ars Nouveau Compat 1.1とCreate: Compat Core 1.0.0により、Ars Nouveauの装置・Charmを
+  Millingして構成素材の一部を回収できるようにします。
+- Create: Addon Compatibility 1.0.0により、PneumaticCraft、Create Diesel Generators、
+  Create: Connected等を含む導入済みMod間の共通素材・流体タグと処理互換性を補います。
+- Create: Craft 'n Extras 1.2.1により、Haunting、Pressing、Cutting、Milling、Crushingを使う
+  バニラ素材中心の追加加工レシピを導入します（配布JARの内部バージョン表記は1.2.0）。
+- Craftoria 1.36.0にはCreate Crafts & Additionsが含まれるため、Create: AE2 Recipes同梱の
+  Meteorite CompassのChargingレシピも条件付きデータを通過して有効になります。
 
 ### Mekanism Digital Miner
 

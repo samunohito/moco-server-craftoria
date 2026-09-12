@@ -19,14 +19,16 @@
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "09338cee03965766e5b0ce0aa971918daa18f754ea2de66888ce49f5e1c884a1",
+        "594fb8175193aff8faf30ebdea5886628e28e62f1fbad8aaa68bc1fabae0aac1",
         "7351323a9c3dc3c5ac02fd5e2db7adced2a25cde5390cfc8aac4156fbb800ce2"
       ]
     },
     "config/ftbquests/quests/reward_tables/303299C956CA9C80.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
+        "0a067a1012ba8fcfd857030df03b1fbac5ae6d16451cff38eda0c9eb44517083",
         "6daf376f55a345675dbe57e387ed372575ad79e2a2d18cb6091eaa46aac25e26",
-        "0a067a1012ba8fcfd857030df03b1fbac5ae6d16451cff38eda0c9eb44517083"
+        "97e096b9b54b83a746a02a3bcb503d4415d74d5f9b4998fcfd7853928b67414d"
       ]
     },
     "config/cataclysm.toml": {
@@ -40,14 +42,16 @@
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "daa380a6e180577ca03c3b99db1cdacc169f13438a190bd9a0934572db054bfe",
-        "67787b73a7b480c8d6ca84f9b48dbaa077281818aa3298bbdf16ce2036d3c88e"
+        "67787b73a7b480c8d6ca84f9b48dbaa077281818aa3298bbdf16ce2036d3c88e",
+        "ebd1584c43ba9ad46c54c10776186cbc34152d8b36e864e9367aef18750b99cb"
       ]
     },
     "config/irons_spellbooks-server.toml": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "d47973a3c4e14444df99d1cab4bce0d87d229cc2e391c690252db60d34cc817a",
-        "75b2fa2072c3442ff34b86986f42e50cf57eba6c2332f7a9c059f119789879fd"
+        "04739af9917ea14b5a0e410bf663f8bda35e9f7f3614072e8d305dd5cceeb218",
+        "75b2fa2072c3442ff34b86986f42e50cf57eba6c2332f7a9c059f119789879fd",
+        "d47973a3c4e14444df99d1cab4bce0d87d229cc2e391c690252db60d34cc817a"
       ]
     },
     "config/twilightforest-common.toml": {
@@ -68,8 +72,9 @@
     "config/ftbquests/quests/reward_tables/0414572B7C36F04F.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "b08bc192098129ed9116c78b2745453f95656918bad45bf1a90fe7514864eae5",
         "0950478f266546de52f8b48e4c68069263fa533bb3cec994b0a2209c5cbf4f5a",
+        "234e6b3c0d09f5aa34cf63260ed40aa40a754f6df8c5caab361f164d188b9d24",
+        "b08bc192098129ed9116c78b2745453f95656918bad45bf1a90fe7514864eae5",
         "cb852d7501b1611f9eb588b5c9938a0a3c28890053dd3a982788721ae54b2397"
       ]
     },
@@ -92,15 +97,17 @@
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "45818007f2b183807ec3f30af1c73f0381e6798a900c5ec7939726507edb29c8",
-        "2d217907ba94cdb507e557d8a47fe33dcbc3ea668c18f9fd0b7c67a72cc0cb3c"
+        "2d217907ba94cdb507e557d8a47fe33dcbc3ea668c18f9fd0b7c67a72cc0cb3c",
+        "772afa5a97e60543072024f5fdc8d3d539d28306e9537253eaed506d07360702"
       ]
     },
     "config/ftbquests/quests/reward_tables/2C400654E7B41B6A.snbt": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "ee33ce1603670b92f4fc614756f69fdb28f303e0a4406b0eb2af31e629df53e5",
         "74f8ce08600a46664fe9dd5035c498f954cff629d55e895bfdd948c75f125063",
-        "8342f79482610362960beb76e824decd562fbe650ae07bc55ab7d96e0c497160"
+        "8342f79482610362960beb76e824decd562fbe650ae07bc55ab7d96e0c497160",
+        "d3908ad7ee42f66461d06ae0a101d04045dae4172bfc87b5f1cb2d21eba2d8f1",
+        "ee33ce1603670b92f4fc614756f69fdb28f303e0a4406b0eb2af31e629df53e5"
       ]
     },
     "kubejs/client_scripts/jsconfig.json": {
@@ -112,25 +119,28 @@
     "kubejs/server_scripts/Mods/Craftoria/ConflictFixes.js": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "be0eaee625dda26870d9a59025035a44c69bcb61d502b06c1e1d6dbe55d4e790",
+        "58bd0d9526fb57490637252553d0a5d1137792c2972033f91679909d1ad774ed",
         "58d26b7ccd9615310f49b0f8576fb56084c15367898144a8152fc4f975163cca",
-        "58bd0d9526fb57490637252553d0a5d1137792c2972033f91679909d1ad774ed"
+        "866d2c24f6487dd90693e8c8203f0e5672ff057ada65fd6c7fdbf2680cc04eda",
+        "be0eaee625dda26870d9a59025035a44c69bcb61d502b06c1e1d6dbe55d4e790"
       ]
     },
     "kubejs/server_scripts/Mods/ModernIndustrialization/ReplicatorBlacklist.js": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "30ffc72981a0e91592e36787b31ddd1a44ae64158a11939279dc9d71421eedf6",
         "23c3f2b1b2e1bb1688fa6df1795531ec5cb10a923748bc21b1744b3445588b74",
+        "30ffc72981a0e91592e36787b31ddd1a44ae64158a11939279dc9d71421eedf6",
+        "98b992502be659421ca10ffd59d8bd8ac5f37334124379c6d0d1e4dd9d42014d",
         "f74d6232a6a578bc340cffd61db626408da9efffccab1cce5ade6d5b879515ef"
       ]
     },
     "kubejs/server_scripts/unify/Knife.js": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
-        "f8fad5d65580c6823e25185a3196a95865201fa33c2b5d0bef830822f99c535a",
         "01239a96ff206220a5d8b5d6b5f946be2de02575eef146553bc7ac136bcc01dc",
-        "c542a0df3f5ea9a7cd1dd62e6cc9a94b8ec33dafc7b9df42bb8c42a0659ec390"
+        "8ec8b8b83551ce782c0a13770407b176ba99212d0f52c4c1d2e40559e49be51b",
+        "c542a0df3f5ea9a7cd1dd62e6cc9a94b8ec33dafc7b9df42bb8c42a0659ec390",
+        "f8fad5d65580c6823e25185a3196a95865201fa33c2b5d0bef830822f99c535a"
       ]
     },
     "kubejs/server_scripts/jsconfig.json": {
@@ -148,19 +158,21 @@
     "kubejs/server_scripts/tags.js": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
+        "210e5f5ba377bd1fa45039e1908515dd9cada14cbb6f833e529c1a46a2d8d2ff",
         "5c99a925deb78278c40b2ff2e27df56bd07b183cb9b00495bb53456ed827644e",
-        "bac2927caacb9ac1c82e8e3b642730148360ec1eb4d4c5ae432ec6e558e1b0df",
-        "b832abd582bffbe1aa15dfc0a0b83253d01872d7b0a29f9675d2a9e5eeb05f0e"
+        "b832abd582bffbe1aa15dfc0a0b83253d01872d7b0a29f9675d2a9e5eeb05f0e",
+        "bac2927caacb9ac1c82e8e3b642730148360ec1eb4d4c5ae432ec6e558e1b0df"
       ]
     },
     "kubejs/server_scripts/Mods/HostileNeuralNetworks/DataModels.js": {
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
+        "305ef3bba383cf31cc9932476898e534d9f27e342a5a39dfc1ad0b36c50b9d7c",
         "648edb45e2f4b82f507e32093dea56fff64473d148cb27c11f27e775e8eeaad6",
         "733312569e3405cd7a5c6506f8ac3b446705b806f03aa7e086cb218c6a916bd9",
         "8cb0af997c55ed81306d11e43d2784a6a00fd925ec06d42b365ae1fa2715fb63",
-        "dd3930c178a109f2dd295bb19c3c0b408897f83ca37f89b262c917d374251f09",
-        "305ef3bba383cf31cc9932476898e534d9f27e342a5a39dfc1ad0b36c50b9d7c"
+        "b053aff52419fcefffa154bf1888dd61dcbaa6629ccee975a5621868a9767bd5",
+        "dd3930c178a109f2dd295bb19c3c0b408897f83ca37f89b262c917d374251f09"
       ]
     },
     "kubejs/server_scripts/Mods/IndustrialForegoing/Recipes.js": {
@@ -184,6 +196,7 @@
       "replacePolicy": "known-base-only",
       "expectedExistingHashes": [
         "1bcd6fa6bde35e63a78b54a3e9a1a64f7df4a762a4a964cbe7c8ee5cd06b869e",
+        "664ae96b51296ca78e93c445db5131281f272b8f0dee8749e30226a6cba49f7c",
         "73c3f642d3ba10304ff3bc57cfb4600423bb848b00966e75f45b916150dfc611"
       ]
     },

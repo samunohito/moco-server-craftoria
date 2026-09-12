@@ -1,6 +1,6 @@
-# Craftoria 1.31.0 add-on overlay
+# Craftoria 1.36.0 add-on overlay
 
-Craftoria 1.31.0 (Minecraft 1.21.1 / NeoForge 21.1.230) に、追加した
+Craftoria 1.36.0 (Minecraft 1.21.1 / NeoForge 21.1.249) に、追加した
 Create系Mod、選択した設定、KubeJS差分を安全に重ねるためのツールです。
 
 `minecraft/` は実行環境としてGit管理せず、`payload/` をカスタマイズの正本にします。
@@ -76,8 +76,8 @@ overlayへ同梱できます。`overlay.template.json`へ`bundledFiles`を追加
 ```json
 "bundledFiles": [
   {
-    "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.1.jar",
-    "path": "mods/mekanism-overclock-0.1.1.jar",
+    "source": "mekanism-overclock/build/libs/mekanism-overclock-0.1.2.jar",
+    "path": "mods/mekanism-overclock-0.1.2.jar",
     "kind": "mod",
     "hashAlgorithm": "SHA256",
     "replacePolicy": "known-base-only"
@@ -126,6 +126,14 @@ Linux/macOSでは `./install.sh` または `sh install.sh` を実行します。
 - KubeJS Create 2101.3.1-build.18
 - KubeJS Diesel Generators 1.21.1-1.2.3
 
+Create: Ultimate Factory 2.2.4もクライアント・サーバー双方へ導入し、Createの憑霊による
+木炭から石炭への変換を含む資源自動化レシピを追加します。
+
+Createと導入済みModの連携用として、Create: Addon Compatibility 1.0.0、
+Create: AE2 Recipes 0.2.0、Create: Ars Nouveau Compat 1.1、および必須ライブラリの
+Create: Compat Core 1.0.0もクライアント・サーバー双方へ導入します。さらに、
+Create: Craft 'n Extras 1.2.1（JAR内部バージョン1.2.0）の加工・クラフトレシピを追加します。
+
 追加Mod固有の設定ファイルは、ゲームで生成・調整した後に `capture` で必要なファイル
 だけを `payload/` へ取り込んでください。
 
@@ -157,7 +165,7 @@ pnpm run cli -- install --instance "C:\path\to\Craftoria\game-directory"
 
 `--instance` にはゲームディレクトリ自体、またはその直下に `minecraft/` がある
 ランチャーのインスタンスディレクトリを指定できます。事前確認だけなら `--dry-run` を
-付けます。対象はCraftoria 1.31.0に固定され、既存
+付けます。対象はCraftoria 1.36.0に固定され、既存
 ファイルは `.craftoria-overlay/backups/` に退避されます。既知の公式KubeJSファイル
 以外が変更済みなら停止します。内容を確認して上書きする場合だけ
 `--force-conflict` を指定してください。
