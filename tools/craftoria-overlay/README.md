@@ -91,8 +91,9 @@ overlayへ同梱できます。`overlay.template.json`へ`bundledFiles`を追加
 `source`は`tools/`からの相対パス、`path`はインストール先Minecraftディレクトリからの
 相対パスです。対象は`mods/`直下のJARに限定されます。`sync`はビルド済みJARを開発用
 インスタンスへ同期し、`export`と`export-client`はJARを配布ZIP内のpayloadへコピーして
-SHA-256またはSHA-512をmanifestへ自動記録します。成果物が未ビルドの場合は安全のため
-処理を停止します。
+SHA-256またはSHA-512をmanifestへ自動記録します。ソースツリーから直接`install`する場合も
+ビルド済みJARを`source`から読み込みます。`payload/mods`への手動コピーは不要です。
+成果物が未ビルドの場合は安全のため処理を停止します。
 
 ## 2. クライアント配布ZIPを作る
 

@@ -15,6 +15,7 @@ import {
 import { validateClientInstallation } from './instance.js';
 import { readPreviouslyInstalled, writeInstalledState } from './installed-state.js';
 import { prepareOverlay } from './manifest.js';
+import type { PayloadSource } from './payload.js';
 import type { OverlayFile, OverlayManifest, RemovedOverlayFile } from './types.js';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -41,6 +42,15 @@ type RemovePlan = {
 };
 
 type OverlayPlan = InstallPlan | RemovePlan;
+
+export function installSourcePath(
+  resourceRoot: string,
+  entry: OverlayFile,
+  sources: ReadonlyMap<string, PayloadSource>,
+): string {
+  const source = sources.get(String(entry.path).replaceAll('\\', '/'));
+  return source?.source ?? resolveInside(resourceRoot, String(entry.payload));
+}
 
 export function overlayFileAppliesToTarget(
   entry: OverlayFile,
@@ -71,9 +81,15 @@ export async function installOverlay({
 
   const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
   const packagedManifest = path.join(resourceRoot, 'manifest.json');
-  const manifest = await pathExists(packagedManifest)
-    ? await readJson<OverlayManifest>(packagedManifest)
-    : (await prepareOverlay(resourceRoot)).manifest;
+  let manifest: OverlayManifest;
+  const sources = new Map<string, PayloadSource>();
+  if (await pathExists(packagedManifest)) {
+    manifest = await readJson<OverlayManifest>(packagedManifest);
+  } else {
+    const prepared = await prepareOverlay(resourceRoot);
+    manifest = prepared.manifest;
+    for (const source of prepared.sources) sources.set(source.path, source);
+  }
   let root: string;
 
   if (instancePath !== undefined) {
@@ -151,7 +167,7 @@ export async function installOverlay({
       if (plan.entry.url !== undefined) await downloadFile(plan.entry.url, staged);
       else {
         if (plan.entry.payload === undefined) throw new Error(`Payload location is missing: ${plan.entry.path}`);
-        const payload = resolveInside(resourceRoot, plan.entry.payload);
+        const payload = installSourcePath(resourceRoot, plan.entry, sources);
         if (!await pathExists(payload)) throw new Error(`Payload is missing: ${payload}`);
         await copyFile(payload, staged);
       }
