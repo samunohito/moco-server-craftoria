@@ -69,11 +69,26 @@
       "hash": "342be675356044e7328841eb13116e66e476a6176dea8c634d3ca096b98cf818b314d190e42f2be859c9c9d2c53087fd471b0052e50872c3fc3f5090c813f5f3"
     },
     {
+      "path": "mods/bluemap-5.7-neoforge.jar",
+      "kind": "mod",
+      "side": "server",
+      "url": "https://cdn.modrinth.com/data/swbUV1cr/versions/8iJcPOHJ/bluemap-5.7-neoforge.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "7332afbcd2389f846e2142a0937a85aec1a7c90b02876d396c701bdaccae529ef918adadca7c5e472b2f0fce2e7a614f1832f1579f310de8a4ba9b0a97114335"
+    },
+    {
       "path": "mods/create_ultimate_factory-2.2.4-neoforge-1.21.1.jar",
       "kind": "mod",
       "url": "https://cdn.modrinth.com/data/N9QToVpw/versions/AEMRNsNS/create_ultimate_factory-2.2.4-neoforge-1.21.1.jar",
       "hashAlgorithm": "SHA512",
       "hash": "2a1d1e6e27aa0744d131ad12dcc4e3bcae2d5d10c620cc566cb0300c63a66bced1c55be0b636998f3773e3a7b384e74ef06395ec7ee6a90649f7702c9a893b0d"
+    },
+    {
+      "path": "mods/Create-Structures-Arise-1.21.1-NeoForge-176.49.49.jar",
+      "kind": "mod",
+      "url": "https://mediafilez.forgecdn.net/files/8837/992/Create-Structures-Arise-1.21.1-NeoForge-176.49.49.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "e5864441b5f7ab76841057b269afd52327682aa35119c1346adab02b890b43664b5ffe13519c7f36d2e831b7b3d4d9df4ac9e8032250d704f54faadf957f973b"
     },
     {
       "path": "mods/createaddoncompatibility-neoforge-1.21.1-1.0.0.jar",

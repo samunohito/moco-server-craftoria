@@ -218,6 +218,16 @@ sudo journalctl -u craftoria.service -f
 `server-setup-config.yaml`の`launch.minRam`と`launch.maxRam`で設定します。詳細は
 [systemd README](server-bootstrap/systemd/README.md)を参照してください。
 
+### BlueMapを有効にする
+
+`install --server`はMinecraft 1.21.1 / NeoForge用のBlueMap 5.7をサーバー専用Modとして
+導入します。クライアントへの導入は不要です。初回起動後に生成される
+`config/bluemap/core.conf`で利用条件への同意を設定し、必要に応じて
+`config/bluemap/webserver.conf`の待受アドレスとポートを調整してください。
+既定のWebポートを外部公開する場合は、サーバー側のファイアウォールやホスティング管理画面でも
+同じTCPポートを許可します。インターネットへ直接公開する場合は、リバースプロキシでHTTPS化と
+アクセス制御を行うことを推奨します。
+
 ### ロリポップ！for Gamersへ配布する
 
 ロリポップのWebGUIが作成・選択するNeoForgeディレクトリへ重ねるパッチZIPを作成できます。
