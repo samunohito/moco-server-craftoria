@@ -221,7 +221,8 @@ sudo journalctl -u craftoria.service -f
 
 ロリポップの固定された `/opt/minecraft/current/server.jar` と `run.sh` で起動できる、
 サーバールート直下展開用ZIPを作成できます。先に通常手順で公式サーバーを構築し、
-オーバーレイまで適用してください。
+オーバーレイまで適用してください。配布toolkit内では、同梱済みの`manifest.json`を使うため、
+元の開発リポジトリやローカルMODのビルドディレクトリは必要ありません。
 
 ```powershell
 pnpm run export:lolipop -- --server "D:\Minecraft\CraftoriaServer"

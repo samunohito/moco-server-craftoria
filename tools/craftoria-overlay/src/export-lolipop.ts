@@ -8,6 +8,7 @@ import {
   findResourceRoot,
   hashFile,
   pathExists,
+  readJson,
   removeOwnedScratch,
 } from './lib.js';
 import { prepareOverlay } from './manifest.js';
@@ -164,7 +165,10 @@ export async function writeLolipopArchive({
 export async function exportLolipopServer({ serverPath, output }: ExportLolipopOptions = {}): Promise<void> {
   if (serverPath === undefined) throw new Error('--server is required.');
   const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
-  const { manifest } = await prepareOverlay(resourceRoot);
+  const packagedManifest = path.join(resourceRoot, 'manifest.json');
+  const manifest = await pathExists(packagedManifest)
+    ? await readJson<OverlayManifest>(packagedManifest)
+    : (await prepareOverlay(resourceRoot)).manifest;
   const outputPath = lolipopOutputPath(resourceRoot, manifest, output);
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-starter-'));
 
