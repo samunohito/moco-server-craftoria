@@ -232,9 +232,9 @@ sudo journalctl -u craftoria.service -f
 pnpm run export:lolipop -- --server "D:\Minecraft\CraftoriaServer"
 ```
 
-`dist/Craftoria-Lolipop-Server-<version>.zip` が生成されます。サーバーを停止し、ZIPの
-中身を `/opt/minecraft/current/` 直下へ上書き配置してから再起動します。ZIPは展開時に
-余分な最上位フォルダを作りません。
+`dist/Craftoria-Lolipop-Server-<version>.zip` が生成されます。ZIP内はclient版や通常版と
+同様に、`Craftoria-Lolipop-Server-<version>/` が最上位ディレクトリです。サーバーを停止し、
+このディレクトリの中身を `/opt/minecraft/current/` 直下へ上書き配置してから再起動します。
 
 ロリポップの `java -jar server.jar` をNeoForgeの `unix_args.txt`へ橋渡しするため、
 [NeoForge ServerStarterJar 0.1.34](https://github.com/neoforged/ServerStarterJar/releases/tag/0.1.34)

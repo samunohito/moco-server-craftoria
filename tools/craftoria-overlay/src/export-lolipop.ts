@@ -51,7 +51,11 @@ interface WriteLolipopArchiveOptions {
 }
 
 export function lolipopOutputPath(resourceRoot: string, manifest: OverlayManifest, output?: string): string {
-  return path.resolve(output ?? path.join(resourceRoot, 'dist', `Craftoria-Lolipop-Server-${manifest.addonVersion}.zip`));
+  return path.resolve(output ?? path.join(resourceRoot, 'dist', `${lolipopArchiveName(manifest)}.zip`));
+}
+
+export function lolipopArchiveName(manifest: OverlayManifest): string {
+  return `Craftoria-Lolipop-Server-${manifest.addonVersion}`;
 }
 
 function isServerPayloadPath(relativePath: string): boolean {
@@ -143,6 +147,8 @@ export async function writeLolipopArchive({
   if (await pathExists(outputPath)) throw new Error(`Output already exists: ${outputPath}`);
   const source = await validatePreparedServer(sourceServer, manifest, overlaySources);
   const stage = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-export-'));
+  const packageName = lolipopArchiveName(manifest);
+  const packageRoot = path.join(stage, packageName);
   const clientOnlyFiles = new Set(
     manifest.files
       .filter((entry) => !overlayFileAppliesToTarget(entry, 'server'))
@@ -153,10 +159,11 @@ export async function writeLolipopArchive({
   );
 
   try {
+    await mkdir(packageRoot, { recursive: true });
     for (const directory of serverDirectories) {
       const from = path.join(source, directory);
       if (!await pathExists(from)) continue;
-      await cp(from, path.join(stage, directory), {
+      await cp(from, path.join(packageRoot, directory), {
         recursive: true,
         filter: (candidate) => {
           const relative = path.relative(source, candidate).replaceAll('\\', '/');
@@ -174,14 +181,14 @@ export async function writeLolipopArchive({
       const overlaySource = overlaySources.get(relative);
       if (overlaySource === undefined) continue;
       if (!await pathExists(overlaySource)) throw new Error(`Overlay source is missing: ${overlaySource}`);
-      const destination = resolveInside(stage, relative);
+      const destination = resolveInside(packageRoot, relative);
       await mkdir(path.dirname(destination), { recursive: true });
       await copyFile(overlaySource, destination);
     }
 
     for (const entry of serverOverlayFiles(manifest)) {
       const relative = normalizedPath(String(entry.path));
-      const staged = resolveInside(stage, relative);
+      const staged = resolveInside(packageRoot, relative);
       if (!await pathExists(staged)) throw new Error(`Overlay file is missing from the Lolipop archive: ${relative}`);
       const actual = await hashFile(staged, entry.hashAlgorithm);
       if (actual !== String(entry.hash).toLowerCase()) {
@@ -189,17 +196,17 @@ export async function writeLolipopArchive({
       }
     }
 
-    await copyFile(starterJar, path.join(stage, 'server.jar'));
-    await writeFile(path.join(stage, 'run.sh'), lolipopRunScript(manifest.target.neoForge), 'utf8');
+    await copyFile(starterJar, path.join(packageRoot, 'server.jar'));
+    await writeFile(path.join(packageRoot, 'run.sh'), lolipopRunScript(manifest.target.neoForge), 'utf8');
     await writeFile(
-      path.join(stage, 'LOLIPOP-README.txt'),
+      path.join(packageRoot, 'LOLIPOP-README.txt'),
       `Craftoria ${manifest.target.managedPackVersion} / add-on ${manifest.addonVersion}\n`
       + 'サーバーを停止してから、このZIPの中身を /opt/minecraft/current/ へ上書き配置してください。\n'
       + 'world、server.properties、ops/whitelist/ban情報、ログはこのZIPに含まれません。\n'
       + 'ロリポップ側のJavaは21または25を選択してください。メモリ量は管理画面の設定が使われます。\n',
       'utf8',
     );
-    await createZip(stage, outputPath, { executablePaths: ['run.sh'] });
+    await createZip(stage, outputPath, { executablePaths: [`${packageName}/run.sh`] });
   } finally {
     await removeOwnedScratch(stage);
   }

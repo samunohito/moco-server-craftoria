@@ -239,7 +239,7 @@ test('systemd unit uses the dedicated server root and clean Minecraft shutdown',
   assert.match(unit, /^ReadWritePaths=\/srv\/craftoria$/mu);
 });
 
-test('Lolipop export is flat, preserves provider state, and supplies a server.jar bridge', async () => {
+test('Lolipop export has a versioned root, preserves provider state, and supplies a server.jar bridge', async () => {
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-zip-test-'));
   try {
     const server = path.join(scratch, 'prepared-server');
@@ -293,18 +293,21 @@ test('Lolipop export is flat, preserves provider state, and supplies a server.ja
     });
     const entries = await zipEntries(output);
     const names = entries.map(({ name }) => name);
-    assert.ok(names.includes('server.jar'));
-    assert.ok(names.includes('run.sh'));
-    assert.ok(names.includes('LOLIPOP-README.txt'));
-    assert.ok(names.includes('config/test-common.toml'));
-    assert.ok(names.includes('kubejs/server_scripts/Test.js'));
-    assert.ok(names.includes(`libraries/net/neoforged/neoforge/${manifest.target.neoForge}/unix_args.txt`));
-    assert.ok(!names.some((name) => name.startsWith('world/') || name.startsWith('logs/')));
-    assert.ok(!names.includes('server.properties'));
-    assert.ok(!names.includes('mods/ProbeJS-8.0.3.jar'));
-    assert.ok(!names.includes('mods/old.jar'));
-    assert.ok(!names.some((name) => name.startsWith('kubejs/client_scripts/') || name.startsWith('kubejs/logs/')));
-    assert.equal(entries.find(({ name }) => name === 'run.sh')?.mode, 0o100755);
+    const prefix = 'Craftoria-Lolipop-Server-9.8.7-test/';
+    assert.ok(names.length > 0);
+    assert.ok(names.every((name) => name.startsWith(prefix)));
+    assert.ok(names.includes(`${prefix}server.jar`));
+    assert.ok(names.includes(`${prefix}run.sh`));
+    assert.ok(names.includes(`${prefix}LOLIPOP-README.txt`));
+    assert.ok(names.includes(`${prefix}config/test-common.toml`));
+    assert.ok(names.includes(`${prefix}kubejs/server_scripts/Test.js`));
+    assert.ok(names.includes(`${prefix}libraries/net/neoforged/neoforge/${manifest.target.neoForge}/unix_args.txt`));
+    assert.ok(!names.some((name) => name.startsWith(`${prefix}world/`) || name.startsWith(`${prefix}logs/`)));
+    assert.ok(!names.includes(`${prefix}server.properties`));
+    assert.ok(!names.includes(`${prefix}mods/ProbeJS-8.0.3.jar`));
+    assert.ok(!names.includes(`${prefix}mods/old.jar`));
+    assert.ok(!names.some((name) => name.startsWith(`${prefix}kubejs/client_scripts/`) || name.startsWith(`${prefix}kubejs/logs/`)));
+    assert.equal(entries.find(({ name }) => name === `${prefix}run.sh`)?.mode, 0o100755);
     assert.match(lolipopRunScript(manifest.target.neoForge), /if false; then[\s\S]*unix_args\.txt/u);
     assert.match(lolipopRunScript(manifest.target.neoForge), /\/usr\/bin\/screen -DmS minecraft-je/u);
   } finally {
