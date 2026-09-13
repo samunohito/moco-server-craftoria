@@ -4,6 +4,7 @@ export type ReplacePolicy = 'known-base-only' | 'backup';
 export interface OverlayFile {
   path: string;
   kind: 'mod' | 'kubejs' | 'config';
+  side?: 'both' | 'client' | 'server';
   url?: string;
   payload?: string;
   hashAlgorithm: HashAlgorithm;

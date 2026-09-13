@@ -42,6 +42,13 @@ type RemovePlan = {
 
 type OverlayPlan = InstallPlan | RemovePlan;
 
+export function overlayFileAppliesToTarget(
+  entry: OverlayFile,
+  target: 'client' | 'server',
+): boolean {
+  return entry.side === undefined || entry.side === 'both' || entry.side === target;
+}
+
 async function backupFile(source: string, relative: string, backupRoot: string): Promise<void> {
   const backup = resolveInside(backupRoot, relative);
   await mkdir(path.dirname(backup), { recursive: true });
@@ -95,8 +102,10 @@ export async function installOverlay({
   const stageRoot = path.join(controlRoot, 'staging', randomUUID());
   const plans: OverlayPlan[] = [];
   const previouslyInstalled = await readPreviouslyInstalled(controlRoot);
+  const installTarget = serverPath === undefined ? 'client' : 'server';
+  const applicableFiles = manifest.files.filter((entry) => overlayFileAppliesToTarget(entry, installTarget));
 
-  for (const entry of manifest.files) {
+  for (const entry of applicableFiles) {
     const relative = assertSafeRelative(String(entry.path));
     const destination = resolveInside(root, relative);
     let existingHash: string | null = null;
@@ -173,7 +182,7 @@ export async function installOverlay({
       await rm(plan.destination, { force: true });
     }
 
-    await writeInstalledState(controlRoot, manifest, {
+    await writeInstalledState(controlRoot, { ...manifest, files: applicableFiles }, {
       installedAt: new Date().toISOString(),
       target: root,
       backup: backupMade ? backupRoot : null,

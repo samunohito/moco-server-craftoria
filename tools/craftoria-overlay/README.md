@@ -53,6 +53,9 @@ overlay所有ファイルだけを扱い、既存ファイルは `.craftoria-ove
 
 ### ProbeJS型定義を更新する
 
+オーバーレイはProbeJS 8.0.3をクライアント専用の開発Modとして導入します。専用サーバーへの
+`install --server`ではこのJARを除外します。
+
 ProbeJS 8でゲーム内Dumpを完了した後、次の専用コマンドで `minecraft/.probe/` から
 TypeScript宣言だけを `payload/kubejs/probe/` へ取り込みます。
 

@@ -61,6 +61,14 @@
   ],
   "files": [
     {
+      "path": "mods/ProbeJS-8.0.3.jar",
+      "kind": "mod",
+      "side": "client",
+      "url": "https://mediafilez.forgecdn.net/files/8304/356/ProbeJS-8.0.3.jar",
+      "hashAlgorithm": "SHA512",
+      "hash": "342be675356044e7328841eb13116e66e476a6176dea8c634d3ca096b98cf818b314d190e42f2be859c9c9d2c53087fd471b0052e50872c3fc3f5090c813f5f3"
+    },
+    {
       "path": "mods/create_ultimate_factory-2.2.4-neoforge-1.21.1.jar",
       "kind": "mod",
       "url": "https://cdn.modrinth.com/data/N9QToVpw/versions/AEMRNsNS/create_ultimate_factory-2.2.4-neoforge-1.21.1.jar",

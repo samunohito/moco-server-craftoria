@@ -3,7 +3,9 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
+import { overlayFileAppliesToTarget } from './install-overlay.js';
 import { assertPayloadPath } from './payload.js';
+import type { OverlayTemplate } from './types.js';
 
 const resourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -40,6 +42,18 @@ test('BrokenDevices avoids array spread unsupported by the bundled Rhino runtime
 
   assert.doesNotMatch(script, /\.\.\.disabledQuarryCards/u);
   assert.match(script, /disabledQuarryCards\.concat/u);
+});
+
+test('ProbeJS is pinned as a client-only overlay mod', async () => {
+  const template = JSON.parse(
+    await readFile(path.join(resourceRoot, 'overlay.template.json'), 'utf8'),
+  ) as OverlayTemplate;
+  const probe = template.files.find(({ path: filePath }) => filePath === 'mods/ProbeJS-8.0.3.jar');
+
+  assert.ok(probe);
+  assert.equal(probe.side, 'client');
+  assert.equal(overlayFileAppliesToTarget(probe, 'client'), true);
+  assert.equal(overlayFileAppliesToTarget(probe, 'server'), false);
 });
 
 test('FTB Quests base policies accept verified Linux LF variants', async () => {
