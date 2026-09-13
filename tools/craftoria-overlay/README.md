@@ -220,10 +220,10 @@ sudo journalctl -u craftoria.service -f
 
 ### ロリポップ！for Gamersへ配布する
 
-ロリポップの固定された `/opt/minecraft/current/server.jar` と `run.sh` で起動できる、
-サーバールート直下展開用ZIPを作成できます。先に通常手順で公式サーバーを構築し、
-オーバーレイまで適用してください。配布toolkit内では、同梱済みの`manifest.json`を使うため、
-元の開発リポジトリやローカルMODのビルドディレクトリは必要ありません。
+ロリポップのWebGUIが作成・選択するNeoForgeディレクトリへ重ねるパッチZIPを作成できます。
+先に通常手順で公式Craftoriaサーバーを構築し、オーバーレイまで適用してください。
+配布toolkit内では、同梱済みの`manifest.json`を使うため、元の開発リポジトリやローカルMODの
+ビルドディレクトリは必要ありません。
 実行時にModがコメントや書式を再生成する設定ファイルは、稼働サーバー上のバイト列を
 ハッシュ比較せず、Git管理されたpayloadから配布ZIPへ再適用します。Mod JARと外部取得物、
 および完成したZIP内のoverlayファイルは引き続きハッシュ検証されます。
@@ -232,19 +232,32 @@ sudo journalctl -u craftoria.service -f
 pnpm run export:lolipop -- --server "D:\Minecraft\CraftoriaServer"
 ```
 
-`dist/Craftoria-Lolipop-Server-<version>.zip` が生成されます。ZIP内はclient版や通常版と
-同様に、`Craftoria-Lolipop-Server-<version>/` が最上位ディレクトリです。サーバーを停止し、
-このディレクトリの中身を `/opt/minecraft/current/` 直下へ上書き配置してから再起動します。
+`dist/Craftoria-Lolipop-NeoForge-Patch-<version>.zip` が生成されます。ZIP内も同名の
+`Craftoria-Lolipop-NeoForge-Patch-<version>/` が最上位ディレクトリです。旧方式の
+`Craftoria-Lolipop-Server-<version>/` は使用しません。
 
-ロリポップの `java -jar server.jar` をNeoForgeの `unix_args.txt`へ橋渡しするため、
-[NeoForge ServerStarterJar 0.1.34](https://github.com/neoforged/ServerStarterJar/releases/tag/0.1.34)
-をSHA-256固定で同梱します。`run.sh`はロリポップの環境変数、メモリ設定、screen管理を
-維持しつつ、ServerStarterJarがNeoForge起動引数を検出できる行を追加したものです。
+WebGUIでMinecraft 1.21.1のNeoForgeを選択し、一度起動して停止した後、SSHで実体を確認します。
+
+```sh
+readlink -f /opt/minecraft/current
+```
+
+たとえば `/opt/minecraft/neoforge-1.21.1-21.1.250` と表示された場合は、サーバーを停止したまま
+展開済みパッチの中身をその実体へコピーしてから、WebGUIで再起動します。
+
+```sh
+cp -a Craftoria-Lolipop-NeoForge-Patch-1.2.2/. \
+  /opt/minecraft/neoforge-1.21.1-21.1.250/
+```
+
+`current`シンボリックリンクは変更しません。また、パッチには`libraries`、`versions`、
+`server.jar`、`run.sh`を含めません。NeoForge本体と起動方法はWebGUIが用意したものを保持し、
+Craftoriaの`mods`、`config`、`defaultconfigs`、`kubejs`などだけを追加します。
 
 ワールド、`server.properties`、EULA、OP・ホワイトリスト・BAN情報、ユーザーキャッシュ、
 ログ、バックアップは配布物へ含めません。そのため既存の本番状態をZIPで上書きしても
-これらは維持されます。Javaは21または25を選択し、メモリ量はロリポップ管理画面側で
-設定してください。
+これらは維持されます。既存ワールドは作業前に別途バックアップしてください。Javaは21または
+25を選択し、メモリ量はロリポップ管理画面側で設定してください。
 
 ## 開発
 

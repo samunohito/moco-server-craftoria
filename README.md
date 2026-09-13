@@ -28,16 +28,53 @@ Craftoriaの幅広い探索・工業・魔術コンテンツを土台に、Creat
 
 1. Prism Launcherなどで **Craftoria 1.36.0** を導入し、一度起動してから終了します。
 2. Minecraftとランチャーを完全に終了します。
-3. 配布された `Craftoria-Client-Addon-1.2.2.zip` をCraftoriaのゲームディレクトリへ置きます。
-4. ZIPを通常どおり展開し、展開先にある `install.bat` を実行します。
+3. 配布された `Craftoria-Client-Addon-1.2.2.zip` をCraftoriaのゲームディレクトリ
+   である `minecraft/` の直下へ置きます。
+4. ZIPをその場所で展開し、`install.bat`、`install.sh`、`manifest.json`、
+   `.installer/`、`payload/` が並んでいる配布フォルダーを開きます。Windowsではその中の
+   `install.bat` を実行します。
 5. インストール完了の表示を確認してからCraftoriaを起動します。
 
 ゲームディレクトリとは、`version_info.json`、`mods/`、`config/`、`kubejs/` が置かれて
 いる場所です。Prism Launcherでは通常、対象インスタンスの「フォルダー」から開いた先の
-`minecraft/` に当たります。ZIPの展開で同名フォルダが二重になっても、インストーラーが
-上位のゲームディレクトリを検出します。
+`minecraft/` に当たります。展開後の推奨構成は次のとおりです。
 
-Linux/macOSでは、同じ場所で次を実行します。
+```text
+<Craftoriaインスタンス>/
+└─ minecraft/                              # Craftoriaのゲームディレクトリ
+   ├─ version_info.json
+   ├─ mods/
+   ├─ config/
+   ├─ kubejs/
+   ├─ Craftoria-Client-Addon-1.2.2.zip     # 配布ZIP
+   └─ Craftoria-Client-Addon-1.2.2/        # ZIPの展開先
+      ├─ install.bat                       # Windowsで実行
+      ├─ install.sh                        # Linux/macOSで実行
+      ├─ manifest.json
+      ├─ .installer/
+      └─ payload/
+```
+
+Windowsの「すべて展開」で同名フォルダが二重になった場合も、次の構成なら
+そのまま使用できます。一番内側の、`install.bat` があるフォルダーで実行して
+ください。
+
+```text
+minecraft/
+└─ Craftoria-Client-Addon-1.2.2/
+   └─ Craftoria-Client-Addon-1.2.2/
+      ├─ install.bat
+      ├─ install.sh
+      ├─ manifest.json
+      ├─ .installer/
+      └─ payload/
+```
+
+`install.bat` や `install.sh` だけを `minecraft/` へ移動させないでください。インストーラーは
+同じ配布フォルダー内の `manifest.json`、`.installer/`、`payload/` を使用し、その上位に
+`version_info.json`、`mods/`、`config/`、`kubejs/` がある `minecraft/` を自動検出します。
+
+Linux/macOSでは、`install.sh` がある配布フォルダーへ移動して次を実行します。
 
 ```sh
 ./install.sh

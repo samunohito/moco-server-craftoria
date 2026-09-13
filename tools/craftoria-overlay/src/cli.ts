@@ -57,7 +57,7 @@ async function main(): Promise<void> {
     )
     .command(
       'export-lolipop',
-      'ロリポップ！for Gamersの固定server.jar構成向けサーバーZIPを作成します',
+      'ロリポップ！for GamersのWebGUI管理NeoForgeへ重ねるパッチZIPを作成します',
       (command) => command
         .option('server', {
           type: 'string',

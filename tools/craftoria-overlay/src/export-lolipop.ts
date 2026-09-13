@@ -4,7 +4,6 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   createZip,
-  downloadFile,
   findResourceRoot,
   hashFile,
   pathExists,
@@ -18,23 +17,17 @@ import type { OverlayManifest } from './types.js';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 
-export const serverStarterVersion = '0.1.34';
-export const serverStarterUrl = `https://github.com/neoforged/ServerStarterJar/releases/download/${serverStarterVersion}/server.jar`;
-export const serverStarterSha256 = '1f6b5cfde510ebd1de35fa15a8b1e3828a2178827508810fb737cf73878084b2';
-
 const serverDirectories = [
   'config',
   'coremods',
   'defaultconfigs',
   'kubejs',
-  'libraries',
   'local',
   'mods',
   'moonlight-global-datapacks',
   'patchouli_books',
   'resources',
   'scripts',
-  'versions',
 ] as const;
 
 export interface ExportLolipopOptions {
@@ -45,7 +38,6 @@ export interface ExportLolipopOptions {
 interface WriteLolipopArchiveOptions {
   sourceServer: string;
   outputPath: string;
-  starterJar: string;
   manifest: OverlayManifest;
   overlaySources?: ReadonlyMap<string, string>;
 }
@@ -55,7 +47,7 @@ export function lolipopOutputPath(resourceRoot: string, manifest: OverlayManifes
 }
 
 export function lolipopArchiveName(manifest: OverlayManifest): string {
-  return `Craftoria-Lolipop-Server-${manifest.addonVersion}`;
+  return `Craftoria-Lolipop-NeoForge-Patch-${manifest.addonVersion}`;
 }
 
 function isServerPayloadPath(relativePath: string): boolean {
@@ -115,32 +107,9 @@ async function validatePreparedServer(
   return root;
 }
 
-export function lolipopRunScript(neoForgeVersion: string): string {
-  return `#!/bin/bash
-
-# This unreachable command lets NeoForge ServerStarterJar discover the modular launch arguments.
-# Lolipop's launcher still executes the screen command below and supplies the actual JVM memory flags.
-if false; then
-    \${JAVA_HOME}/bin/java @libraries/net/neoforged/neoforge/${neoForgeVersion}/unix_args.txt
-fi
-
-# check environment variables
-if [[ -z \${MOD} || -z \${JAVA_HOME} || -z \${MCMAXMEM} || -z \${MCMINMEM} ]]; then
-    echo "Environment variables are not set."
-    exit 1
-fi
-
-ARGS="-Xmx\${MCMAXMEM} -Xms\${MCMINMEM} -XX:+UseG1GC -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10"
-
-# run minecraft server
-/usr/bin/screen -DmS minecraft-je \${JAVA_HOME}/bin/java -server \${ARGS} -jar /opt/minecraft/current/server.jar --nogui
-`;
-}
-
 export async function writeLolipopArchive({
   sourceServer,
   outputPath,
-  starterJar,
   manifest,
   overlaySources = new Map(),
 }: WriteLolipopArchiveOptions): Promise<void> {
@@ -196,17 +165,18 @@ export async function writeLolipopArchive({
       }
     }
 
-    await copyFile(starterJar, path.join(packageRoot, 'server.jar'));
-    await writeFile(path.join(packageRoot, 'run.sh'), lolipopRunScript(manifest.target.neoForge), 'utf8');
     await writeFile(
       path.join(packageRoot, 'LOLIPOP-README.txt'),
       `Craftoria ${manifest.target.managedPackVersion} / add-on ${manifest.addonVersion}\n`
-      + 'サーバーを停止してから、このZIPの中身を /opt/minecraft/current/ へ上書き配置してください。\n'
+      + 'サーバーを停止し、readlink -f /opt/minecraft/current でWebGUIが選択した実体を確認してください。\n'
+      + 'このディレクトリの中身を、表示されたneoforge-1.21.1-*ディレクトリへ上書き配置してください。\n'
+      + 'currentシンボリックリンク自体は変更しないでください。\n'
+      + 'NeoForge本体のlibraries、server.jar、run.shはこのZIPに含まれず、WebGUI側のものを使用します。\n'
       + 'world、server.properties、ops/whitelist/ban情報、ログはこのZIPに含まれません。\n'
       + 'ロリポップ側のJavaは21または25を選択してください。メモリ量は管理画面の設定が使われます。\n',
       'utf8',
     );
-    await createZip(stage, outputPath, { executablePaths: [`${packageName}/run.sh`] });
+    await createZip(stage, outputPath);
   } finally {
     await removeOwnedScratch(stage);
   }
@@ -231,18 +201,6 @@ export async function exportLolipopServer({ serverPath, output }: ExportLolipopO
     for (const entry of prepared.sources) overlaySources.set(normalizedPath(entry.path), entry.source);
   }
   const outputPath = lolipopOutputPath(resourceRoot, manifest, output);
-  const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-starter-'));
-
-  try {
-    const starterJar = path.join(scratch, 'server.jar');
-    await downloadFile(serverStarterUrl, starterJar);
-    const actual = await hashFile(starterJar, 'SHA256');
-    if (actual !== serverStarterSha256) {
-      throw new Error(`NeoForge ServerStarterJar hash verification failed: ${actual}`);
-    }
-    await writeLolipopArchive({ sourceServer: serverPath, outputPath, starterJar, manifest, overlaySources });
-    console.log(`Created: ${outputPath}`);
-  } finally {
-    await removeOwnedScratch(scratch);
-  }
+  await writeLolipopArchive({ sourceServer: serverPath, outputPath, manifest, overlaySources });
+  console.log(`Created: ${outputPath}`);
 }
