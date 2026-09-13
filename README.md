@@ -4,7 +4,7 @@ Craftoriaの幅広い探索・工業・魔術コンテンツを土台に、Creat
 進行を飛ばしてしまう自動化、発電、時間操作、ボス複製などを再調整するための
 アドオン・オーバーレイです。
 
-これは単体で遊べるModpackではありません。先に導入した**Craftoria 1.31.0**へ、追加Mod、
+これは単体で遊べるModpackではありません。先に導入した**Craftoria 1.36.0**へ、追加Mod、
 設定、KubeJSスクリプトを重ねて使用します。Craftoria本体の楽しさや終盤設備を一律に弱体化
 するのではなく、「便利さは残し、相応の進行・設備・継続コストを求める」ことを基本方針に
 しています。
@@ -14,9 +14,9 @@ Craftoriaの幅広い探索・工業・魔術コンテンツを土台に、Creat
 | 項目 | バージョン |
 | --- | --- |
 | Overlay | 1.2.2 |
-| Craftoria | 1.31.0 |
+| Craftoria | 1.36.0 |
 | Minecraft | 1.21.1 |
-| NeoForge | 21.1.230 |
+| NeoForge | 21.1.249 |
 | Java | 21（サーバーは21または25） |
 
 別バージョンのCraftoriaには適用できません。Craftoria本体を更新した場合も、対応する
@@ -26,7 +26,7 @@ Craftoriaの幅広い探索・工業・魔術コンテンツを土台に、Creat
 
 ### クライアント
 
-1. Prism Launcherなどで **Craftoria 1.31.0** を導入し、一度起動してから終了します。
+1. Prism Launcherなどで **Craftoria 1.36.0** を導入し、一度起動してから終了します。
 2. Minecraftとランチャーを完全に終了します。
 3. 配布された `Craftoria-Client-Addon-1.2.2.zip` をCraftoriaのゲームディレクトリへ置きます。
 4. ZIPを通常どおり展開し、展開先にある `install.bat` を実行します。
@@ -133,7 +133,7 @@ Createの回転設備、電力変換、ディーゼル発電、通貨・取引�
 
 ## 独自Mod: Mekanism Overclock
 
-このリポジトリには独自のNeoForge Mod **Mekanism Overclock 0.1.1** が含まれています。
+このリポジトリには独自のNeoForge Mod **Mekanism Overclock 0.1.2** が含まれています。
 MekanismのSpeed / Energy Upgradeを最大16枚まで積める楽しさを残しながら、9枚目以降へ
 発電設備に見合う追加電力コストを与えるModです。
 
