@@ -224,6 +224,9 @@ sudo journalctl -u craftoria.service -f
 サーバールート直下展開用ZIPを作成できます。先に通常手順で公式サーバーを構築し、
 オーバーレイまで適用してください。配布toolkit内では、同梱済みの`manifest.json`を使うため、
 元の開発リポジトリやローカルMODのビルドディレクトリは必要ありません。
+実行時にModがコメントや書式を再生成する設定ファイルは、稼働サーバー上のバイト列を
+ハッシュ比較せず、Git管理されたpayloadから配布ZIPへ再適用します。Mod JARと外部取得物、
+および完成したZIP内のoverlayファイルは引き続きハッシュ検証されます。
 
 ```powershell
 pnpm run export:lolipop -- --server "D:\Minecraft\CraftoriaServer"

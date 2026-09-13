@@ -1,4 +1,4 @@
-import { copyFile, cp, mkdtemp, realpath, writeFile } from 'node:fs/promises';
+import { copyFile, cp, mkdir, mkdtemp, realpath, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -10,6 +10,7 @@ import {
   pathExists,
   readJson,
   removeOwnedScratch,
+  resolveInside,
 } from './lib.js';
 import { overlayFileAppliesToTarget } from './install-overlay.js';
 import { prepareOverlay } from './manifest.js';
@@ -46,6 +47,7 @@ interface WriteLolipopArchiveOptions {
   outputPath: string;
   starterJar: string;
   manifest: OverlayManifest;
+  overlaySources?: ReadonlyMap<string, string>;
 }
 
 export function lolipopOutputPath(resourceRoot: string, manifest: OverlayManifest, output?: string): string {
@@ -59,7 +61,21 @@ function isServerPayloadPath(relativePath: string): boolean {
     && !normalized.startsWith('kubejs/probe/');
 }
 
-async function validatePreparedServer(sourceServer: string, manifest: OverlayManifest): Promise<string> {
+function normalizedPath(filePath: string): string {
+  return filePath.replaceAll('\\', '/');
+}
+
+function serverOverlayFiles(manifest: OverlayManifest) {
+  return manifest.files.filter(
+    (entry) => overlayFileAppliesToTarget(entry, 'server') && isServerPayloadPath(String(entry.path)),
+  );
+}
+
+async function validatePreparedServer(
+  sourceServer: string,
+  manifest: OverlayManifest,
+  overlaySources: ReadonlyMap<string, string>,
+): Promise<string> {
   const root = await realpath(path.resolve(sourceServer));
   for (const required of ['config', 'kubejs', 'libraries', 'mods']) {
     if (!await pathExists(path.join(root, required))) {
@@ -80,8 +96,8 @@ async function validatePreparedServer(sourceServer: string, manifest: OverlayMan
     throw new Error(`NeoForge ${manifest.target.neoForge} unix_args.txt is missing. Finish the official server installation first.`);
   }
 
-  for (const entry of manifest.files) {
-    if (!overlayFileAppliesToTarget(entry, 'server') || !isServerPayloadPath(String(entry.path))) continue;
+  for (const entry of serverOverlayFiles(manifest)) {
+    if (overlaySources.has(normalizedPath(String(entry.path)))) continue;
     const installed = path.join(root, String(entry.path));
     if (!await pathExists(installed)) {
       throw new Error(`Overlay file is missing from the prepared server: ${entry.path}. Apply the overlay before exporting.`);
@@ -92,11 +108,6 @@ async function validatePreparedServer(sourceServer: string, manifest: OverlayMan
     }
   }
 
-  for (const entry of manifest.remove ?? []) {
-    if (isServerPayloadPath(String(entry.path)) && await pathExists(path.join(root, String(entry.path)))) {
-      throw new Error(`A file removed by the overlay is still present: ${entry.path}. Apply the overlay before exporting.`);
-    }
-  }
   return root;
 }
 
@@ -127,14 +138,18 @@ export async function writeLolipopArchive({
   outputPath,
   starterJar,
   manifest,
+  overlaySources = new Map(),
 }: WriteLolipopArchiveOptions): Promise<void> {
   if (await pathExists(outputPath)) throw new Error(`Output already exists: ${outputPath}`);
-  const source = await validatePreparedServer(sourceServer, manifest);
+  const source = await validatePreparedServer(sourceServer, manifest, overlaySources);
   const stage = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-export-'));
   const clientOnlyFiles = new Set(
     manifest.files
       .filter((entry) => !overlayFileAppliesToTarget(entry, 'server'))
       .map((entry) => String(entry.path).replaceAll('\\', '/')),
+  );
+  const removedFiles = new Set(
+    (manifest.remove ?? []).map((entry) => normalizedPath(String(entry.path))),
   );
 
   try {
@@ -147,10 +162,31 @@ export async function writeLolipopArchive({
           const relative = path.relative(source, candidate).replaceAll('\\', '/');
           return isServerPayloadPath(relative)
             && !clientOnlyFiles.has(relative)
+            && !removedFiles.has(relative)
             && !relative.startsWith('kubejs/logs/')
             && !relative.endsWith('.log');
         },
       });
+    }
+
+    for (const entry of serverOverlayFiles(manifest)) {
+      const relative = normalizedPath(String(entry.path));
+      const overlaySource = overlaySources.get(relative);
+      if (overlaySource === undefined) continue;
+      if (!await pathExists(overlaySource)) throw new Error(`Overlay source is missing: ${overlaySource}`);
+      const destination = resolveInside(stage, relative);
+      await mkdir(path.dirname(destination), { recursive: true });
+      await copyFile(overlaySource, destination);
+    }
+
+    for (const entry of serverOverlayFiles(manifest)) {
+      const relative = normalizedPath(String(entry.path));
+      const staged = resolveInside(stage, relative);
+      if (!await pathExists(staged)) throw new Error(`Overlay file is missing from the Lolipop archive: ${relative}`);
+      const actual = await hashFile(staged, entry.hashAlgorithm);
+      if (actual !== String(entry.hash).toLowerCase()) {
+        throw new Error(`Overlay file does not match the release manifest in the Lolipop archive: ${relative} (${actual}).`);
+      }
     }
 
     await copyFile(starterJar, path.join(stage, 'server.jar'));
@@ -173,9 +209,20 @@ export async function exportLolipopServer({ serverPath, output }: ExportLolipopO
   if (serverPath === undefined) throw new Error('--server is required.');
   const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
   const packagedManifest = path.join(resourceRoot, 'manifest.json');
-  const manifest = await pathExists(packagedManifest)
-    ? await readJson<OverlayManifest>(packagedManifest)
-    : (await prepareOverlay(resourceRoot)).manifest;
+  let manifest: OverlayManifest;
+  const overlaySources = new Map<string, string>();
+  if (await pathExists(packagedManifest)) {
+    manifest = await readJson<OverlayManifest>(packagedManifest);
+    for (const entry of manifest.files) {
+      if (entry.payload !== undefined) {
+        overlaySources.set(normalizedPath(String(entry.path)), resolveInside(resourceRoot, entry.payload));
+      }
+    }
+  } else {
+    const prepared = await prepareOverlay(resourceRoot);
+    manifest = prepared.manifest;
+    for (const entry of prepared.sources) overlaySources.set(normalizedPath(entry.path), entry.source);
+  }
   const outputPath = lolipopOutputPath(resourceRoot, manifest, output);
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-starter-'));
 
@@ -186,7 +233,7 @@ export async function exportLolipopServer({ serverPath, output }: ExportLolipopO
     if (actual !== serverStarterSha256) {
       throw new Error(`NeoForge ServerStarterJar hash verification failed: ${actual}`);
     }
-    await writeLolipopArchive({ sourceServer: serverPath, outputPath, starterJar, manifest });
+    await writeLolipopArchive({ sourceServer: serverPath, outputPath, starterJar, manifest, overlaySources });
     console.log(`Created: ${outputPath}`);
   } finally {
     await removeOwnedScratch(scratch);
