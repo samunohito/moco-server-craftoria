@@ -14,6 +14,10 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 repositories {
     mavenCentral()
+    maven {
+        name = 'ModMaven'
+        url = 'https://modmaven.dev/'
+    }
 }
 
 neoForge {
@@ -40,7 +44,10 @@ neoForge {
 }
 
 dependencies {
-    implementation files("${rootProject.projectDir}/../../minecraft/mods/Mekanism-${minecraft_version}-${mekanism_version}.jar")
+    def localMekanism = file("${rootProject.projectDir}/../../minecraft/mods/Mekanism-${minecraft_version}-${mekanism_version}.jar")
+    implementation localMekanism.exists()
+        ? files(localMekanism)
+        : "mekanism:Mekanism:${minecraft_version}-${mekanism_version}"
 
     testImplementation platform('org.junit:junit-bom:5.11.4')
     testImplementation 'org.junit.jupiter:junit-jupiter'
