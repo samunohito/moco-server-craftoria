@@ -247,7 +247,16 @@ test('Lolipop export is flat, preserves provider state, and supplies a server.ja
     const starter = path.join(scratch, 'starter.jar');
     const configContent = 'config value\n';
     const kubeContent = 'test script\n';
+    const probeContent = 'client-only probe mod\n';
     const manifest = fixtureManifest(configContent, kubeContent);
+    manifest.files.push({
+      path: 'mods/ProbeJS-8.0.3.jar',
+      kind: 'mod',
+      side: 'client',
+      url: 'https://example.invalid/ProbeJS-8.0.3.jar',
+      hashAlgorithm: 'SHA256',
+      hash: sha256(probeContent),
+    });
     for (const directory of [
       'config',
       'kubejs/server_scripts',
@@ -260,6 +269,7 @@ test('Lolipop export is flat, preserves provider state, and supplies a server.ja
     ]) await mkdir(path.join(server, directory), { recursive: true });
     await writeFile(path.join(server, 'config/test-common.toml'), configContent, 'utf8');
     await writeFile(path.join(server, 'kubejs/server_scripts/Test.js'), kubeContent, 'utf8');
+    await writeFile(path.join(server, 'mods/ProbeJS-8.0.3.jar'), probeContent, 'utf8');
     await writeFile(
       path.join(server, `libraries/net/neoforged/neoforge/${manifest.target.neoForge}/unix_args.txt`),
       '--launchTarget neoforgeserver\n',
@@ -281,6 +291,7 @@ test('Lolipop export is flat, preserves provider state, and supplies a server.ja
     assert.ok(names.includes(`libraries/net/neoforged/neoforge/${manifest.target.neoForge}/unix_args.txt`));
     assert.ok(!names.some((name) => name.startsWith('world/') || name.startsWith('logs/')));
     assert.ok(!names.includes('server.properties'));
+    assert.ok(!names.includes('mods/ProbeJS-8.0.3.jar'));
     assert.ok(!names.some((name) => name.startsWith('kubejs/client_scripts/') || name.startsWith('kubejs/logs/')));
     assert.equal(entries.find(({ name }) => name === 'run.sh')?.mode, 0o100755);
     assert.match(lolipopRunScript(manifest.target.neoForge), /if false; then[\s\S]*unix_args\.txt/u);

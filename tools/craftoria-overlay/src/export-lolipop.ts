@@ -11,6 +11,7 @@ import {
   readJson,
   removeOwnedScratch,
 } from './lib.js';
+import { overlayFileAppliesToTarget } from './install-overlay.js';
 import { prepareOverlay } from './manifest.js';
 import type { OverlayManifest } from './types.js';
 
@@ -80,7 +81,7 @@ async function validatePreparedServer(sourceServer: string, manifest: OverlayMan
   }
 
   for (const entry of manifest.files) {
-    if (!isServerPayloadPath(String(entry.path))) continue;
+    if (!overlayFileAppliesToTarget(entry, 'server') || !isServerPayloadPath(String(entry.path))) continue;
     const installed = path.join(root, String(entry.path));
     if (!await pathExists(installed)) {
       throw new Error(`Overlay file is missing from the prepared server: ${entry.path}. Apply the overlay before exporting.`);
@@ -130,6 +131,11 @@ export async function writeLolipopArchive({
   if (await pathExists(outputPath)) throw new Error(`Output already exists: ${outputPath}`);
   const source = await validatePreparedServer(sourceServer, manifest);
   const stage = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-export-'));
+  const clientOnlyFiles = new Set(
+    manifest.files
+      .filter((entry) => !overlayFileAppliesToTarget(entry, 'server'))
+      .map((entry) => String(entry.path).replaceAll('\\', '/')),
+  );
 
   try {
     for (const directory of serverDirectories) {
@@ -140,6 +146,7 @@ export async function writeLolipopArchive({
         filter: (candidate) => {
           const relative = path.relative(source, candidate).replaceAll('\\', '/');
           return isServerPayloadPath(relative)
+            && !clientOnlyFiles.has(relative)
             && !relative.startsWith('kubejs/logs/')
             && !relative.endsWith('.log');
         },
