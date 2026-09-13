@@ -1,5 +1,5 @@
 [Unit]
-Description=Craftoria 1.31.0 NeoForge Server
+Description=Craftoria 1.36.0 NeoForge Server
 Wants=network-online.target
 After=network-online.target
 StartLimitIntervalSec=300

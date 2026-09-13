@@ -1,6 +1,6 @@
 ---
 name: craftoria-kubejs
-description: Develop, review, diagnose, and package KubeJS scripts and Minecraft modpack changes for this Craftoria 1.31.0 workspace (Minecraft 1.21.1, NeoForge 21.1.230). Use for KubeJS recipes, tags, startup/client/server scripts, Create integration, mod compatibility, client/server synchronization, crash or script-error investigation, and overlay release work in this repository.
+description: Develop, review, diagnose, and package KubeJS scripts and Minecraft modpack changes for this Craftoria 1.36.0 workspace (Minecraft 1.21.1, NeoForge 21.1.249). Use for KubeJS recipes, tags, startup/client/server scripts, Create integration, mod compatibility, client/server synchronization, crash or script-error investigation, and overlay release work in this repository.
 ---
 
 # Craftoria KubeJS Development
@@ -27,7 +27,7 @@ Treat the installed instance, mod JAR metadata, generated ProbeJS declarations, 
 
 ## Guardrails
 
-- Target only Minecraft 1.21.1, NeoForge 21.1.230, Craftoria 1.31.0 unless the user explicitly requests an upgrade.
+- Target only Minecraft 1.21.1, NeoForge 21.1.249, Craftoria 1.36.0 unless the user explicitly requests an upgrade.
 - Use Java 21 or 25 for server work.
 - Never edit or distribute logs, saves, options, Xaero data, caches, generated search indexes, or personal server lists.
 - Do not copy every file under `config` or `kubejs`; enumerate intentional files.

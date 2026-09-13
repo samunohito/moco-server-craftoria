@@ -2,10 +2,10 @@
 
 ## Fixed baseline
 
-- Prism managed pack: Craftoria 1.31.0
-- CurseForge project/file IDs: 1039252 / 8127261
+- Prism managed pack: Craftoria 1.36.0
+- CurseForge project/file IDs: 1039252 / 8850018
 - Minecraft: 1.21.1
-- NeoForge: 21.1.230
+- NeoForge: 21.1.249
 - Java: 21 or 25
 - Game root: `minecraft/`
 

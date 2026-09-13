@@ -7,10 +7,9 @@ const disabledQuarryCards = [
   'rftoolsbuilder:shape_card_quarry_clear_fortune',
 ];
 
-const disabledBrokenDevices = [
-  ...disabledQuarryCards,
+const disabledBrokenDevices = disabledQuarryCards.concat([
   'mob_grinding_utils:entity_spawner',
-];
+]);
 
 ServerEvents.recipes(event => {
   disabledBrokenDevices.forEach(item => event.remove({ output: item }));

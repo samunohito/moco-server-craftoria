@@ -21,6 +21,27 @@ test('continues to reject KubeJS runtime logs', () => {
   );
 });
 
+test('dedicated-server bootstrap excludes current client-only rendering mods', async () => {
+  const serverSetup = await readFile(
+    path.join(resourceRoot, 'server-bootstrap/server-setup-config.yaml'),
+    'utf8',
+  );
+
+  for (const projectId of ['394468', '447673', '1374153', '574123', '532127']) {
+    assert.match(serverSetup, new RegExp(`- ${projectId}(?:\\s|$)`, 'u'), projectId);
+  }
+});
+
+test('BrokenDevices avoids array spread unsupported by the bundled Rhino runtime', async () => {
+  const script = await readFile(
+    path.join(resourceRoot, 'payload/kubejs/server_scripts/Mods/Craftoria/BrokenDevices.js'),
+    'utf8',
+  );
+
+  assert.doesNotMatch(script, /\.\.\.disabledQuarryCards/u);
+  assert.match(script, /disabledQuarryCards\.concat/u);
+});
+
 test('FTB Quests base policies accept verified Linux LF variants', async () => {
   const policy = JSON.parse(await readFile(path.join(resourceRoot, 'payload-policy.json'), 'utf8')) as {
     files: Record<string, { expectedExistingHashes?: string[] }>;
@@ -45,7 +66,7 @@ test('FTB Quests base policies accept verified Linux LF variants', async () => {
   }
 });
 
-test('base policies accept verified Craftoria 1.31.0 text line endings', async () => {
+test('base policies retain verified Craftoria text line-ending variants', async () => {
   const policy = JSON.parse(await readFile(path.join(resourceRoot, 'payload-policy.json'), 'utf8')) as {
     files: Record<string, { expectedExistingHashes?: string[] }>;
   };

@@ -14,6 +14,7 @@ import {
 } from './lib.js';
 import { validateClientInstallation } from './instance.js';
 import { readPreviouslyInstalled, writeInstalledState } from './installed-state.js';
+import { prepareOverlay } from './manifest.js';
 import type { OverlayFile, OverlayManifest, RemovedOverlayFile } from './types.js';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -61,8 +62,11 @@ export async function installOverlay({
     throw new Error('Specify exactly one of --instance or --server.');
   }
 
-  const resourceRoot = await findResourceRoot(scriptDirectory, 'manifest.json');
-  const manifest = await readJson<OverlayManifest>(path.join(resourceRoot, 'manifest.json'));
+  const resourceRoot = await findResourceRoot(scriptDirectory, 'overlay.template.json');
+  const packagedManifest = path.join(resourceRoot, 'manifest.json');
+  const manifest = await pathExists(packagedManifest)
+    ? await readJson<OverlayManifest>(packagedManifest)
+    : (await prepareOverlay(resourceRoot)).manifest;
   let root: string;
 
   if (instancePath !== undefined) {

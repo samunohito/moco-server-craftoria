@@ -25,7 +25,7 @@ test('prepareOverlay bundles a locally built mod from a sibling tools project', 
     addonVersion: 'test',
     target: {
       managedPackId: 'test', managedPackVersionId: 'test', managedPackVersion: 'test',
-      minecraft: '1.21.1', neoForge: '21.1.230',
+      minecraft: '1.21.1', neoForge: '21.1.249',
     },
     files: [],
     bundledFiles: [{
@@ -71,7 +71,7 @@ test('prepareOverlay rejects bundled mods outside the tools directory', async (c
   await writeFile(path.join(resourceRoot, 'overlay.template.json'), JSON.stringify({
     schemaVersion: 1,
     addonVersion: 'test',
-    target: { managedPackId: 'test', managedPackVersionId: 'test', managedPackVersion: 'test', minecraft: '1.21.1', neoForge: '21.1.230' },
+    target: { managedPackId: 'test', managedPackVersionId: 'test', managedPackVersion: 'test', minecraft: '1.21.1', neoForge: '21.1.249' },
     files: [],
     bundledFiles: [{ source: '../outside.jar', path: 'mods/outside.jar', kind: 'mod' }],
   }), 'utf8');

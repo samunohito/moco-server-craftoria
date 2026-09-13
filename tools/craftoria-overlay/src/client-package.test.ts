@@ -28,9 +28,9 @@ function fixtureManifest(configContent: string, kubeContent: string): OverlayMan
     target: {
       managedPackId: 'test-pack',
       managedPackVersionId: 'test-file',
-      managedPackVersion: '1.31.0-test',
+      managedPackVersion: '1.36.0-test',
       minecraft: '1.21.1-test',
-      neoForge: '21.1.230-test',
+      neoForge: '21.1.249-test',
     },
     files: [
       {
@@ -144,7 +144,7 @@ test('client validation accepts a launcher-independent game directory', async ()
     await writeFile(path.join(gameRoot, 'version_info.json'), JSON.stringify({ version: 'wrong-version' }), 'utf8');
     await assert.rejects(
       validateClientInstallation(gameRoot, manifest.target),
-      /Expected Craftoria 1\.31\.0-test/u,
+      /Expected Craftoria 1\.36\.0-test/u,
     );
   } finally {
     await rm(scratch, { recursive: true, force: true });
@@ -326,7 +326,7 @@ test('generated Windows installer supports double-folder extraction and safe ins
       },
     ];
     await writeClientPackage(resourceRoot, packageRoot, packageName, manifest, sources);
-    await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.31.0-test' }), 'utf8');
+    await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.36.0-test' }), 'utf8');
     await mkdir(path.join(minecraftRoot, 'config'), { recursive: true });
     await mkdir(path.join(minecraftRoot, 'kubejs'), { recursive: true });
     await mkdir(path.join(minecraftRoot, 'mods'), { recursive: true });
@@ -340,8 +340,8 @@ test('generated Windows installer supports double-folder extraction and safe ins
     await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: 'wrong-version' }), 'utf8');
     const wrongVersion = await run('cmd.exe', ['/d', '/c', 'install.bat', '--dry-run'], packageRoot);
     assert.notEqual(wrongVersion.code, 0);
-    assert.match(wrongVersion.output, /Expected Craftoria 1\.31\.0-test/u);
-    await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.31.0-test' }), 'utf8');
+    assert.match(wrongVersion.output, /Expected Craftoria 1\.36\.0-test/u);
+    await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.36.0-test' }), 'utf8');
 
     const packagedConfig = path.join(packageRoot, 'payload/config/test-common.toml');
     await writeFile(packagedConfig, 'tampered payload\n', 'utf8');
@@ -421,7 +421,7 @@ test('generated POSIX installer supports double-folder extraction and installati
         replacePolicy: 'known-base-only', expectedExistingHashes: [sha256('official base\n')],
       },
     ]);
-    await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.31.0-test' }), 'utf8');
+    await writeFile(path.join(minecraftRoot, 'version_info.json'), JSON.stringify({ version: '1.36.0-test' }), 'utf8');
     await mkdir(path.join(minecraftRoot, 'config'), { recursive: true });
     await mkdir(path.join(minecraftRoot, 'kubejs/server_scripts'), { recursive: true });
     await writeFile(path.join(minecraftRoot, 'kubejs/server_scripts/Test.js'), 'official base\n', 'utf8');

@@ -1,6 +1,6 @@
 # Craftoria systemd unit
 
-Craftoria 1.31.0のNeoForgeサーバーをsystemdで起動するための雛形です。既定では次を
+Craftoria 1.36.0のNeoForgeサーバーをsystemdで起動するための雛形です。既定では次を
 前提にしています。
 
 - サービスユーザーとグループ：`minecraft`
