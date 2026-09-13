@@ -8,6 +8,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { clientInstallPlan, writeClientPackage } from './client-package.js';
 import { exportClientOverlay } from './export-client.js';
+import { lolipopOutputPath, lolipopRunScript, writeLolipopArchive } from './export-lolipop.js';
 import { exportOverlay, overlayOutputPath } from './export-overlay.js';
 import { validateClientInstallation } from './instance.js';
 import { readPreviouslyInstalled, writeInstalledState } from './installed-state.js';
@@ -207,19 +208,22 @@ test('toolkit export defaults to the dist directory', () => {
   );
 });
 
-test('legacy toolkit export still contains the Node CLI, server bootstrap, and client templates', async () => {
+test('legacy toolkit export uses a versioned top-level directory and contains all toolkit files', async () => {
   const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-toolkit-zip-test-'));
   try {
     const output = path.join(scratch, 'toolkit.zip');
     await exportOverlay({ sourceInstance: path.resolve(resourceRoot, '..', '..'), output });
     const names = (await zipEntries(output)).map(({ name }) => name);
-    assert.ok(names.includes('src/cli.ts'));
-    assert.ok(names.includes('server-bootstrap/startserver.sh'));
-    assert.ok(names.includes('server-bootstrap/systemd/craftoria.service'));
-    assert.ok(names.includes('server-bootstrap/systemd/README.md'));
-    assert.ok(names.includes('client-templates/install.sh'));
-    assert.ok(names.includes('package.json'));
-    assert.ok(names.includes('manifest.json'));
+    const prefix = 'Craftoria-Addon-1.2.2/';
+    assert.ok(names.length > 0);
+    assert.ok(names.every((name) => name.startsWith(prefix)));
+    assert.ok(names.includes(`${prefix}src/cli.ts`));
+    assert.ok(names.includes(`${prefix}server-bootstrap/startserver.sh`));
+    assert.ok(names.includes(`${prefix}server-bootstrap/systemd/craftoria.service`));
+    assert.ok(names.includes(`${prefix}server-bootstrap/systemd/README.md`));
+    assert.ok(names.includes(`${prefix}client-templates/install.sh`));
+    assert.ok(names.includes(`${prefix}package.json`));
+    assert.ok(names.includes(`${prefix}manifest.json`));
   } finally {
     await rm(scratch, { recursive: true, force: true });
   }
@@ -233,6 +237,65 @@ test('systemd unit uses the dedicated server root and clean Minecraft shutdown',
   assert.match(unit, /^KillSignal=SIGINT$/mu);
   assert.match(unit, /^Restart=on-failure$/mu);
   assert.match(unit, /^ReadWritePaths=\/srv\/craftoria$/mu);
+});
+
+test('Lolipop export is flat, preserves provider state, and supplies a server.jar bridge', async () => {
+  const scratch = await mkdtemp(path.join(os.tmpdir(), 'craftoria-lolipop-zip-test-'));
+  try {
+    const server = path.join(scratch, 'prepared-server');
+    const output = path.join(scratch, 'lolipop.zip');
+    const starter = path.join(scratch, 'starter.jar');
+    const configContent = 'config value\n';
+    const kubeContent = 'test script\n';
+    const manifest = fixtureManifest(configContent, kubeContent);
+    for (const directory of [
+      'config',
+      'kubejs/server_scripts',
+      'kubejs/client_scripts',
+      'kubejs/logs',
+      `libraries/net/neoforged/neoforge/${manifest.target.neoForge}`,
+      'mods',
+      'world',
+      'logs',
+    ]) await mkdir(path.join(server, directory), { recursive: true });
+    await writeFile(path.join(server, 'config/test-common.toml'), configContent, 'utf8');
+    await writeFile(path.join(server, 'kubejs/server_scripts/Test.js'), kubeContent, 'utf8');
+    await writeFile(
+      path.join(server, `libraries/net/neoforged/neoforge/${manifest.target.neoForge}/unix_args.txt`),
+      '--launchTarget neoforgeserver\n',
+      'utf8',
+    );
+    await writeFile(path.join(server, 'world/level.dat'), 'private world', 'utf8');
+    await writeFile(path.join(server, 'logs/latest.log'), 'private log', 'utf8');
+    await writeFile(path.join(server, 'server.properties'), 'motd=private', 'utf8');
+    await writeFile(path.join(starter), 'starter jar', 'utf8');
+
+    await writeLolipopArchive({ sourceServer: server, outputPath: output, starterJar: starter, manifest });
+    const entries = await zipEntries(output);
+    const names = entries.map(({ name }) => name);
+    assert.ok(names.includes('server.jar'));
+    assert.ok(names.includes('run.sh'));
+    assert.ok(names.includes('LOLIPOP-README.txt'));
+    assert.ok(names.includes('config/test-common.toml'));
+    assert.ok(names.includes('kubejs/server_scripts/Test.js'));
+    assert.ok(names.includes(`libraries/net/neoforged/neoforge/${manifest.target.neoForge}/unix_args.txt`));
+    assert.ok(!names.some((name) => name.startsWith('world/') || name.startsWith('logs/')));
+    assert.ok(!names.includes('server.properties'));
+    assert.ok(!names.some((name) => name.startsWith('kubejs/client_scripts/') || name.startsWith('kubejs/logs/')));
+    assert.equal(entries.find(({ name }) => name === 'run.sh')?.mode, 0o100755);
+    assert.match(lolipopRunScript(manifest.target.neoForge), /if false; then[\s\S]*unix_args\.txt/u);
+    assert.match(lolipopRunScript(manifest.target.neoForge), /\/usr\/bin\/screen -DmS minecraft-je/u);
+  } finally {
+    await rm(scratch, { recursive: true, force: true });
+  }
+});
+
+test('Lolipop export defaults to a provider-specific artifact name', () => {
+  const manifest = fixtureManifest('config value\n', 'test script\n');
+  assert.equal(
+    lolipopOutputPath(resourceRoot, manifest),
+    path.join(resourceRoot, 'dist', 'Craftoria-Lolipop-Server-9.8.7-test.zip'),
+  );
 });
 
 test('generated Windows installer supports double-folder extraction and safe installation', {

@@ -76,8 +76,12 @@ export async function installOverlay({
       throw new Error('The official Craftoria server base is not installed yet. Run startserver first, stop it, then apply the overlay.');
     }
     const serverConfig = await readFile(serverConfigPath, 'utf8');
-    if (!/Craftoria-1\.31\.0\.zip/u.test(serverConfig) || !/loaderVersion:\s*21\.1\.230/u.test(serverConfig)) {
-      throw new Error('The server base is not Craftoria 1.31.0 / NeoForge 21.1.230.');
+    const expectedPack = `Craftoria-${manifest.target.managedPackVersion}.zip`;
+    const expectedLoader = `loaderVersion: ${manifest.target.neoForge}`;
+    if (!serverConfig.includes(expectedPack) || !serverConfig.includes(expectedLoader)) {
+      throw new Error(
+        `The server base is not Craftoria ${manifest.target.managedPackVersion} / NeoForge ${manifest.target.neoForge}.`,
+      );
     }
   }
 

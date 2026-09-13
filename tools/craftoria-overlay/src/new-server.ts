@@ -60,7 +60,7 @@ export async function newCraftoriaServer({
   const bootstrap = path.join(resourceRoot, 'server-bootstrap');
 
   if (dryRun) {
-    console.log(`Would prepare official Craftoria 1.31.0 server bootstrap at: ${target}`);
+    console.log(`Would prepare the official Craftoria server bootstrap at: ${target}`);
   } else {
     await mkdir(target, { recursive: true });
     for (const name of ['server-setup-config.yaml', 'startserver.bat', 'startserver.sh']) {

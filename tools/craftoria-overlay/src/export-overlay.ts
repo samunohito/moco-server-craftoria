@@ -35,28 +35,31 @@ export async function exportOverlay({ sourceInstance, output }: ExportOverlayOpt
   const { manifest, sources } = await prepareOverlay(resourceRoot);
   await validateClientInstallation(sourceInstance ?? defaultInstance, manifest.target);
   const outputPath = overlayOutputPath(resourceRoot, manifest, output);
+  const packageName = overlayArchiveName(manifest);
 
   if (await pathExists(outputPath)) throw new Error(`Output already exists: ${outputPath}`);
   const stage = await mkdtemp(path.join(os.tmpdir(), 'craftoria-overlay-export-'));
+  const packageRoot = path.join(stage, packageName);
 
   try {
-    await cp(path.join(resourceRoot, 'src'), path.join(stage, 'src'), { recursive: true });
+    await mkdir(packageRoot, { recursive: true });
+    await cp(path.join(resourceRoot, 'src'), path.join(packageRoot, 'src'), { recursive: true });
     for (const projectFile of ['package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.json']) {
-      await copyFile(path.join(resourceRoot, projectFile), path.join(stage, projectFile));
+      await copyFile(path.join(resourceRoot, projectFile), path.join(packageRoot, projectFile));
     }
-    await copyFile(path.join(resourceRoot, 'payload-policy.json'), path.join(stage, 'payload-policy.json'));
-    await copyFile(path.join(resourceRoot, 'overlay.template.json'), path.join(stage, 'overlay.template.json'));
-    await copyFile(path.join(resourceRoot, 'README.md'), path.join(stage, 'README.md'));
-    await cp(path.join(resourceRoot, 'server-bootstrap'), path.join(stage, 'server-bootstrap'), { recursive: true });
-    await cp(path.join(resourceRoot, 'client-templates'), path.join(stage, 'client-templates'), { recursive: true });
+    await copyFile(path.join(resourceRoot, 'payload-policy.json'), path.join(packageRoot, 'payload-policy.json'));
+    await copyFile(path.join(resourceRoot, 'overlay.template.json'), path.join(packageRoot, 'overlay.template.json'));
+    await copyFile(path.join(resourceRoot, 'README.md'), path.join(packageRoot, 'README.md'));
+    await cp(path.join(resourceRoot, 'server-bootstrap'), path.join(packageRoot, 'server-bootstrap'), { recursive: true });
+    await cp(path.join(resourceRoot, 'client-templates'), path.join(packageRoot, 'client-templates'), { recursive: true });
 
     for (const entry of sources) {
-      const destination = resolveInside(path.join(stage, 'payload'), entry.path);
+      const destination = resolveInside(path.join(packageRoot, 'payload'), entry.path);
       await mkdir(path.dirname(destination), { recursive: true });
       await copyFile(entry.source, destination);
     }
 
-    await writeJson(path.join(stage, 'manifest.json'), manifest);
+    await writeJson(path.join(packageRoot, 'manifest.json'), manifest);
     await createZip(stage, outputPath);
     console.log(`Created: ${outputPath}`);
     const kubeCount = sources.filter(({ kind }) => kind === 'kubejs').length;

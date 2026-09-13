@@ -11,6 +11,7 @@
     "cli": "tsx src/cli.ts",
     "export": "tsx src/cli.ts export",
     "export:client": "tsx src/cli.ts export-client",
+    "export:lolipop": "tsx src/cli.ts export-lolipop",
     "sync": "tsx src/cli.ts sync",
     "diff": "tsx src/cli.ts diff",
     "capture-typings": "tsx src/cli.ts capture-typings",

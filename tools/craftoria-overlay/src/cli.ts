@@ -2,6 +2,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { exportOverlay } from './export-overlay.js';
 import { exportClientOverlay } from './export-client.js';
+import { exportLolipopServer } from './export-lolipop.js';
 import { capturePayload, captureProbeTypings, diffPayload, syncPayload } from './dev-overlay.js';
 import { installDevSkills } from './install-dev-skills.js';
 import { installOverlay } from './install-overlay.js';
@@ -50,6 +51,28 @@ async function main(): Promise<void> {
       async (arguments_) => {
         await exportClientOverlay({
           ...(arguments_.sourceInstance === undefined ? {} : { sourceInstance: arguments_.sourceInstance }),
+          ...(arguments_.output === undefined ? {} : { output: arguments_.output }),
+        });
+      },
+    )
+    .command(
+      'export-lolipop',
+      'ロリポップ！for Gamersの固定server.jar構成向けサーバーZIPを作成します',
+      (command) => command
+        .option('server', {
+          type: 'string',
+          demandOption: true,
+          description: '公式ベース導入とオーバーレイ適用が完了したサーバーディレクトリ',
+          normalize: true,
+        })
+        .option('output', {
+          type: 'string',
+          description: '出力するロリポップ向けZIPファイル',
+          normalize: true,
+        }),
+      async (arguments_) => {
+        await exportLolipopServer({
+          serverPath: arguments_.server,
           ...(arguments_.output === undefined ? {} : { output: arguments_.output }),
         });
       },

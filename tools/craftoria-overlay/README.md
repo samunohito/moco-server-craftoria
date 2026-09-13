@@ -214,6 +214,30 @@ sudo journalctl -u craftoria.service -f
 `server-setup-config.yaml`の`launch.minRam`と`launch.maxRam`で設定します。詳細は
 [systemd README](server-bootstrap/systemd/README.md)を参照してください。
 
+### ロリポップ！for Gamersへ配布する
+
+ロリポップの固定された `/opt/minecraft/current/server.jar` と `run.sh` で起動できる、
+サーバールート直下展開用ZIPを作成できます。先に通常手順で公式サーバーを構築し、
+オーバーレイまで適用してください。
+
+```powershell
+pnpm run export:lolipop -- --server "D:\Minecraft\CraftoriaServer"
+```
+
+`dist/Craftoria-Lolipop-Server-<version>.zip` が生成されます。サーバーを停止し、ZIPの
+中身を `/opt/minecraft/current/` 直下へ上書き配置してから再起動します。ZIPは展開時に
+余分な最上位フォルダを作りません。
+
+ロリポップの `java -jar server.jar` をNeoForgeの `unix_args.txt`へ橋渡しするため、
+[NeoForge ServerStarterJar 0.1.34](https://github.com/neoforged/ServerStarterJar/releases/tag/0.1.34)
+をSHA-256固定で同梱します。`run.sh`はロリポップの環境変数、メモリ設定、screen管理を
+維持しつつ、ServerStarterJarがNeoForge起動引数を検出できる行を追加したものです。
+
+ワールド、`server.properties`、EULA、OP・ホワイトリスト・BAN情報、ユーザーキャッシュ、
+ログ、バックアップは配布物へ含めません。そのため既存の本番状態をZIPで上書きしても
+これらは維持されます。Javaは21または25を選択し、メモリ量はロリポップ管理画面側で
+設定してください。
+
 ## 開発
 
 スクリプトはビルドせず、`tsx` で `src/cli.ts` を直接実行します。利用できる
